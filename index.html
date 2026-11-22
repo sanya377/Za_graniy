@@ -76,13 +76,48 @@ html{scroll-behavior:auto}
 @keyframes rainMove{from{transform:translateY(-25px)}to{transform:translateY(28px)}}
 @media(prefers-reduced-motion:reduce){.poster .glow,.poster .figure,.poster .rails,.poster .tunnel,.panel.scene-enter,.panel.scene-enter .story p,.actions.scene-enter .choice,.ending-illustration.show,.ending-illustration .scenery,.ending-illustration .light,.ending-illustration .rain{animation:none!important}}
 
+
+/* V3.1 cinematic treatment */
+body{background:radial-gradient(ellipse at 50% -15%,#271b35 0%,transparent 52%),linear-gradient(165deg,#0a0b15 0%,#0e101c 55%,#080b14 100%)}
+.poster{min-height:285px;border-color:#9c8bab42;background:linear-gradient(to top,#080a17 1%,#0b0d1d36 75%),linear-gradient(115deg,#121c30,#292038 55%,#131626);box-shadow:0 30px 80px #0009,inset 0 0 60px #0007}
+.poster:before{display:block!important;content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(0deg,#090915ce 1%,transparent 65%),radial-gradient(ellipse at center,transparent 25%,#06071396 100%);border-radius:inherit}
+.poster .art{filter:saturate(.7) contrast(1.13)}
+.poster h1{font-size:clamp(39px,10vw,58px);text-shadow:0 3px 26px #05050b,0 5px 10px #05050b;max-width:330px}
+.poster .eyebrow,.poster h1,.poster p{z-index:2}
+.poster p{max-width:340px;text-shadow:0 2px 12px #000}
+.poster .glow{background:#a680ca55!important}
+.poster[data-mood="danger"]{background:linear-gradient(0deg,#100b1a,#321b2d 60%,#101525)}
+.poster[data-mood="danger"] .glow{background:#a83b5d99!important}
+.poster[data-mood="memory"]{background:linear-gradient(0deg,#100e1c,#2f3252 65%,#1b1931)}
+.poster[data-mood="memory"] .glow{background:#b6a4d49c!important}
+.poster[data-mood="hope"]{background:linear-gradient(0deg,#171424,#6a5366 75%,#342943)}
+.poster[data-mood="hope"] .glow{background:#f0b476c9!important}
+.poster[data-mood="mystery"]{background:linear-gradient(0deg,#080f1b,#1c3a4c 68%,#101523)}
+.poster[data-mood="mystery"] .glow{background:#75b0d18c!important}
+.poster[data-mood="danger"] .figure{filter:drop-shadow(0 0 14px #e64f85)}
+.poster[data-mood="memory"] .tunnel{border-color:#cbb4e09c}
+.poster[data-mood="mystery"] .tunnel{border-color:#83b7cf9c}
+.poster[data-mood="hope"] .tunnel{border-color:#ffdfb99c}
+.poster .art:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,#ffffff06 4px);opacity:.2;pointer-events:none}
+.poster .scene-stamp{position:absolute;right:20px;top:20px;z-index:2;color:#dcd1e9b8;font-size:10px;font-weight:700;letter-spacing:.18em;text-shadow:0 1px 12px #080813}
+.poster .art .dust{position:absolute;inset:0;background-image:radial-gradient(#dce2ffba 1px,transparent 1.3px),radial-gradient(#cfb7ec99 1px,transparent 1.2px);background-size:87px 113px,133px 169px;background-position:10px 32px,55px 10px;opacity:.27;animation:dustDrift 19s ease-in-out infinite alternate}
+@keyframes dustDrift{from{transform:translateY(0);opacity:.16}to{transform:translateY(-20px);opacity:.37}}
+.audio-state{font-size:11px;color:#aaa3bc;line-height:1.5;margin-top:-11px;padding-left:2px;min-height:1em}
+.chip[aria-pressed="true"]{background:linear-gradient(135deg,#4b305b,#252c49);border-color:#bda5dc}
+.panel{background:linear-gradient(145deg,#181824f0,#121522f2);border-color:#aaa0bd2b;box-shadow:0 20px 55px #0005}
+.choice{background:linear-gradient(110deg,#242337,#1f2433);border-color:#8a819b44;box-shadow:0 7px 20px #0002}
+.choice:active{transform:scale(.99);background:#423149}
+@media(max-width:420px){.poster{min-height:260px}.poster h1{font-size:clamp(37px,10vw,50px)}}
+@media(prefers-reduced-motion:reduce){.poster .art .dust{animation:none!important}}
+
 </style>
 </head>
 <body>
 <main>
-<header><div class="logo">ЗА ГРАНЬЮ ◇</div><div class="badge">ЭПИЗОД 01 · V3.0</div></header>
-<div class="poster" id="poster"><div class="art" aria-hidden="true"><div class="glow"></div><div class="tunnel"></div><div class="rails"></div><div class="figure"></div></div><div class="eyebrow">Интерактивный триллер</div><h1>Последний<br>поезд</h1><p>Иногда последняя остановка — это только начало.</p></div>
-<div class="toolbar"><button type="button" class="chip" id="audio" aria-pressed="false">♫ Звук: выкл.</button><button type="button" class="chip" id="achievements">🏆 Достижения</button><button type="button" class="chip" id="library">📚 Истории</button></div>
+<header><div class="logo">ЗА ГРАНЬЮ ◇</div><div class="badge">ЭПИЗОД 01 · V3.1</div></header>
+<div class="poster" id="poster"><div class="art" aria-hidden="true"><div class="dust"></div><div class="glow"></div><div class="tunnel"></div><div class="rails"></div><div class="figure"></div></div><span class="scene-stamp" id="sceneStamp">23:47 / ЛИНИЯ 0</span><div class="eyebrow">Интерактивный триллер</div><h1>Последний<br>поезд</h1><p>Иногда последняя остановка — это только начало.</p></div>
+<div class="toolbar"><button type="button" class="chip" id="audio" aria-pressed="false">♫ Музыка: выкл.</button><button type="button" class="chip" id="achievements">🏆 Достижения</button><button type="button" class="chip" id="library">📚 Истории</button></div>
+<div class="audio-state" id="audioState" role="status">Мрачная музыка включается по нажатию. Громкость зависит от телефона.</div>
 <div class="stats"><div class="stat">Смелость: <strong id="bravery">0</strong></div><div class="stat">Память: <strong id="memory">0</strong></div><div class="stat">Следы: <strong id="clues">0</strong></div></div>
 <div><div class="chapterrow"><strong id="chapter"></strong><span id="count"></span></div><div class="track"><div class="fill" id="fill"></div></div></div>
 <section class="panel" id="panel" aria-live="polite"><h2 id="title"></h2><div class="story" id="story"></div></section>
@@ -162,17 +197,82 @@ scenes.letter.o.push(["Найти служебный архив","archive"]);
 scenes.station.o.push(["Проверить служебный коридор","archive"]);
 scenes.dark.o.unshift(["Попробовать вспомнить код выключателя","free","clues",3]);
 scenes.dark.o=scenes.dark.o.map(c=>c[0]==="Выключить систему"?["Выключить систему наугад","loop"]:c);
-let audioCtx=null,audioOn=false;
-function tone(freq=110,duration=.16,volume=.025){if(!audioOn)return;try{
-audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
-if(audioCtx.state==="suspended")audioCtx.resume();
+
+/* Dark atmospheric soundtrack composed in Web Audio; no external media or autoplay. */
+let audioCtx=null,audioOn=false,musicBus=null,voices=[],lfo=null,musicTimer=null,step=0;
+const musicPhrases={
+quiet:[55,82.41,110,73.42],
+mystery:[55,77.78,103.83,73.42],
+danger:[46.25,69.3,92.5,61.74],
+memory:[58.27,87.31,116.54,77.78],
+hope:[65.41,98,130.81,87.31]
+};
+function audioContext(){
+if(audioCtx)return audioCtx;
+const C=window.AudioContext||window.webkitAudioContext;
+if(!C)throw Error("AudioContext unavailable");
+audioCtx=new C();
+musicBus=audioCtx.createGain();musicBus.gain.value=0;musicBus.connect(audioCtx.destination);
+const filter=audioCtx.createBiquadFilter();filter.type="lowpass";filter.frequency.value=500;filter.Q.value=.4;filter.connect(musicBus);
+voices=[0,1,2].map((_,index)=>{
+const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+osc.type=index===1?"triangle":"sine";gain.gain.value=index===0?.46:index===1?.16:.095;
+osc.connect(gain);gain.connect(filter);osc.start();return{osc,gain}});
+lfo=audioCtx.createOscillator();const lfoGain=audioCtx.createGain();lfo.frequency.value=.09;lfoGain.gain.value=90;lfo.connect(lfoGain);lfoGain.connect(filter.frequency);lfo.start();
+return audioCtx;
+}
+function musicMood(id){
+if(["trap","loop","chase","emergency","dark","lastChoice"].includes(id))return"danger";
+if(["memoryDoor","girlTalk","year","refuse","farewell","newspaper"].includes(id))return"memory";
+if(["saved","free","light"].includes(id))return"hope";
+if(["archive","recording","conductor","controlRoom","reflection","mirror","warning"].includes(id))return"mystery";
+return"quiet";
+}
+function updateMusic(id){
+if(!audioOn||!audioCtx||!voices.length)return;
+const now=audioCtx.currentTime;
+const notes=musicPhrases[musicMood(id)]||musicPhrases.quiet;
+voices.forEach((v,i)=>v.osc.frequency.setTargetAtTime(notes[i===2?2:i],now,.8));
+if(musicBus){musicBus.gain.cancelScheduledValues(now);musicBus.gain.setTargetAtTime(musicMood(id)==="danger"?.09:.065,now,1.25)}
+}
+function chime(freq=220,length=1,volume=.008){
+if(!audioOn||!audioCtx||audioCtx.state!=="running")return;
 const osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),now=audioCtx.currentTime;
-osc.type="sine";osc.frequency.setValueAtTime(freq,now);osc.frequency.exponentialRampToValueAtTime(Math.max(50,freq*.6),now+duration);
-gain.gain.setValueAtTime(volume,now);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
-osc.connect(gain);gain.connect(audioCtx.destination);osc.start(now);osc.stop(now+duration+.02)
-}catch(_){}}
-const ambient=()=>{if(audioOn)tone(65,.55,.014)};
-document.getElementById("audio").addEventListener("click",()=>{audioOn=!audioOn;const b=document.getElementById("audio");b.textContent=audioOn?"♫ Звук: вкл.":"♫ Звук: выкл.";b.setAttribute("aria-pressed",String(audioOn));if(audioOn)tone(300,.25,.035)});
+osc.type="sine";osc.frequency.setValueAtTime(freq,now);osc.frequency.exponentialRampToValueAtTime(Math.max(55,freq*.75),now+length);
+gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(volume,now+.035);
+gain.gain.exponentialRampToValueAtTime(.0001,now+length);osc.connect(gain);gain.connect(audioCtx.destination);
+osc.start(now);osc.stop(now+length+.05);
+}
+function tone(freq=110,duration=.16,volume=.025){chime(freq,Math.max(.12,duration),Math.min(volume,.015))}
+function ambient(){chime(82.4,1.8,.006)}
+function musicPulse(){
+if(!audioOn||document.hidden||!audioCtx||audioCtx.state!=="running")return;
+const notes=musicPhrases[musicMood(player.scene)]||musicPhrases.quiet;
+if(step%4===0)chime(notes[2]*2,2.4,.0035);
+else if(step%4===2)chime(notes[1]*2,1.6,.002);
+step++;
+}
+function updateAudioUI(){
+const b=$("audio");b.textContent=audioOn?"♫ Музыка: вкл.":"♫ Музыка: выкл.";
+b.setAttribute("aria-pressed",String(audioOn));
+$("audioState").textContent=audioOn?"Играет тихий мрачный эмбиент · мелодия меняется со сценой":"Музыка выключена · нажми кнопку для включения";
+}
+$("audio").addEventListener("click",async()=>{
+if(audioOn){
+audioOn=false;clearInterval(musicTimer);musicTimer=null;
+if(audioCtx&&musicBus){const now=audioCtx.currentTime;musicBus.gain.cancelScheduledValues(now);musicBus.gain.setTargetAtTime(0,now,.15)}
+updateAudioUI();return;
+}
+try{
+const ctx=audioContext();await ctx.resume();audioOn=true;
+updateMusic(player.scene);musicPulse();clearInterval(musicTimer);musicTimer=setInterval(musicPulse,3400);updateAudioUI();
+}catch(_){audioOn=false;$("audioState").textContent="Браузер не разрешил воспроизведение. Попробуй нажать ещё раз.";updateAudioUI()}
+});
+document.addEventListener("visibilitychange",()=>{
+if(!audioOn||!audioCtx||!musicBus)return;
+const now=audioCtx.currentTime;musicBus.gain.cancelScheduledValues(now);
+musicBus.gain.setTargetAtTime(document.hidden?0:.065,now,.15);
+});
 function dialog(title,body){$("dialogtitle").textContent=title;$("dialogbody").replaceChildren();$("dialogbody").append(body);$("overlay").hidden=false;$("closeDialog").focus()}
 $("closeDialog").addEventListener("click",()=>{$("overlay").hidden=true});
 $("overlay").addEventListener("click",e=>{if(e.target===$("overlay"))$("overlay").hidden=true});
@@ -257,7 +357,7 @@ box.hidden=false;box.classList.remove("show");void box.offsetWidth;box.classList
 function renderV2(){
 mark();persist();const s=scenes[player.scene],id=player.scene;
 $("chapter").textContent=s.c;$("count").textContent="СЦЕН ПРОЙДЕНО: "+player.visited.length;$("fill").style.width=Math.min(100,Math.round(player.visited.length/15*100))+"%";
-$("title").textContent=s.t;$("poster").dataset.scene=id;$("story").replaceChildren();
+$("title").textContent=s.t;$("poster").dataset.scene=id;const mood=musicMood(id);$("poster").dataset.mood=mood;$("sceneStamp").textContent=(mood==="danger"?"ТРЕВОГА":mood==="memory"?"ВОСПОМИНАНИЕ":mood==="hope"?"РАССВЕТ":mood==="mystery"?"ТАЙНА":"23:47 / ЛИНИЯ 0");updateMusic(id);$("story").replaceChildren();
 for(const line of s.p){const p=document.createElement("p");p.innerHTML=line;$("story").append(p)}
 $("bravery").textContent=player.bravery;$("memory").textContent=player.memory;$("clues").textContent=player.clues;
 $("choices").replaceChildren();
