@@ -63,7 +63,7 @@ footer{display:flex;justify-content:space-between;gap:12px;align-items:center;co
 </head>
 <body class="mood-mystery">
 <main>
-<header><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="ep">ЭПИЗОД 01 · V4.3</div></header>
+<header><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="ep">ЭПИЗОД 01 · V4.4</div></header>
 <section class="hero" id="hero">
   <div class="stamp" id="stamp">23:47 / ЛИНИЯ 0</div>
   <div class="art" aria-hidden="true"><div class="dust"></div><div class="scan"></div><div class="glow"></div><div class="tunnel"></div><div class="window"></div><div class="rails"></div><div class="figure"></div><div class="fog"></div></div>
@@ -73,10 +73,13 @@ footer{display:flex;justify-content:space-between;gap:12px;align-items:center;co
 </section>
 <div class="toolbar">
   <button type="button" class="pill" id="musicBtn" aria-pressed="false">♫ Музыка: выкл.</button>
+  <button type="button" class="pill" id="voiceBtn" aria-pressed="true">🎙️ Озвучка: вкл.</button>
+  <button type="button" class="pill" id="replayVoice">↻ Повторить сцену</button>
   <button type="button" class="pill" id="achBtn">🏆 Архив</button>
   <button type="button" class="pill" id="aboutBtn">📖 Об эпизоде</button>
   <a class="pill" href="./voice-studio.html?v=45" style="display:inline-flex;align-items:center;text-decoration:none;background:#483260;border:1px solid #c5a4ea66;color:#fff">🎙️ Студия озвучки</a>
 </div>
+<div class="audio-status" id="voiceStatus" aria-live="polite">🎙️ Озвучка 28 сцен готова. Нажми на картинку, чтобы открыть историю и услышать голос.</div>
 <div class="audio-status" id="audioStatus">Нажми «Музыка», чтобы включить саундтрек. На iPhone звук запускается только по нажатию.</div>
 <div class="music-credit">🎼 Kevin MacLeod, <em>Dark Times</em> / <em>Darkness is Coming</em>, CC BY 3.0 · <a href="https://incompetech.com" target="_blank" rel="noopener noreferrer">Автор и лицензия</a></div>
 <div class="stats">
@@ -281,9 +284,71 @@ const sceneSeed=[...id].reduce((a,c)=>a+c.charCodeAt(0),0)%7;
 const details='<g opacity=".28">'+Array.from({length:7},(_,i)=>'<circle cx="'+(40+i*86+sceneSeed*3)+'" cy="'+(67+i*53%297)+'" r="'+(1+i%3)+'" fill="'+light+'"/>').join("")+'</g>';
 return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 470" role="img" aria-label="Иллюстрация: '+(artNames[id]||"Сцена")+'" preserveAspectRatio="xMidYMid slice">'+define+frame+objects+mist+details+'</svg>';
 }
+
+/* Voice narration: 28 MP3 recordings stored as base64 text files for GitHub Pages.
+ * Decoding takes place in the browser. Each scene is fetched only when needed.
+ */
+let voiceEnabled=true,voiceSequence=0,voiceUrl=null;
+const voiceAudio=new Audio();
+voiceAudio.preload="none";
+voiceAudio.volume=1;
+voiceAudio.playsInline=true;
+const voiceStatus=()=>document.getElementById("voiceStatus");
+function voiceDuck(on){if(typeof music!=="undefined")music.volume=on?.11:.46}
+function stopNarration(){
+ voiceSequence++;
+ voiceAudio.pause();
+ voiceAudio.removeAttribute("src");
+ voiceAudio.load();
+ if(voiceUrl){URL.revokeObjectURL(voiceUrl);voiceUrl=null}
+ voiceDuck(false);
+}
+function voiceToggleButton(){
+ $("voiceBtn").textContent=voiceEnabled?"🎙️ Озвучка: вкл.":"🎙️ Озвучка: выкл.";
+ $("voiceBtn").setAttribute("aria-pressed",String(voiceEnabled));
+}
+async function playNarration(id){
+ stopNarration();
+ if(!voiceEnabled)return;
+ const token=voiceSequence;
+ voiceStatus().textContent="🎙️ Загружаю озвучку сцены…";
+ try{
+   const response=await fetch("./assets/voice/"+encodeURIComponent(id)+".b64",{cache:"force-cache"});
+   if(!response.ok)throw Error("Запись не найдена ("+response.status+")");
+   const encoded=(await response.text()).trim().replace(/\s+/g,"");
+   if(token!==voiceSequence)return;
+   const binary=atob(encoded);
+   const arr=new Uint8Array(binary.length);
+   for(let i=0;i<binary.length;i++)arr[i]=binary.charCodeAt(i);
+   if(token!==voiceSequence)return;
+   const blob=new Blob([arr],{type:"audio/mpeg"});
+   voiceUrl=URL.createObjectURL(blob);
+   voiceAudio.src=voiceUrl;
+   voiceDuck(true);
+   try{
+     await voiceAudio.play();
+     if(token===voiceSequence)voiceStatus().textContent="🔊 Идёт озвучка · нажми «Повторить сцену», чтобы послушать заново.";
+   }catch(error){
+     voiceDuck(false);
+     if(token===voiceSequence)voiceStatus().textContent="🎙️ Нажми «Повторить сцену», чтобы разрешить воспроизведение на iPhone.";
+   }
+ }catch(error){
+   voiceDuck(false);
+   if(token===voiceSequence)voiceStatus().textContent="Озвучка недоступна: "+error.message+". Текст остаётся доступен.";
+ }
+}
+voiceAudio.addEventListener("ended",()=>{voiceDuck(false);voiceStatus().textContent="✓ Озвучка завершена · можно повторить сцену."});
+$("voiceBtn").addEventListener("click",()=>{
+ voiceEnabled=!voiceEnabled;voiceToggleButton();
+ if(!voiceEnabled){stopNarration();voiceStatus().textContent="Озвучка выключена."}
+ else {voiceStatus().textContent="Озвучка включена.";if(state.revealed)playNarration(state.scene)}
+});
+$("replayVoice").addEventListener("click",()=>{if(!state.revealed)revealCurrentScene();else {voiceEnabled=true;voiceToggleButton();playNarration(state.scene)}});
+voiceToggleButton();
+
 function revealCurrentScene(){
 if(state.revealed)return;
-state.revealed=true;save();updateReveal();clickAccent();
+state.revealed=true;save();updateReveal();clickAccent();if(voiceEnabled)playNarration(state.scene);
 }
 function updateReveal(){
 const visible=!!state.revealed;
@@ -368,14 +433,14 @@ function go(choice){
     if(choice.effect.clue) state.clue+=choice.effect.clue;
     if(choice.effect.flag && !state.flags.includes(choice.effect.flag)) state.flags.push(choice.effect.flag);
   }
-  state.scene=choice.to;state.revealed=false;
+  stopNarration();state.scene=choice.to;state.revealed=false;
   if(!state.visited.includes(choice.to)) state.visited.push(choice.to);
   if(scenes[choice.to]?.ending && !state.endings.includes(scenes[choice.to].ending)) state.endings.push(scenes[choice.to].ending);
   if(choice.note){$("effect").textContent=choice.note; $("effect").hidden=false;} else $("effect").hidden=true;
   clickAccent(); render();
   requestAnimationFrame(()=>{const stage=$("stage");if(stage)stage.scrollIntoView({behavior:"smooth",block:"start"});});
 }
-$("restart").addEventListener("click",()=>{if(state.scene==="start"||confirm("Начать эпизод сначала? Открытые финалы и архив останутся сохранены.")){state={...state,scene:"start",revealed:false,nerve:0,mind:0,clue:0,flags:[],visited:[]}; $("effect").hidden=true; if(!state.visited.includes("start")) state.visited.push("start"); render();}});
+$("restart").addEventListener("click",()=>{if(state.scene==="start"||confirm("Начать эпизод сначала? Открытые финалы и архив останутся сохранены.")){stopNarration();state={...state,scene:"start",revealed:false,nerve:0,mind:0,clue:0,flags:[],visited:[]}; $("effect").hidden=true; if(!state.visited.includes("start")) state.visited.push("start"); render();}});
 if(!state.visited.includes(state.scene)) state.visited.push(state.scene);
 
 
