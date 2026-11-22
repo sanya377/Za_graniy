@@ -110,8 +110,8 @@ button{font:inherit;color:inherit}button:focus-visible{outline:2px solid #e5a9a9
 @media(prefers-reduced-motion:reduce){.fx-fog,.fx-glitch,.fx-filmflash,.fx-scene-msg,.scene.fx-danger::before,.scene .noise,#picture,.scene.fx-danger .dark-figure.visible{animation:none!important}#weather{display:none}}
 </style></head><body>
 <div class="shell">
-<header class="top"><div><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="topsmall">ГЛАВА 01 · V6.1 · КИНОЭФФЕКТЫ</div></div><div class="toolbar"><button id="flashBtn" class="icon" title="Фонарик" aria-label="Включить или выключить фонарик">🔦</button><button id="motion" class="icon" title="Анимация" aria-label="Включить или выключить анимацию">🎬</button><button id="sound" class="icon" title="Звук" aria-label="Включить или выключить звук">🔇</button><button id="bag" class="icon" title="Улики" aria-label="Улики">⌑</button><button id="again" class="replay" title="Начать заново" aria-label="Играть заново">↻ Заново</button></div></header>
-<div class="progress"><div id="bar"></div></div><div class="buildtag">V6.1 · ЖИВОЙ ДОЖДЬ · ТЕНИ · ФОНАРИК · ГЛИТЧ · КАМЕРА</div>
+<header class="top"><div><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="topsmall">ГЛАВА 01 · V6.2 · РАСШИРЕННАЯ ИСТОРИЯ</div></div><div class="toolbar"><button id="hapticBtn" class="icon" title="Вибрация и обратная связь" aria-label="Включить или выключить вибрацию">📳</button><button id="flashBtn" class="icon" title="Фонарик" aria-label="Включить или выключить фонарик">🔦</button><button id="motion" class="icon" title="Анимация" aria-label="Включить или выключить анимацию">🎬</button><button id="sound" class="icon" title="Звук" aria-label="Включить или выключить звук">🔇</button><button id="bag" class="icon" title="Улики" aria-label="Улики">⌑</button><button id="again" class="replay" title="Начать заново" aria-label="Играть заново">↻ Заново</button></div></header>
+<div class="progress"><div id="bar"></div></div><div class="buildtag">V6.2 · ВИБРАЦИЯ · НОВЫЕ ГЛАВЫ · ВЫБОРЫ · ФИНАЛЫ</div>
 <main class="scene" id="scene"><img id="picture" src="assets/scenes/start.webp" alt="Кадр истории"><div class="noise"></div><canvas id="weather" aria-hidden="true"></canvas><div class="fx-fog" aria-hidden="true"></div><div class="fx-fog fx-fog2" aria-hidden="true"></div><div id="glitch" class="fx-glitch" aria-hidden="true"></div><div id="flashlight" class="fx-flashlight" aria-hidden="true"></div><div id="filmflash" class="fx-filmflash" aria-hidden="true"></div><div id="sceneMsg" class="fx-scene-msg" aria-live="off">НЕ ОБОРАЧИВАЙСЯ</div><div id="particles" aria-hidden="true"></div><div class="dark-figure" id="darkFigure" aria-hidden="true"><div class="dark-head"></div><div class="dark-body"></div></div><div class="lightning" id="lightning"></div><div class="caption" id="stamp">23:47 · ВАГОН 0</div><div class="countdown" id="clock">00:10</div><div class="hots" id="hots"></div>
 <div id="huntStatus" class="hunt-status hidden" aria-live="polite">
  <div class="hunt-row"><span id="huntCue">👣 ШАГИ БЛИЗКО</span><strong id="huntCount">16 c</strong></div>
@@ -134,6 +134,13 @@ window.addEventListener("DOMContentLoaded",()=>{
 const $=id=>document.getElementById(id);
 let s={node:"wake",clues:[],fear:0,turned:false,knowsMother:false,seen:[],sound:false,lock:false,checkpoint:"trapCell",digits:"",mistakes:0,codePowered:false,ventOpen:false,deaths:0};
 let ctx=null,timer=null,remaining=0,scareTimeout=null,scareSeq=0,screamBuffer=null,screamLoading=null,huntTimer=null,huntPhase=0,huntDeadline=0,huntVisit=0,huntIntensity=0;
+let hapticsEnabled=true,hasNativeVibrate=typeof navigator.vibrate==="function",feedbackPulse=0;
+function haptic(pattern="tap"){
+ if(!hapticsEnabled)return;
+ const patterns={tap:14,foot:[24,70,20],danger:[75,55,95],death:[120,80,150],scare:[85,45,115,45,100]};
+ if(hasNativeVibrate){try{navigator.vibrate(patterns[pattern]||14)}catch(e){}}
+ // On iPhone Safari, the Web Vibration API is unavailable; visual and audio effects remain active.
+}
 let motion=true,phaserGame=null,phaserReady=false,howlScream=null,toneSynth=null,ambienceOn=false,ambientTimer=null,sceneAnimation=null,lastAnimatedScene="",motionToken=0;
 const reduceMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 if(reduceMotion)motion=false;
@@ -179,7 +186,7 @@ function fxTrigger(id){
  }
  scene.classList.remove("fx-shake");
  for(const key of ["glitch","filmflash","sceneMsg"]){const el=$(key);el.classList.remove("hit","show");void el.offsetWidth}
- const peril=/^(turned|door|opened|refused|reflection|window|chaseHall|huntRoom|dead.*|trapCell|openVent|shaftExit|codeOpen)$/.test(id);
+ const peril=/^(turned|door|opened|refused|reflection|window|chaseHall|huntRoom|dead.*|trapCell|openVent|shaftExit|codeOpen|corridorFork|redDoor|emergency|caughtLight|passGuard|guardTruth|rewritePast)$/.test(id);
  const fatal=/^dead/.test(id);
  scene.classList.toggle("fx-danger",peril);
  $("flashlight").classList.toggle("on",motion&&(peril||flashlightManual));
@@ -187,7 +194,7 @@ function fxTrigger(id){
  $("glitch").classList.add("hit");
  $("filmflash").classList.add("hit");
  if(peril){scene.classList.add("fx-shake");fxSchedule(()=>scene.classList.remove("fx-shake"),450)}
- const messages={wake:"НЕ ОБОРАЧИВАЙСЯ",turned:"ОН УВИДЕЛ ТЕБЯ",safe:"КТО-ТО РЯДОМ",door:"НЕ ОТКРЫВАЙ",opened:"ОН УЖЕ ЗДЕСЬ",chaseHall:"БЕГИ",huntRoom:"НЕ ШУМИ",trapCell:"ТЫ ЗАПЕРТ",openVent:"ТИШЕ...",escapeGood:"ТЫ ВЫЖИЛ",deadHunt:"ТЕБЯ НАШЛИ"};
+ const messages={archive:"ЭКСПЕРИМЕНТ 48",corridorFork:"НЕ ВЕРЬ ГОЛОСАМ",redDoor:"ЭТО НЕ ДОМ",emergency:"12 СЕКУНД",passGuard:"НЕ ОСТАНАВЛИВАЙСЯ",finalChoice:"ПОСЛЕДНИЙ ВЫБОР",trueEscape:"ТЫ СВОБОДЕН",wake:"НЕ ОБОРАЧИВАЙСЯ",turned:"ОН УВИДЕЛ ТЕБЯ",safe:"КТО-ТО РЯДОМ",door:"НЕ ОТКРЫВАЙ",opened:"ОН УЖЕ ЗДЕСЬ",chaseHall:"БЕГИ",huntRoom:"НЕ ШУМИ",trapCell:"ТЫ ЗАПЕРТ",openVent:"ТИШЕ...",escapeGood:"ТЫ ВЫЖИЛ",deadHunt:"ТЕБЯ НАШЛИ"};
  const msg=messages[id]||(fatal?"ТЫ ПОГИБ":"");
  if(msg){$("sceneMsg").textContent=msg;$("sceneMsg").classList.add("show")}
  if(peril&&id!=="huntRoom")fxSchedule(()=>{if(s.node===id){$("glitch").classList.remove("hit");void $("glitch").offsetWidth;$("glitch").classList.add("hit")}},2200);
@@ -310,7 +317,7 @@ openVent:{tag:"10 · УЗКИЙ ПРОХОД",title:"Канал под пото�
 shaftExit:{tag:"11 · СНАРУЖИ",title:"За стеной поезда",img:"stationGirl",text:"Ты срываешься из шахты на узкую технологическую платформу. Внизу медленно катится пустой состав.\n\nВ одном из окон ты видишь себя. Тот, другой, смотрит прямо на тебя и медленно машет рукой.\n\nС платформы ведёт лестница в диспетчерскую.",actions:[["Подняться в диспетчерскую","controlFinal"],["Вернуться к поезду","deadReturn"]]},
 keypad:{tag:"ЗАГАДКА",title:"Кодовый замок",img:"controlRoom",text:"На замке четыре цифры. Зелёная лампа должна гореть, иначе механизм не откроется.\n\nВспомни, какое время повторялось всю дорогу.\n\n<em>Введи четыре цифры.</em>",actions:[["Вернуться в вагон","trapCell"]]},
 codeOpen:{tag:"10 · СВОБОДА?",title:"Дверь открыта",img:"serviceDoor",text:"Мотор замка щёлкает, дверь отходит на несколько сантиметров. Ты проскакиваешь в коридор, когда за спиной начинает визжать аварийная сирена.\n\nНо в окне отражается не твоя фигура, а женщина с мокрыми волосами.",actions:[["Бежать к выходу на платформу","shaftExit"],["Обратиться к женщине в отражении","deadReturn"]]},
-controlFinal:{tag:"12 · ДИСПЕТЧЕРСКАЯ",title:"Кто запер тебя?",img:"controlRoom",text:"На панели управления мигают две записи: <em>ПАССАЖИР №1</em> и <em>ДЕЖУРНЫЙ №48</em>.\n\nРядом прикреплено твоё фото. Под ним подпись: «Запирать при каждой попытке вспомнить».\n\nТеперь ясно: ловушка была создана не для убийства. Кто-то намеренно не хотел, чтобы ты добрался сюда.",actions:[["Отключить систему и выйти из поезда","escapeGood"],["Включить линию ноль ещё раз","endingLoop"]]},
+controlFinal:{tag:"12 · ДИСПЕТЧЕРСКАЯ",title:"Кто запер тебя?",img:"controlRoom",text:"На панели управления мигают две записи: <em>ПАССАЖИР №1</em> и <em>ДЕЖУРНЫЙ №48</em>.\n\nРядом прикреплено твоё фото. Под ним подпись: «Запирать при каждой попытке вспомнить».\n\nТеперь ясно: ловушка была создана не для убийства. Кто-то намеренно не хотел, чтобы ты добрался сюда.",actions:[["Исследовать секретный архив","archive"],["Отключить систему, не узнав правду","escapeGood"],["Включить линию ноль ещё раз","endingLoop"]]},
 escapeGood:{tag:"КОНЕЦ ГЛАВЫ · ПОБЕГ",title:"Ты выжил. Пока.",img:"freedom",text:"Поезд застывает. За окном вместо тоннеля появляется серое предрассветное небо.\n\nНа телефон приходит сообщение от неизвестного номера: <em>«Ты вышел из вагона. Но она всё ещё внутри».</em>\n\nТы выжил, нашёл следы прошлого и открыл путь ко второй главе.",actions:[["↻ Играть заново","restart"]]},
 endingLoop:{tag:"КОНЕЦ ГЛАВЫ · ПЕТЛЯ",title:"Новый смотритель",img:"keeper",text:"Ты нажимаешь кнопку запуска. Свет заливает пустой поезд.\n\nДежурный №48 снимает значок и оставляет его тебе. «В этот раз ты сам выбрал остаться».\n\nСледующий пассажир появится ровно в 23:47.",actions:[["↻ Играть заново","restart"]]},
 deadCorridor:{tag:"СМЕРТЬ · ПОГОНЯ",title:"Они догнали тебя",img:"trap",death:true,text:"Ты прячешься за автоматом с водой. Шаги прекращаются.\n\nМокрые пальцы внезапно обхватывают твою шею сзади. Последнее, что ты слышишь, женский шёпот: <em>«Не надо было останавливаться».</em>\n\nТы погиб. Но поезд позволяет попытаться ещё раз.",actions:[["↻ Повторить с контрольной точки","checkpoint"],["Начать историю заново","restart"]]},
@@ -318,7 +325,25 @@ deadDoor:{tag:"СМЕРТЬ · ЛОВУШКА",title:"Последний уда�
 deadShaft:{tag:"СМЕРТЬ · ШАХТА",title:"Не тот голос",img:"reflection",death:true,text:"Ты ползёшь на детский плач. Он становится ближе, но ни одного ребёнка здесь нет.\n\nЧьи-то холодные руки хватают тебя за лицо. Вентиляция содрогается от женского крика.\n\n<em>Больше никто не услышит твоих шагов.</em>",actions:[["↻ Повторить с контрольной точки","checkpoint"],["Начать заново","restart"]]},
 deadReturn:{tag:"СМЕРТЬ · ОТРАЖЕНИЕ",title:"Ты остался там",img:"reflection",death:true,text:"Ты протягиваешь руку к тёмному стеклу. На мгновение оно становится жидким.\n\nЧеловек по другую сторону меняется с тобой местами. Теперь ты смотришь на мир из отражения, а твоё тело уходит по платформе.\n\n<em>Оно больше тебе не принадлежит.</em>",actions:[["↻ Повторить с контрольной точки","checkpoint"],["Начать заново","restart"]]},
 end:{tag:"КОНЕЦ ГЛАВЫ",title:"Следующая остановка",img:"stationGirl",text:"Девочка в красном ожидает тебя на платформе.\n\n«Ты вспомнил, как сюда попал. Теперь вспомни, почему вернулся».\n\n<em>Конец первой главы.</em>",actions:[["Играть заново","restart"]]}
-
+,
+archive:{tag:"13 · ЗАПРЕТНЫЙ АРХИВ",title:"Папка «НУЛЕВАЯ ЛИНИЯ»",img:"controlRoom",text:"В тумбе диспетчерской ты находишь папку, запертую на магнитный замок. На обложке твоя детская фотография и штамп <em>«ЭКСПЕРИМЕНТ 48»</em>.\\n\\nВнутри лежат три вещи: журнал событий, кассета с голосом женщины и ключ с красной ниткой. Снаружи кто-то медленно поворачивает дверную ручку.",actions:[["Прослушать кассету","tape"],["Прочитать журнал смены","logbook"],["Взять ключ и осмотреть проход","redKey"]]},
+tape:{tag:"УЛИКА · ГОЛОС",title:"Запись из будущего",img:"recording",text:"Плёнка шипит. Женщина тихо говорит: «Когда услышишь мой крик, это не означает, что я рядом. Они научились подделывать голоса».\\n\\nЗатем слышен другой голос. Твой собственный: <em>«Не открывай красную дверь. Ни при каких обстоятельствах».</em>",actions:[["Вернуться к документам","archive"],["Искать красную дверь","corridorFork"]]},
+logbook:{tag:"УЛИКА · ЖУРНАЛ",title:"Протокол 23:47",img:"mapRoom",text:"Каждую ночь система возвращает поезд в одну и ту же минуту. В журнале перечислены десятки попыток побега.\\n\\nОтмечена странная закономерность: <em>«При включении аварийного света объект 48 перестаёт видеть пассажира на 12 секунд».</em>",actions:[["Вернуться к документам","archive"],["Пойти к аварийному щитку","corridorFork"]]},
+redKey:{tag:"УЛИКА · КЛЮЧ",title:"Ключ с красной нитью",img:"envelope",text:"Небольшой ключ кажется знакомым. На нём выбито <em>«ДОМ / НЕ ОТКРЫВАТЬ»</em>.\\n\\nВ коридоре гаснет освещение. Кто-то тяжело дышит по ту сторону стены. Нить на ключе внезапно становится тёплой.",actions:[["Убрать ключ в карман и вернуться","archive"],["Выйти в тёмный коридор","corridorFork"]]},
+corridorFork:{tag:"14 · ТУННЕЛЬ ВОСПОМИНАНИЙ",title:"Две двери",img:"serviceDoor",text:"В конце коридора две двери. Над одной горит зелёная лампа <em>«АВАРИЙНОЕ ОСВЕЩЕНИЕ»</em>. Над другой мигает красная надпись <em>«ДОМ»</em>.\\n\\nЗа красной дверью раздаётся знакомый смех. Кажется, там ждут те, кого ты потерял.",actions:[["Включить аварийный свет","emergency"],["Открыть красную дверь","redDoor"],["Пойти туда, откуда доносится смех","redDoor"]]},
+emergency:{tag:"15 · ДВЕНАДЦАТЬ СЕКУНД",title:"Свет против темноты",img:"controlRoom",text:"Ты опускаешь рычаг. Коридор заливает резкий белый свет. В конце прохода стоит дежурный №48. Он замирает с поднятой рукой, будто застывшая фотография.\\n\\nСвет начинает мерцать. <em>Времени немного.</em>",actions:[["Пробежать мимо дежурного","passGuard"],["Спрятаться и ничего не делать","caughtLight"]]},
+caughtLight:{tag:"СМЕРТЬ · СВЕТ",title:"Свет погас",img:"trap",text:"Ты ждёшь, пока он уйдёт. Но дежурный не уходит. На двенадцатой секунде лампы гаснут.\\n\\nЕго лицо оказывается прямо перед твоим. <em>«Вы снова опоздали».</em> Это последнее, что ты слышишь.",death:true,actions:[["↻ Вернуться к диспетчерской","checkpoint2"],["Играть сначала","restart"]]},
+passGuard:{tag:"16 · ЗА ДВЕРЬЮ",title:"Комната потерянных",img:"memoryDoor",text:"Ты проскакиваешь мимо застывшего дежурного. За дверью находится тесная комната, стены которой обиты фотографиями. На каждой фотографии ты в разном возрасте.\\n\\nПосреди комнаты сидит девочка в красном пальто. Она поднимает глаза: <em>«В этот раз ты почти всё вспомнил».</em>",actions:[["Попросить показать последнюю ночь","nightTruth"],["Спросить, кто на самом деле дежурный","guardTruth"]]},
+redDoor:{tag:"15 · ЛОЖНЫЙ ДОМ",title:"Ужин, которого не было",img:"falseHome",text:"За дверью пахнет свежим хлебом. На кухне ждёт женщина в красном шарфе. Она улыбается и протягивает руки.\\n\\nНо её отражение в оконном стекле продолжает сидеть, даже когда она встаёт. <em>«Иди сюда, сынок»</em>, шепчет она.",actions:[["Обнять женщину","deadHome"],["Не верить отражению и закрыть дверь","corridorFork"],["Показать ей старую фотографию","homeClue"]]},
+homeClue:{tag:"УЛИКА · ПОДМЕНА",title:"Это не твоя мать",img:"reflection",text:"Ты достаёшь фотографию. Женщина смотрит на неё и улыбается ещё шире. Затем её лицо на мгновение теряет форму.\\n\\n<em>«Твоей матери здесь никогда не было»</em>, произносит существо чужим голосом. Ты захлопываешь дверь прежде, чем оно успевает подойти.",actions:[["Вернуться в коридор","corridorFork"]]},
+deadHome:{tag:"СМЕРТЬ · ОБЪЯТИЯ",title:"Никогда не возвращайся домой",img:"trap",text:"Ты делаешь шаг навстречу. Женщина обнимает тебя слишком крепко. Руки становятся холодными, а комната начинает складываться внутрь себя.\\n\\nПоследняя мысль: <em>в настоящем доме никогда не пахло хлебом.</em>",death:true,actions:[["↻ Вернуться к диспетчерской","checkpoint2"],["Играть сначала","restart"]]},
+nightTruth:{tag:"17 · ПОСЛЕДНЯЯ НОЧЬ",title:"Почему ты вернулся",img:"memoryDoor",text:"Девочка берёт тебя за руку. Ты видишь ту ночь: аварийный поезд, дым, огонь и мать, запирающую дверь, чтобы спасти пассажиров.\\n\\nНо потом воспоминание продолжается. Проходят годы. Взрослый ты снова и снова запускаешь линию ноль, надеясь переписать случившееся. <em>Это ты создал петлю.</em>",actions:[["Согласиться и отпустить прошлое","finalChoice"],["Обвинить девочку во лжи","guardTruth"]]},
+guardTruth:{tag:"17 · ЛИЦО ДЕЖУРНОГО",title:"Человек по ту сторону маски",img:"conductor",text:"«Дежурный №48 — это твой страх», отвечает девочка. «Каждый раз, когда ты отказываешься принять прошлое, он становится сильнее».\\n\\nВ зеркале за её плечом появляется фигура дежурного. На секунду вместо его лица ты видишь своё. <em>«Один из вас должен остаться».</em>",actions:[["Разбить зеркало и принять правду","finalChoice"],["Попытаться убить отражение","deadMirror"]]},
+deadMirror:{tag:"СМЕРТЬ · ЗЕРКАЛО",title:"Ты убил не того",img:"reflection",text:"Ты ударяешь зеркало. Осколки летят во все стороны, но ни один не падает на пол.\\n\\nВ отражении остаётся только дежурный. А твоё собственное тело исчезает, будто тебя никогда не существовало.",death:true,actions:[["↻ Вернуться к диспетчерской","checkpoint2"],["Играть сначала","restart"]]},
+finalChoice:{tag:"18 · ПОСЛЕДНЕЕ РЕШЕНИЕ",title:"Кого спасать?",img:"stationGirl",text:"За окном медленно появляется рассвет. Девочка поднимается со стула.\\n\\n«Ты можешь остановить линию, но не вернуть ту ночь», говорит она. «Или остаться здесь и продолжать искать невозможный выход».\\n\\nНа пульте три кнопки: <em>ОТПУСТИТЬ, ОСТАТЬСЯ, ПЕРЕПИСАТЬ.</em>",actions:[["Остановить линию и отпустить прошлое","trueEscape"],["Остаться смотрителем поезда","endingLoop"],["Попытаться переписать прошлое","rewritePast"]]},
+rewritePast:{tag:"19 · ПОСЛЕДНЯЯ СДЕЛКА",title:"Цена воспоминания",img:"secondChanceOffer",text:"Дежурный появляется рядом и протягивает маленький ключ. «Я могу вернуть тебя в ту ночь. Но ты забудешь всё, что узнал о ней», говорит он.\\n\\nДевочка качает головой. <em>«Не делай этого. Мы уже пробовали».</em>",actions:[["Отказаться от сделки","finalChoice"],["Взять ключ и вернуться в ночь","memoryLoop"]]},
+memoryLoop:{tag:"ФИНАЛ · ПЕТЛЯ",title:"Тот же поезд",img:"loop",text:"Ты закрываешь глаза. Холодная платформа. Запах дыма. Красный шарф в твоих руках.\\n\\nНо в этот раз ты не можешь вспомнить лицо матери. Ты забываешь даже то, почему вернулся.\\n\\nЧасы снова показывают <em>23:47</em>. Из динамика раздаётся голос: «Пожалуйста, не оборачивайтесь».",actions:[["↻ Начать заново","restart"]]},
+trueEscape:{tag:"ФИНАЛ · ОСВОБОЖДЕНИЕ",title:"Первый настоящий рассвет",img:"freedom",text:"Ты нажимаешь «ОТПУСТИТЬ». Поезд останавливается без единого звука. Лица на фотографиях наконец исчезают.\\n\\nНа платформе больше никого нет, но из динамика доносится знакомый голос: <em>«Теперь живи за нас обоих».</em>\\n\\nТы выходишь наружу. Впервые за много лет часы идут вперёд. Конец первой истории.",actions:[["↻ Пройти историю иначе","restart"]]}
 };
 const HUNT_PHASES=[
  {title:"Шаги приближаются",story:"ТУК... ТУК... ТУК...\n\nРядом два укрытия: железный шкаф с тёмной нишей и скамейка под мигающей лампой. В отражении на стене движется длинная тень.",cue:"👣 ШАГИ БЛИЗКО",choices:[["Спрятаться за железным шкафом","hideCloset"],["Залезть под освещённую скамейку","hideBench"],["Побежать к двери","runNow"]],sec:16},
@@ -326,7 +351,7 @@ const HUNT_PHASES=[
  {title:"Шаги уходят",story:"Сначала один шаг... затем второй... потом тишина.\n\nЗа металлической перегородкой дверь служебного отсека. Но неизвестно, действительно ли существо ушло.",cue:"👣 ШАГИ УДАЛЯЮТСЯ",choices:[["Прислушаться ещё раз","listenMore"],["Сразу броситься к двери","rushDoor"],["Шумно отвлечь существо","makeNoise"]],sec:17},
  {title:"Путь свободен?",story:"Теперь ты слышишь отчётливо: три медленных шага уходят в дальнюю часть вагона. Затем хлопает дверь.\n\nЕсли двигаться тихо, можно добраться до служебного отсека.",cue:"✅ ШАГИ ЗА ДАЛЬНЕЙ ДВЕРЬЮ",choices:[["Тихо проскользнуть в отсек","sneakExit"],["Продолжать ждать","waitForever"],["Позвать на помощь","makeNoise"]],sec:13}
 ];
-const found={clock:"Часы идут назад",window:"Девочка в отражении",seat:"Фотография в красном шарфе",seatTool:"Медная проволока",breaker:"Подсказка: время 23:47",vent:"Найден вентиляционный канал"};
+const found={tape:"Кассета с голосом женщины",logbook:"Журнал: свет останавливает объект №48",redKey:"Ключ с красной нитью",clock:"Часы идут назад",window:"Девочка в отражении",seat:"Фотография в красном шарфе",seatTool:"Медная проволока",breaker:"Подсказка: время 23:47",vent:"Найден вентиляционный канал"};
 
 function loudScare(){
  if(!s.sound)return;
@@ -355,6 +380,7 @@ function loudScare(){
 }
 function hideScare(){scareSeq++;if(scareTimeout){clearTimeout(scareTimeout);scareTimeout=null;}$("scare").classList.remove("show");}
 function jumpscare(){
+ haptic("scare");
  const seq=++scareSeq;const panel=$("scare");
  if(motion){$("scene").classList.add("fx-shake");fxSchedule(()=>$("scene").classList.remove("fx-shake"),500)}
  panel.classList.add("show");loudScare();
@@ -369,6 +395,7 @@ function stopHunt(){
  $("scene").classList.remove("hunting");
 }
 function footstep(strength=.7){
+ haptic("foot");
  if(!s.sound)return;
  try{
  ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();ctx.resume();
@@ -417,25 +444,31 @@ function startHunt(phase=0){
  function tick(){
    if(s.node!=="huntRoom"||huntVisit!==seq)return;
    const left=Math.max(0,Math.ceil((end-Date.now())/1000));$("huntCount").textContent=left+" c";
-   if(left===0){stopHunt();choose("deadHunt");return}
-   if(s.sound&&left%3===0&&left!==s.lastFoot){s.lastFoot=left;footstep(phase===1?1:phase===3?.3:.65)}
+   if(left===0){haptic("danger");stopHunt();choose("deadHunt");return}
+   if(left%3===0&&left!==s.lastFoot){s.lastFoot=left;footstep(phase===1?1:phase===3?.3:.65)}
  }
  tick();huntTimer=setInterval(tick,400);
 }
 function clean(){if(timer){clearInterval(timer);timer=null;}$("clock").classList.remove("on");}
 function resetGame(target="wake"){
  const sound=s.sound;hideScare();clean();stopHunt();
- s={node:target,clues:target==="wake"?[]:["clock","window"],fear:0,turned:false,knowsMother:false,seen:[],sound,lock:false,checkpoint:"trapCell",digits:"",mistakes:0,codePowered:false,ventOpen:false,deaths:0};
+ const deaths=s.deaths||0;
+ s={node:target,clues:target==="wake"?[]:["clock","window"],fear:0,turned:false,knowsMother:false,seen:[],sound,lock:false,checkpoint:"trapCell",digits:"",mistakes:0,codePowered:false,ventOpen:false,deaths};
  render(target);
 }
 function choose(id){
  tone(115,.2,.065,"triangle");
+ haptic("tap");
  if(id==="restart"){resetGame("wake");return}
  if(id==="checkpoint"){resetGame("trapCell");return}
+ if(id==="checkpoint2"){resetGame("controlFinal");return}
  if(id==="retryHunt"){stopHunt();startHunt(0);return}
  if(found[id]&&!s.clues.includes(id))s.clues.push(id);
+ if(["tape","logbook","redKey"].includes(id)&&!s.clues.includes(id))s.clues.push(id);
  if(id==="door"&&s.clues.filter(x=>["clock","window","seat"].includes(x)).length<2){$("hint").textContent="🔎 Исследуй ещё предметы: нужно 2 улики.";tone(280,.18);return}
  if(id==="huntRoom"){startHunt(0);return}
+ if(id==="emergency"&&!s.clues.includes("logbook")){$("hint").textContent="⚡ Ты не знаешь, как действует аварийный свет. Найди журнал смены в архиве.";return}
+ if(id==="trueEscape"&&!s.clues.includes("tape")&&!s.clues.includes("logbook")){$("hint").textContent="Нужно узнать правду. Вернись к архиву и найди хотя бы одну запись.";return}
  if(id==="turned"){s.turned=true;s.fear++}
  if(id==="opened")s.fear++;
  if(id==="bridge"&&!s.clues.includes("seatTool")){ $("hint").textContent="⚡ Контакты нечем замкнуть. Поищи проволоку под сиденьем.";return}
@@ -468,7 +501,9 @@ function renderDigits(){
  let target=$("digits");if(target)target.textContent=(s.digits||"").padEnd(4,"•");
 }
 function render(id){
- stopHunt();clean();s.node=id;const n=texts[id];s.seen.push(id);if(id==="end")s.seen=s.seen.slice(-30);
+ stopHunt();clean();s.node=id;
+ if(/^dead/.test(id)){s.deaths=(s.deaths||0)+1;haptic("death");}
+ if(["door","huntRoom","trapCell","redDoor","emergency","finalChoice"].includes(id))haptic("danger");const n=texts[id];s.seen.push(id);if(id==="end")s.seen=s.seen.slice(-30);
  $("tag").textContent=n.tag;$("title").textContent=n.title;$("story").innerHTML=n.text;$("stamp").textContent=n.stamp||"23:47 · ЛИНИЯ 0";
  $("picture").src="assets/scenes/"+n.img+".webp";$("picture").alt="Иллюстрация: "+n.title;
  $("scene").classList.remove("active");requestAnimationFrame(()=>$("scene").classList.add("active"));
@@ -488,12 +523,19 @@ function render(id){
  }
  for(const [label,to] of n.actions||[]){const b=document.createElement("button");b.className="action"+(to==="end"?" primary":"");b.innerHTML="<strong></strong><span>→</span>";b.querySelector("strong").textContent=label;b.onclick=()=>choose(to);a.appendChild(b)}
  $("hint").textContent=id==="explore"?"Улики: "+s.clues.length+"/2 · Нажимай на светящиеся точки":id==="end"?"Твои решения будут влиять на продолжение полной истории.":"";
- if(id==="door"){remaining=12;$("clock").classList.add("on");$("clock").textContent="00:"+remaining;timer=setInterval(()=>{remaining--;$("clock").textContent="00:"+String(Math.max(remaining,0)).padStart(2,"0");if(remaining<=0){clean();choose("opened")}},1000);}
+ if(id==="door"){remaining=12;$("clock").classList.add("on");$("clock").textContent="00:"+remaining;timer=setInterval(()=>{remaining--;$("clock").textContent="00:"+String(Math.max(remaining,0)).padStart(2,"0");if(remaining<=0){haptic("danger");clean();choose("opened")}},1000);}
  try{sessionStorage.setItem("zg_v5_node",id)}catch(e){}
 }
 $("begin").onclick=()=>{
- $("intro").classList.add("hidden");s.sound=true;$("sound").textContent="🔊";
+ haptic("tap");$("intro").classList.add("hidden");s.sound=true;$("sound").textContent="🔊";
  initSound();prepareScream();initAtmosphere();tone(110,.4,.08,"sawtooth");render("wake");
+};
+$("hapticBtn").onclick=()=>{
+ hapticsEnabled=!hapticsEnabled;
+ $("hapticBtn").textContent=hapticsEnabled?"📳":"📴";
+ $("hapticBtn").setAttribute("aria-pressed",String(hapticsEnabled));
+ $("hint").textContent=hapticsEnabled?(hasNativeVibrate?"📳 Вибрация включена. Проверь её в опасных сценах.":"📱 Safari на iPhone не поддерживает веб-вибрацию. Оставлены звуковые и визуальные сигналы."):"Вибрация выключена.";
+ if(hapticsEnabled)haptic("tap");
 };
 $("sound").onclick=()=>{s.sound=!s.sound;$("sound").textContent=s.sound?"🔊":"🔇";if(s.sound){initSound();prepareScream();tone(220,.2)}else if(howlScream)howlScream.stop()};
 $("motion").onclick=()=>{
