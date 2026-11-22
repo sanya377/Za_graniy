@@ -27,11 +27,43 @@ footer{display:flex;justify-content:space-between;gap:12px;align-items:center;co
 @keyframes glow{from{opacity:.44;transform:scale(.96)}to{opacity:.92;transform:scale(1.13)}}@keyframes tunnel{from{opacity:.55}to{opacity:1}}@keyframes rails{from{background-position:0 0}to{background-position:0 68px}}@keyframes breathe{from{transform:translateY(1px) scale(.97)}to{transform:translateY(-4px) scale(1.02)}}@keyframes dust{from{transform:translateY(0)}to{transform:translateY(-18px)}}@keyframes fog{from{transform:translateY(0);opacity:.35}to{transform:translateY(-8px);opacity:.7}}@keyframes cardIn{from{opacity:.18;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes textIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes endingIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
 @media(max-width:480px){main{padding:20px 14px 28px}.hero{min-height:265px;padding:22px}.card h2{font-size:29px}.story{font-size:16px}.toolbar,.stats{gap:8px}.pill{padding:9px 12px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* V4.1 interactive illustrated scenes */
+.hero{min-height:auto;padding:16px 20px;border-radius:18px;box-shadow:none}
+.hero .art,.hero:before{display:none}
+.hero h1{font-size:22px;line-height:1.1;margin:5px 0}.hero p{font-size:12px;line-height:1.4}
+.hero .stamp{position:static;align-self:flex-end;font-size:9px;margin-bottom:0}
+.hero .eyebrow{font-size:9px}
+.stage{display:block;position:relative;width:100%;padding:0;border:1px solid #9385bb66;min-height:410px;overflow:hidden;border-radius:24px;background:#070c16;color:#fff;text-align:left;box-shadow:0 20px 70px #0009;isolation:isolate;-webkit-tap-highlight-color:transparent}
+.stage svg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.stage:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,#060712b8,transparent 33%,#04071322 78%,#06071350);z-index:2}
+.stage::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0 4px,#ffffff08 5px 6px);opacity:.15}
+.stage-label{position:absolute;left:20px;top:21px;z-index:3;font-size:11px;font-weight:800;color:#fff;letter-spacing:.16em;text-transform:uppercase;text-shadow:0 2px 15px #000}
+.stage-tap{position:absolute;bottom:22px;left:18px;right:18px;z-index:3;display:flex;gap:11px;align-items:center;justify-content:center;text-align:center;padding:14px 15px;border:1px solid #ddd3ff55;border-radius:16px;background:#080a18b8;backdrop-filter:blur(9px);font-size:14px;letter-spacing:.02em;box-shadow:0 9px 24px #0009}
+.stage-tap .hand{font-size:22px;animation:tapPulse 2s ease-in-out infinite}
+.stage:not(.revealed) svg{animation:artEnter .8s ease both,sceneZoom 14s ease-in-out infinite alternate}
+.stage.revealed{min-height:170px;height:190px;transition:min-height .5s,height .5s}
+.stage.revealed .stage-tap{opacity:0;pointer-events:none}
+.stage.revealed svg{filter:saturate(.8) brightness(.75)}
+.stage[disabled]{cursor:default}
+.card[hidden],.choices[hidden]{display:none!important}
+.stage .shimmer{animation:stageFlicker 5s ease-in-out infinite}
+.stage .steam{animation:stageMist 8s linear infinite}
+.music-credit{font-size:10px;color:#aaa5ba;line-height:1.5}
+.music-credit a{color:#c7b6e7}
+@keyframes sceneZoom{from{transform:scale(1)}to{transform:scale(1.045)}}
+@keyframes artEnter{from{opacity:.3;filter:brightness(.5)}to{opacity:1;filter:brightness(1)}}
+@keyframes tapPulse{50%{transform:translateY(-4px);opacity:.7}}
+@keyframes stageFlicker{0%,15%,18%,50%,52%,100%{opacity:1}16%,51%{opacity:.55}}
+@keyframes stageMist{from{transform:translateX(-22px)}to{transform:translateX(30px)}}
+@media(max-width:480px){.stage{min-height:360px}.stage.revealed{min-height:150px;height:170px}.hero h1{font-size:20px}}
+@media(prefers-reduced-motion:reduce){.stage svg,.stage .shimmer,.stage .steam,.stage-tap .hand{animation:none!important}}
+
 </style>
 </head>
 <body class="mood-mystery">
 <main>
-<header><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="ep">ЭПИЗОД 01 · V4.0</div></header>
+<header><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="ep">ЭПИЗОД 01 · V4.1</div></header>
 <section class="hero" id="hero">
   <div class="stamp" id="stamp">23:47 / ЛИНИЯ 0</div>
   <div class="art" aria-hidden="true"><div class="dust"></div><div class="scan"></div><div class="glow"></div><div class="tunnel"></div><div class="window"></div><div class="rails"></div><div class="figure"></div><div class="fog"></div></div>
@@ -45,6 +77,7 @@ footer{display:flex;justify-content:space-between;gap:12px;align-items:center;co
   <button type="button" class="pill" id="aboutBtn">📖 Об эпизоде</button>
 </div>
 <div class="audio-status" id="audioStatus">Нажми «Музыка», чтобы включить саундтрек. На iPhone звук запускается только по нажатию.</div>
+<div class="music-credit">🎼 Kevin MacLeod, <em>Dark Times</em> / <em>Darkness is Coming</em>, CC BY 3.0 · <a href="https://incompetech.com" target="_blank" rel="noopener noreferrer">Автор и лицензия</a></div>
 <div class="stats">
   <div class="pill">Смелость: <strong id="sNerve">0</strong></div>
   <div class="pill">Интуиция: <strong id="sMind">0</strong></div>
@@ -54,12 +87,13 @@ footer{display:flex;justify-content:space-between;gap:12px;align-items:center;co
   <div class="meta"><strong id="chapter"></strong><span id="counter"></span></div>
   <div class="track"><div class="bar" id="progress"></div></div>
 </div>
-<section class="card" id="card" aria-live="polite">
+<button type="button" class="stage" id="stage" aria-label="Открыть текст сцены"><span class="stage-label" id="stageLabel"></span><span class="stage-tap" id="stageTap"><span class="hand">☝</span><span>Нажми на изображение, чтобы открыть историю</span></span></button>
+<section class="card" id="card" aria-live="polite" hidden>
   <h2 id="title"></h2>
   <div class="story" id="story"></div>
 </section>
 <section class="ending" id="ending" hidden></section>
-<nav class="choices" id="choices" aria-label="Выбор действий"></nav>
+<nav class="choices" id="choices" aria-label="Выбор действий" hidden></nav>
 <div class="effect" id="effect" hidden></div>
 <footer><button type="button" id="restart">Начать заново</button><span id="notice">Прогресс сохраняется автоматически</span></footer>
 </main>
@@ -191,14 +225,75 @@ freedom:{name:"Рассвет",desc:"Открыть финал «Свобода�
 all:{name:"Архивариус",desc:"Открыть все финалы эпизода"}
 };
 
-const stateKey="za-graniy-v4";
-let state={scene:"start",nerve:0,mind:0,clue:0,flags:[],visited:[],endings:[],ach:[]};
+const stateKey="za-graniy-v41";
+let state={scene:"start",revealed:false,nerve:0,mind:0,clue:0,flags:[],visited:[],endings:[],ach:[]};
 try{const raw=JSON.parse(localStorage.getItem(stateKey)||"null");if(raw&&raw.scene&&scenes[raw.scene])state={...state,...raw}}catch(_){ }
 for(const k of ["flags","visited","endings","ach"])if(!Array.isArray(state[k]))state[k]=[];
 function save(){try{localStorage.setItem(stateKey,JSON.stringify(state))}catch(_){}}
 function hasFlag(expr){if(!expr)return true;if(expr.includes("|"))return expr.split("|").some(x=>state.flags.includes(x));return state.flags.includes(expr)}
 function unlock(id){if(!state.ach.includes(id))state.ach.push(id)}
 function updateAchievements(){if(state.visited.length>1)unlock("first");if(state.clue>=3)unlock("clues3");if(state.mind>=3)unlock("mind3");if(state.nerve>=3)unlock("nerve3");if(state.endings.includes("freedom"))unlock("freedom");if(state.endings.length===Object.keys(endingMeta).length)unlock("all")}
+
+
+/* Each narrative scene has custom cinematic SVG composition, with one of seven environments and a scene-specific artifact. */
+const artKind={
+start:"train",envelope:"letter",intercom:"train",carriage:"train",memoryFlash:"flashback",voiceWarn:"reflection",
+serviceDoor:"door",reflection:"reflection",ticketStub:"letter",conductor:"conductor",recording:"recording",
+mapRoom:"map",seatOne:"train",finePrint:"conductor",questions:"conductor",chase:"tunnel",motherTape:"flashback",
+announcement:"train",stationGirl:"girl",memoryDoor:"flashback",controlRoom:"control",
+secondChanceOffer:"door",falseHome:"home",freedom:"sunrise",keeper:"control",secondChance:"flashback",trap:"home",loop:"train"
+};
+const artNames={
+start:"ПУСТОЙ ВАГОН",envelope:"КОНВЕРТ",intercom:"ГОЛОС ИЗ ДИНАМИКА",carriage:"ВАГОН НОЛЬ",memoryFlash:"ВОСПОМИНАНИЕ",
+voiceWarn:"ПРЕДУПРЕЖДЕНИЕ",serviceDoor:"ДВЕРЬ 48",reflection:"ОТРАЖЕНИЕ",ticketStub:"БИЛЕТ",conductor:"ДЕЖУРНЫЙ №48",
+recording:"ПЛЁНКА 1998",mapRoom:"КАРТА ЛИНИИ НОЛЬ",seatOne:"МЕСТО №1",finePrint:"ЦЕНА БИЛЕТА",
+questions:"ТРИ ВОПРОСА",chase:"ПОГОНЯ",motherTape:"ГОЛОС МАТЕРИ",announcement:"СЛЕДУЮЩАЯ СТАНЦИЯ",
+stationGirl:"ДЕВОЧКА В КРАСНОМ",memoryDoor:"НОЯБРЬ 1998",controlRoom:"ДИСПЕТЧЕРСКАЯ",secondChanceOffer:"СДЕЛКА",
+falseHome:"ЛОЖНЫЙ ДОМ",freedom:"РАССВЕТ",keeper:"НОВАЯ СМЕНА",secondChance:"ВТОРАЯ ПОПЫТКА",trap:"ЛОВУШКА",loop:"23:47"
+};
+function sceneSvg(id){
+const s=scenes[id]||scenes.start,kind=artKind[id]||"train",mood=s.mood;
+const palettes={mystery:["#101c28","#1e4556","#83c4d0"],danger:["#190e1d","#562138","#d66b83"],memory:["#1a1a2b","#61567c","#d2c1ed"],hope:["#2e2942","#bb7980","#ffe0aa"]};
+const [dark,mid,light]=palettes[mood]||palettes.mystery;
+const define='<defs><linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop stop-color="'+dark+'"/><stop offset=".64" stop-color="'+mid+'"/><stop offset="1" stop-color="#070b15"/></linearGradient><radialGradient id="lamp"><stop stop-color="'+light+'" stop-opacity=".95"/><stop offset="1" stop-color="'+light+'" stop-opacity="0"/></radialGradient><linearGradient id="shine" x1="0" x2="1"><stop stop-color="#000" stop-opacity=".9"/><stop offset=".5" stop-color="'+light+'" stop-opacity=".2"/><stop offset="1" stop-color="#000" stop-opacity=".9"/></linearGradient></defs>';
+const frame='<path d="M0 0H620V470H0z" fill="url(#sky)"/><circle class="shimmer" cx="410" cy="110" r="190" fill="url(#lamp)" opacity=".54"/><path d="M0 468L155 266h310l155 202" fill="#0b101c"/><path d="M0 464L195 282M620 464L425 282" stroke="#9fb7c1" stroke-opacity=".25" stroke-width="9"/>';
+const train='<path d="M20 15Q310 -15 600 15V460H20Z" fill="#121b28" stroke="#708090" stroke-opacity=".45" stroke-width="10"/><path d="M65 80L215 125V320L65 440Z" fill="#1b2734" stroke="#8996a5" stroke-opacity=".6" stroke-width="8"/><path d="M555 80L405 125V320L555 440Z" fill="#182331" stroke="#8996a5" stroke-opacity=".6" stroke-width="8"/><path d="M87 160l115 25v105L87 317zM418 185l115-25v157l-115-27z" fill="#273f4c" stroke="#b1d5dc" stroke-opacity=".3" stroke-width="7"/><path d="M250 120h120v230H250Z" fill="#080f1a" stroke="#8e9db2" stroke-width="9"/><path d="M276 160h68v114h-68z" fill="#243944" stroke="#7697a4" stroke-opacity=".55" stroke-width="5"/><path d="M250 355h120" stroke="#a4acbd" stroke-width="8"/><path d="M12 465L130 315h110l10 150M608 465L490 315H380l-10 150" fill="#151825" stroke="#77798a" stroke-width="5"/><path d="M0 470l260-95h100l260 95" fill="#0c1119"/><ellipse cx="310" cy="395" rx="150" ry="13" fill="'+light+'" opacity=".08"/><path d="M245 64h130" stroke="#d1e4ee" stroke-width="18" opacity=".65"/>';
+const envelope='<g transform="translate(340 321) rotate(-12)"><rect width="169" height="108" rx="4" fill="#b0a18f" stroke="#e1c8a6" stroke-width="4"/><path d="M0 3l85 64L169 3" fill="none" stroke="#6d5c54" stroke-width="3"/><circle cx="84" cy="66" r="17" fill="#8c283f"/><circle cx="84" cy="66" r="8" fill="#b34b63"/></g>';
+const ticket='<g transform="translate(350 318) rotate(-11)"><rect width="136" height="89" fill="#d4bb92" stroke="#dacba7" stroke-width="4"/><path d="M16 12h104M16 72h104" stroke="#67483c" stroke-width="3" opacity=".5"/><text x="68" y="61" fill="#503331" text-anchor="middle" font-size="49" font-family="Georgia">48</text></g>';
+const woman='<path d="M312 118a27 27 0 1 0 1 0M290 150q-41 52-40 144l97 4q0-96-35-148" fill="#10131c" stroke="#513b53" stroke-width="4"/><path d="M290 148q18 11 37 0" stroke="#c3415c" stroke-width="13"/>';
+let objects="";
+if(["train","letter","reflection","recording","flashback"].includes(kind)){objects=train;
+if(kind==="letter")objects+=id==="ticketStub"?ticket:envelope;
+else if(kind==="reflection")objects+='<path d="M276 169l17 20 22-8 25 27-12 53-53 0z" fill="#0a0b14" opacity=".9"/><path d="M270 126l55 0" stroke="'+light+'" opacity=".32" stroke-width="3"/>';
+else if(kind==="recording")objects+='<g transform="translate(366 360) rotate(-7)"><rect width="142" height="65" rx="6" fill="#252934" stroke="#a2a4b0" stroke-width="5"/><circle cx="30" cy="33" r="16" fill="#111621" stroke="#9ca2af" stroke-width="3"/><circle cx="110" cy="33" r="16" fill="#111621" stroke="#9ca2af" stroke-width="3"/></g>';
+else if(kind==="flashback")objects+='<circle cx="311" cy="186" r="165" fill="url(#lamp)" opacity=".35"/>'+woman;
+else if(id==="start")objects+=envelope;
+}else if(kind==="conductor"){objects=train+'<path d="M193 444q4-151 85-198h65q91 54 88 198" fill="#151922" stroke="#55596b" stroke-width="7"/><ellipse cx="310" cy="200" rx="54" ry="70" fill="#645851"/><path d="M243 181q0-113 67-113t67 113" fill="#11131a"/><path d="M233 160q77-35 153 0" stroke="#13151d" stroke-width="30"/><path d="M261 199h26M333 199h26" stroke="#090a12" stroke-width="7"/><path d="M290 239q20 12 42 0" stroke="#362825" stroke-width="5"/><path d="M280 299l30 48 30-48" stroke="#8b8992" stroke-width="7" fill="none"/>'+ticket;
+}else if(kind==="girl"){objects='<path d="M0 330h620v140H0z" fill="#18232f"/><path d="M0 322h620" stroke="#8d98a7" stroke-width="9"/><path d="M90 318L145 60M565 318L506 60" stroke="#9fb5c8" stroke-opacity=".5" stroke-width="9"/><circle cx="300" cy="130" r="160" fill="url(#lamp)" opacity=".35"/><ellipse cx="313" cy="191" rx="29" ry="36" fill="#2c2327"/><path d="M284 220Q312 212 342 220L370 382H255Z" fill="#8b2039" stroke="#ec6b7d" stroke-opacity=".6" stroke-width="5"/><path d="M287 360l-5 75m66-75 5 75" stroke="#12121c" stroke-width="17"/><path d="M276 244l-40 95m112-95 35 95" stroke="#3d2330" stroke-width="12"/><path d="M200 465l75-160h75l88 160" fill="none" stroke="#9aabbc" stroke-opacity=".22" stroke-width="9"/>';
+}else if(kind==="tunnel"){objects='<path d="M0 468V175Q310 -184 620 175v293" fill="#0b111b" stroke="#677c8d" stroke-opacity=".45" stroke-width="20"/><path d="M135 466V205Q310 -30 485 205v261" fill="#101f2d" stroke="#80a0a9" stroke-opacity=".5" stroke-width="11"/><path d="M252 467V271Q310 209 368 271v196" fill="#07121d" stroke="#89b2c3" stroke-opacity=".4" stroke-width="8"/><path d="M0 468L290 350M620 468L330 350" stroke="#bccdd2" stroke-opacity=".55" stroke-width="10"/><circle cx="320" cy="295" r="70" fill="url(#lamp)" opacity=".7"/>';
+}else if(kind==="door"){objects='<rect x="135" y="46" width="345" height="424" rx="18" fill="#101827" stroke="#8392a4" stroke-width="14"/><rect x="190" y="96" width="235" height="324" rx="9" fill="#172435" stroke="#9aa4b4" stroke-width="8"/><rect x="261" y="130" width="108" height="78" fill="#b8b5a4" opacity=".8"/><text x="315" y="185" text-anchor="middle" font-size="51" font-family="Georgia" fill="#1c2738">48</text><circle cx="399" cy="275" r="14" fill="#d9b58c"/><path d="M135 440L0 470M480 440l140 30" stroke="#a0a8bd" opacity=".4" stroke-width="9"/>'+ticket;
+}else if(["map","control"].includes(kind)){objects='<path d="M20 25h580v445H20z" fill="#111622" stroke="#6f7584" stroke-width="13"/><path d="M70 70h480v300H70z" fill="#182e36" stroke="#8898a8" stroke-width="8"/><path d="M90 285L220 180 310 235 460 100" fill="none" stroke="#82d0c6" stroke-width="9" stroke-linecap="round"/><circle cx="220" cy="180" r="15" fill="#d8ebce"/><circle cx="310" cy="235" r="15" fill="#de9ca5"/><circle cx="460" cy="100" r="15" fill="#d8ebce"/><path d="M20 402h580" stroke="#8298a7" stroke-width="20"/><rect x="375" y="365" width="155" height="65" rx="7" fill="#28303c" stroke="#999da9" stroke-width="4"/><circle cx="404" cy="398" r="16" fill="#a42e4d"/><circle cx="463" cy="398" r="16" fill="#80beb1"/>';
+}else if(kind==="home"){objects='<path d="M0 0h620v470H0z" fill="#18121a"/><rect x="135" y="30" width="350" height="440" fill="#4b2e34" stroke="#9b746a" stroke-width="15"/><rect x="191" y="91" width="240" height="305" fill="#7e574e" stroke="#be998a" stroke-width="8"/><circle cx="393" cy="245" r="12" fill="#e9c18d"/><path d="M190 395h240" stroke="#241a21" stroke-width="13"/><circle cx="310" cy="200" r="170" fill="url(#lamp)" opacity=".3"/>';
+}else if(kind==="sunrise"){objects='<circle cx="395" cy="158" r="95" fill="#ffdda8" opacity=".87"/><path d="M0 282q185-40 310-4t310 4v188H0Z" fill="#263549"/><path d="M0 345q200-40 390-5t230 0v130H0Z" fill="#172537"/><path d="M0 399h620" stroke="#a0b4c5" stroke-width="10"/><path d="M40 460L310 335M585 460L350 335" stroke="#edc99c" stroke-opacity=".44" stroke-width="9"/>'}
+const mist='<ellipse class="steam" cx="175" cy="395" rx="350" ry="45" fill="'+light+'" opacity=".12"/><path d="M0 454Q140 428 310 450T620 453" fill="none" stroke="#c4deed" stroke-opacity=".16" stroke-width="9"/>';
+const sceneSeed=[...id].reduce((a,c)=>a+c.charCodeAt(0),0)%7;
+const details='<g opacity=".28">'+Array.from({length:7},(_,i)=>'<circle cx="'+(40+i*86+sceneSeed*3)+'" cy="'+(67+i*53%297)+'" r="'+(1+i%3)+'" fill="'+light+'"/>').join("")+'</g>';
+return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 470" role="img" aria-label="Иллюстрация: '+(artNames[id]||"Сцена")+'" preserveAspectRatio="xMidYMid slice">'+define+frame+objects+mist+details+'</svg>';
+}
+function revealCurrentScene(){
+if(state.revealed)return;
+state.revealed=true;save();updateReveal();clickAccent();
+}
+function updateReveal(){
+const visible=!!state.revealed;
+$("stage").classList.toggle("revealed",visible);
+$("stage").disabled=visible;
+$("stage").setAttribute("aria-label",visible?"Иллюстрация сцены, текст открыт":"Нажать на иллюстрацию, чтобы открыть текст");
+$("stageTap").hidden=visible;
+$("card").hidden=!visible;
+$("choices").hidden=!visible;
+}
+$("stage").addEventListener("click",revealCurrentScene);
 
 function renderEnding(id){
   const box=$("ending"), meta=endingMeta[id];
@@ -241,6 +336,10 @@ function render(){
   $("counter").textContent=`СЦЕН ПРОЙДЕНО: ${state.visited.length}`;
   $("progress").style.width=Math.min(100,Math.round(state.visited.length/16*100))+"%";
   $("title").textContent=s.title;
+  $("stageLabel").textContent=artNames[state.scene]||s.title.toUpperCase();
+  $("stage").querySelector("svg")?.remove();
+  $("stage").insertAdjacentHTML("afterbegin",sceneSvg(state.scene));
+  updateReveal();
   const story=$("story"); story.replaceChildren();
   for(const line of s.text){const p=document.createElement("p"); p.innerHTML=line; story.append(p)}
   $("sNerve").textContent=state.nerve; $("sMind").textContent=state.mind; $("sClue").textContent=state.clue;
@@ -263,60 +362,51 @@ function go(choice){
     if(choice.effect.clue) state.clue+=choice.effect.clue;
     if(choice.effect.flag && !state.flags.includes(choice.effect.flag)) state.flags.push(choice.effect.flag);
   }
-  state.scene=choice.to;
+  state.scene=choice.to;state.revealed=false;
   if(!state.visited.includes(choice.to)) state.visited.push(choice.to);
   if(scenes[choice.to]?.ending && !state.endings.includes(scenes[choice.to].ending)) state.endings.push(scenes[choice.to].ending);
   if(choice.note){$("effect").textContent=choice.note; $("effect").hidden=false;} else $("effect").hidden=true;
   clickAccent(); render();
 }
-$("restart").addEventListener("click",()=>{if(state.scene==="start"||confirm("Начать эпизод сначала? Открытые финалы и архив останутся сохранены.")){state={...state,scene:"start",nerve:0,mind:0,clue:0,flags:[],visited:[]}; $("effect").hidden=true; if(!state.visited.includes("start")) state.visited.push("start"); render();}});
+$("restart").addEventListener("click",()=>{if(state.scene==="start"||confirm("Начать эпизод сначала? Открытые финалы и архив останутся сохранены.")){state={...state,scene:"start",revealed:false,nerve:0,mind:0,clue:0,flags:[],visited:[]}; $("effect").hidden=true; if(!state.visited.includes("start")) state.visited.push("start"); render();}});
 if(!state.visited.includes(state.scene)) state.visited.push(state.scene);
 
-/* Music engine: layered dark ambient with motif, bass pulse and scene moods */
-let audioCtx=null,audioOn=false,master=null,padNodes=[],filterNode=null,delayNode=null,feedbackNode=null,musicTimer=null,musicStep=0,currentMood="mystery";
-const scales={mystery:[[55,82.41,110],[49,73.42,98],[58.27,87.31,116.54],[46.25,69.3,92.5]],danger:[[46.25,69.3,92.5],[43.65,65.41,87.31],[41.2,61.74,82.41],[51.91,77.78,103.83]],memory:[[58.27,87.31,116.54],[65.41,98,130.81],[55,82.41,110],[49,73.42,98]],hope:[[65.41,98,130.81],[73.42,110,146.83],[58.27,87.31,116.54],[82.41,123.47,164.81]]};
-function ensureAudio(){
-  if(audioCtx) return audioCtx;
-  const C=window.AudioContext||window.webkitAudioContext; if(!C) throw Error("AudioContext unsupported");
-  audioCtx=new C();
-  master=audioCtx.createGain(); master.gain.value=0.0; master.connect(audioCtx.destination);
-  filterNode=audioCtx.createBiquadFilter(); filterNode.type="lowpass"; filterNode.frequency.value=780; filterNode.Q.value=.4;
-  delayNode=audioCtx.createDelay(2.0); delayNode.delayTime.value=.36; feedbackNode=audioCtx.createGain(); feedbackNode.gain.value=.22; delayNode.connect(feedbackNode); feedbackNode.connect(delayNode);
-  filterNode.connect(master); filterNode.connect(delayNode); delayNode.connect(master);
-  padNodes=[0,1,2].map((_,i)=>{const osc=audioCtx.createOscillator(); const g=audioCtx.createGain(); osc.type=i===0?"triangle":i===1?"sawtooth":"sine"; g.gain.value=i===0?.03:i===1?.018:.012; osc.connect(g); g.connect(filterNode); osc.start(); return {osc,g};});
-  return audioCtx;
+
+/* Licensed instrumental soundtrack, replacing procedural oscillator hum.
+ * Dark Times / Darkness is Coming by Kevin MacLeod (incompetech.com)
+ * CC BY 3.0: https://creativecommons.org/licenses/by/3.0/
+ */
+let audioOn=false,currentMood="mystery",activeSong="normal";
+const tracks={
+normal:"https://incompetech.com/music/royalty-free/mp3-royaltyfree/Dark%20Times.mp3",
+danger:"https://incompetech.com/music/royalty-free/mp3-royaltyfree/Darkness%20is%20Coming.mp3"
+};
+const music=document.createElement("audio");
+music.loop=true;music.preload="none";music.volume=.46;music.playsInline=true;
+music.src=tracks.normal;
+function setButtonAudio(){
+$("musicBtn").textContent=audioOn?"♫ Музыка: вкл.":"♫ Музыка: выкл.";
+$("musicBtn").setAttribute("aria-pressed",String(audioOn));
+$("audioStatus").textContent=audioOn?"🎵 Kevin MacLeod · "+(activeSong==="danger"?"Darkness is Coming":"Dark Times"):"Музыка выключена · нажми для воспроизведения настоящего саундтрека";
 }
-function setButtonAudio(){ $("musicBtn").textContent=audioOn?"♫ Музыка: вкл.":"♫ Музыка: выкл."; $("musicBtn").setAttribute("aria-pressed",String(audioOn)); $("audioStatus").textContent=audioOn?"Играет мрачный саундтрек: бас, эмбиент и мелодические ноты меняются по сценам.":"Нажми «Музыка», чтобы включить саундтрек. На iPhone звук запускается только по нажатию."; }
-function setPad(chord){ if(!audioCtx||!padNodes.length) return; const now=audioCtx.currentTime; padNodes[0].osc.frequency.setTargetAtTime(chord[0],now,.55); padNodes[1].osc.frequency.setTargetAtTime(chord[1],now,.55); padNodes[2].osc.frequency.setTargetAtTime(chord[2],now,.55); }
-function pluck(freq,dur=.48,vol=.06,type="triangle"){
-  if(!audioOn||!audioCtx||audioCtx.state!=="running") return;
-  const now=audioCtx.currentTime, osc=audioCtx.createOscillator(), gain=audioCtx.createGain();
-  osc.type=type; osc.frequency.setValueAtTime(freq,now); osc.frequency.exponentialRampToValueAtTime(Math.max(50,freq*.985),now+dur);
-  gain.gain.setValueAtTime(.0001,now); gain.gain.exponentialRampToValueAtTime(vol,now+.02); gain.gain.exponentialRampToValueAtTime(.0001,now+dur);
-  osc.connect(gain); gain.connect(filterNode); osc.start(now); osc.stop(now+dur+.05);
+async function playTrack(){
+try{await music.play();audioOn=true;setButtonAudio()}catch(_){audioOn=false;$("audioStatus").textContent="Не удалось загрузить музыку. Проверь интернет и нажми ещё раз.";$("musicBtn").setAttribute("aria-pressed","false");}
 }
-function bass(freq,dur=.32,vol=.08){ if(!audioOn||!audioCtx||audioCtx.state!=="running") return; const now=audioCtx.currentTime, osc=audioCtx.createOscillator(), gain=audioCtx.createGain(); osc.type="sine"; osc.frequency.setValueAtTime(freq,now); osc.frequency.exponentialRampToValueAtTime(freq*.72,now+dur); gain.gain.setValueAtTime(.0001,now); gain.gain.exponentialRampToValueAtTime(vol,now+.01); gain.gain.exponentialRampToValueAtTime(.0001,now+dur); osc.connect(gain); gain.connect(master); osc.start(now); osc.stop(now+dur+.04); }
-function heartbeat(){ if(!audioOn||!audioCtx||audioCtx.state!=="running") return; bass(52,.12,.055); setTimeout(()=>bass(44,.18,.04),110); }
-function bell(freq){ pluck(freq,1.1,.03,"sine"); }
-function updateMusicMood(mood){ currentMood=mood; if(!audioOn||!audioCtx) return; const target=mood==="danger"?540:mood==="hope"?1200:mood==="memory"?880:760; filterNode.frequency.setTargetAtTime(target,audioCtx.currentTime,.8); }
-function musicLoop(){
-  if(!audioOn||!audioCtx||audioCtx.state!=="running"||document.hidden) return;
-  const prog=scales[currentMood]||scales.mystery; const chord=prog[musicStep%prog.length]; setPad(chord);
-  if(musicStep%2===0) bass(chord[0]/2,.28,currentMood==="danger"?.09:.06);
-  if(currentMood==="danger"){ heartbeat(); if(musicStep%4===1) pluck(chord[1]*2,.22,.02,"square"); }
-  else if(currentMood==="memory"){ bell(chord[2]*2); if(musicStep%4===2) pluck(chord[1],.42,.03,"triangle"); }
-  else if(currentMood==="hope"){ pluck(chord[0]*2,.45,.028,"triangle"); if(musicStep%4===2) bell(chord[1]*2); }
-  else { pluck((musicStep%3===0?chord[2]:chord[1])*2,.34,.022,musicStep%2?"triangle":"sine"); if(musicStep%4===2) bell(chord[0]*2); }
-  musicStep++;
-}
-function clickAccent(){ if(audioOn){ pluck(220,.18,.018,"triangle"); }}
-$("musicBtn").addEventListener("click",async()=>{
-  if(audioOn){ audioOn=false; clearInterval(musicTimer); musicTimer=null; if(audioCtx&&master){ master.gain.setTargetAtTime(0,audioCtx.currentTime,.14);} setButtonAudio(); return; }
-  try{ ensureAudio(); await audioCtx.resume(); audioOn=true; master.gain.setTargetAtTime(.14,audioCtx.currentTime,.3); setPad((scales[currentMood]||scales.mystery)[0]); updateMusicMood(currentMood); clearInterval(musicTimer); musicStep=0; musicLoop(); musicTimer=setInterval(musicLoop,1550); setButtonAudio(); }
-  catch(e){ audioOn=false; $("audioStatus").textContent="Не удалось включить звук. Попробуй нажать кнопку ещё раз."; }
-});
-document.addEventListener("visibilitychange",()=>{ if(!audioCtx||!master) return; master.gain.setTargetAtTime(document.hidden||!audioOn?0:.14,audioCtx.currentTime,.18); });
+function updateMusicMood(mood){
+currentMood=mood;
+const next=mood==="danger"?"danger":"normal";
+if(next===activeSong)return;
+activeSong=next;
+music.src=tracks[next];music.load();
+if(audioOn)playTrack();
 setButtonAudio();
+}
+function clickAccent(){/* SFX reserved for later; soundtrack remains uninterrupted */ }
+$("musicBtn").addEventListener("click",()=>{
+if(audioOn){music.pause();audioOn=false;setButtonAudio();return;}
+playTrack();
+});
+music.addEventListener("error",()=>{if(audioOn)$("audioStatus").textContent="Не удалось загрузить трек. Проверь интернет или повтори попытку."});
 
 /* dialogs */
 function openDialog(title,body){ $("dialogTitle").textContent=title; $("dialogBody").innerHTML=body; $("overlay").hidden=false; }
