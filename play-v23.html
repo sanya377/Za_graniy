@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c0b17">
+<meta name="description" content="За гранью — интерактивный мистический триллер">
+<title>За гранью | Последний поезд</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#f3efff;background:#0c0b17;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;min-height:100svh;background:radial-gradient(ellipse at 52% -12%,#56346a 0%,transparent 45%),radial-gradient(ellipse at 100% 95%,#1b3650 0%,transparent 40%),#0c0b17}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid #d5b7ff;outline-offset:3px}
+main{max-width:620px;min-height:100svh;margin:auto;padding:27px 20px 35px;display:flex;flex-direction:column;gap:22px}
+header{display:flex;align-items:center;justify-content:space-between}.logo{letter-spacing:.27em;color:#d6b7ff;font-weight:800;font-size:12px}.badge{font-size:11px;color:#afb0c5}.badge:before{content:"";display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:#8fe7ce;box-shadow:0 0 10px #8fe7ce}
+.poster{position:relative;overflow:hidden;min-height:245px;border-radius:26px;border:1px solid #ffffff20;display:flex;justify-content:end;flex-direction:column;padding:26px;background:linear-gradient(0deg,#100e20 0%,#17142611 90%),radial-gradient(circle at 70% 19%,#b58bc9 0%,#685080 13%,transparent 35%),linear-gradient(130deg,#101c35,#394160 55%,#111121);box-shadow:0 25px 55px #0005}
+.poster:after{content:"";position:absolute;right:23%;top:11%;width:74px;height:145px;border:2px solid #dfbaff85;border-radius:40px 40px 6px 6px;box-shadow:0 0 50px #da9dff7a,inset 0 0 25px #d9a9ff6b;transform:perspective(120px) rotateY(-12deg)}
+.eyebrow{font-size:10px;letter-spacing:.27em;color:#dfc5ff;text-transform:uppercase;font-weight:800;z-index:1}.poster h1{font-weight:850;letter-spacing:-.055em;font-size:clamp(40px,10vw,62px);line-height:1;margin:11px 0;z-index:1}.poster p{font-size:13px;line-height:1.6;color:#cfc6dc;margin:0;z-index:1}
+.chapterrow{display:flex;justify-content:space-between;gap:10px;color:#b6adc8;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding-bottom:13px}.chapterrow strong{color:#dbc3ff}.track{height:3px;background:#333045;border-radius:10px;overflow:hidden}.fill{height:100%;width:12.5%;background:linear-gradient(90deg,#b48cf0,#83decf);transition:width .3s}
+.panel{padding:25px 22px;background:#171725d9;border:1px solid #ffffff15;border-radius:23px;box-shadow:0 15px 45px #0003;animation:rise .22s ease}.panel h2{font:normal 28px Georgia,serif;line-height:1.25;margin:0 0 18px}.story{font-size:16px;line-height:1.85;color:#dcd8e9}.story p{margin:0 0 16px}.story p:last-child{margin-bottom:0}.story strong{color:#f5dbff}
+.actions{display:grid;gap:11px}.choice{border:1px solid #ffffff23;border-radius:15px;background:#262539;color:#f4f0ff;padding:18px 17px;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:15px;line-height:1.4;transition:background .15s,transform .15s}.choice:hover{background:#38304b;transform:translateY(-1px)}.choice span:last-child{color:#ca9ef8;font-size:23px;flex:none}
+footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:8px;font-size:11px;color:#87859e}footer button{border:0;background:none;color:#c1b6d4;padding:8px 0;text-decoration:underline;text-underline-offset:4px;font-size:12px}
+@keyframes rise{from{opacity:.25;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){*,*:after,*:before{animation:none!important;transition:none!important}}
+
+/* v2: illustrated scenes, exploration and collection */
+.poster{isolation:isolate;transition:background .45s ease}
+.poster:after{display:none}
+.art{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.art .glow{position:absolute;width:190px;height:190px;top:-15px;right:6%;border-radius:50%;background:#caa1ed66;filter:blur(45px)}
+.art .tunnel{position:absolute;left:8%;right:8%;top:9%;height:115%;border:2px solid #e3c5ff55;border-radius:48% 48% 0 0;box-shadow:0 0 50px #dc9cff66,inset 0 0 52px #a681f555}
+.art .rails{position:absolute;left:47%;bottom:-25%;width:18%;height:70%;transform:perspective(200px) rotateX(58deg);border-left:3px solid #a7bad9b3;border-right:3px solid #a7bad9b3;background:repeating-linear-gradient(to bottom,transparent 0 15px,#8a8ea066 16px 19px)}
+.art .figure{position:absolute;bottom:23%;right:27%;width:25px;height:65px;background:#080916;border-radius:48% 48% 10% 10%;box-shadow:0 -19px 0 -3px #090a19,0 0 26px #030310}
+.poster[data-scene="station"] .figure,.poster[data-scene="year"] .figure{background:#a62f50;box-shadow:0 -19px 0 -3px #10101d,0 0 35px #e0597c88}
+.poster[data-scene="platform"] .tunnel,.poster[data-scene="dark"] .tunnel,.poster[data-scene="free"] .tunnel{transform:scale(.75);box-shadow:0 0 95px #73c5c855}
+.poster[data-scene="mirror"] .tunnel,.poster[data-scene="warning"] .tunnel{border-color:#76cbd8}
+.poster[data-scene="trap"] .glow,.poster[data-scene="loop"] .glow{background:#e95f7666}
+.poster[data-scene="saved"] .glow,.poster[data-scene="free"] .glow{background:#eec7909c}
+.poster .eyebrow,.poster h1,.poster p{position:relative}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:-5px}.chip{border:1px solid #ffffff24;color:#dfd5f3;background:#242238;border-radius:999px;padding:9px 13px;font-size:12px;min-height:38px}.chip[aria-pressed="true"]{border-color:#aa8df2;color:#fff;background:#403153}
+.stats{display:flex;gap:10px;flex-wrap:wrap;color:#b8afc7;font-size:12px}.stat{border:1px solid #ffffff19;background:#191729;padding:8px 11px;border-radius:10px}.stat strong{color:#ead1ff}
+.note{border-left:2px solid #b795de;padding:11px 13px;background:#b795de12;color:#dfc8fb;border-radius:0 10px 10px 0;font-size:13px;line-height:1.5}
+.overlay[hidden]{display:none}.overlay{position:fixed;inset:0;z-index:20;background:#05040bd9;padding:14px;display:grid;place-items:center}.dialog{background:#1a192b;border:1px solid #8e78b34c;max-height:87svh;overflow:auto;border-radius:23px;padding:23px;width:min(100%,490px);box-shadow:0 15px 80px #000a}.dialog h2{font-size:24px;margin:0 0 12px}.dialog p{font-size:14px;line-height:1.65;color:#ccc4d9}.dialog .small{font-size:12px;color:#9890ac}.dialog button{margin-top:12px}.achievement{border-bottom:1px solid #ffffff14;padding:12px 0;display:flex;justify-content:space-between;gap:12px;font-size:13px}.achievement span:last-child{color:#cbb7ea}
+.choice.locked{opacity:.55;border-style:dashed}
+@media(max-width:420px){.poster{min-height:230px}.toolbar{gap:6px}.chip{font-size:11px;padding:8px 10px}}
+
+/* 2.3: animated narrative and illustrated alternate endings */
+html{scroll-behavior:auto}
+.poster .glow{animation:lanternGlow 5s ease-in-out infinite alternate}
+.poster .figure{animation:shadowBreathe 4s ease-in-out infinite}
+.poster .rails{animation:railDrift 3.8s linear infinite}
+.poster .tunnel{animation:tunnelPulse 7s ease-in-out infinite alternate}
+.panel.scene-enter{animation:sceneReveal .48s cubic-bezier(.2,.8,.2,1) both}
+.panel.scene-enter .story p{animation:textReveal .55s ease-out both}
+.panel.scene-enter .story p:nth-child(2){animation-delay:.1s}
+.panel.scene-enter .story p:nth-child(3){animation-delay:.2s}
+.actions.scene-enter .choice{animation:choiceReveal .42s cubic-bezier(.2,.8,.2,1) both}
+.actions.scene-enter .choice:nth-child(2){animation-delay:.08s}
+.actions.scene-enter .choice:nth-child(3){animation-delay:.16s}
+.ending-illustration{overflow:hidden;position:relative;border-radius:23px;border:1px solid #c5adff36;background:#111322;box-shadow:0 24px 65px #0007;min-height:220px}
+.ending-illustration[hidden]{display:none}
+.ending-illustration svg{display:block;width:100%;height:auto;min-height:220px}
+.ending-illustration.show{animation:endingArrive .85s ease both}
+.ending-illustration .scenery{transform-origin:50% 100%;animation:illustrationFloat 8s ease-in-out infinite alternate}
+.ending-illustration .light{animation:lightBreathe 5s ease-in-out infinite alternate}
+.ending-illustration .rain{animation:rainMove 2s linear infinite}
+.ending-illustration .caption{position:absolute;bottom:0;left:0;right:0;padding:32px 20px 17px;background:linear-gradient(transparent,#080916cc);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#efe5ff}
+.ending-illustration .caption strong{display:block;font:normal 22px Georgia,serif;text-transform:none;letter-spacing:normal;margin-top:5px}
+@keyframes lanternGlow{from{opacity:.45;transform:scale(.9)}to{opacity:.88;transform:scale(1.18)}}
+@keyframes shadowBreathe{from{transform:translateY(1px) scale(.97)}to{transform:translateY(-4px) scale(1.03)}}
+@keyframes railDrift{from{background-position:0 0}to{background-position:0 60px}}
+@keyframes tunnelPulse{from{opacity:.5}to{opacity:.98}}
+@keyframes sceneReveal{from{opacity:.25;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes textReveal{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@keyframes choiceReveal{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes endingArrive{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+@keyframes illustrationFloat{from{transform:translateY(2px)}to{transform:translateY(-5px)}}
+@keyframes lightBreathe{from{opacity:.4}to{opacity:1}}
+@keyframes rainMove{from{transform:translateY(-25px)}to{transform:translateY(28px)}}
+@media(prefers-reduced-motion:reduce){.poster .glow,.poster .figure,.poster .rails,.poster .tunnel,.panel.scene-enter,.panel.scene-enter .story p,.actions.scene-enter .choice,.ending-illustration.show,.ending-illustration .scenery,.ending-illustration .light,.ending-illustration .rain{animation:none!important}}
+
+</style>
+</head>
+<body>
+<main>
+<header><div class="logo">ЗА ГРАНЬЮ ◇</div><div class="badge">ЭПИЗОД 01 · V2.3</div></header>
+<div class="poster" id="poster"><div class="art" aria-hidden="true"><div class="glow"></div><div class="tunnel"></div><div class="rails"></div><div class="figure"></div></div><div class="eyebrow">Интерактивный триллер</div><h1>Последний<br>поезд</h1><p>Иногда последняя остановка — это только начало.</p></div>
+<div class="toolbar"><button type="button" class="chip" id="audio" aria-pressed="false">♫ Звук: выкл.</button><button type="button" class="chip" id="achievements">🏆 Достижения</button><button type="button" class="chip" id="library">📚 Истории</button></div>
+<div class="stats"><div class="stat">Смелость: <strong id="bravery">0</strong></div><div class="stat">Память: <strong id="memory">0</strong></div><div class="stat">Следы: <strong id="clues">0</strong></div></div>
+<div><div class="chapterrow"><strong id="chapter"></strong><span id="count"></span></div><div class="track"><div class="fill" id="fill"></div></div></div>
+<section class="panel" id="panel" aria-live="polite"><h2 id="title"></h2><div class="story" id="story"></div></section>
+<section id="endingArt" class="ending-illustration" aria-label="Иллюстрация концовки" hidden></section>
+<nav class="actions" id="choices" aria-label="Выбор действий"></nav>
+<div id="effect" class="note" hidden></div>
+<footer><button id="restart" type="button">Начать заново</button><span id="notice">Прогресс сохраняется автоматически</span></footer>
+</main>
+<div id="overlay" class="overlay" hidden><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogtitle"><h2 id="dialogtitle"></h2><div id="dialogbody"></div><button id="closeDialog" class="chip" type="button">Закрыть</button></section></div>
+<script>
+"use strict";
+const scenes={
+start:{c:"01 / ПРОБУЖДЕНИЕ",t:"23:47",p:["Ты просыпаешься в пустом вагоне метро. За окнами — абсолютная темнота. Телефон показывает <strong>23:47</strong>, хотя часы над дверью отсчитывают секунды назад.","Из динамика раздаётся шёпот: «Пассажир, вас не должно быть здесь». На сиденье напротив лежит конверт с твоим именем."],o:[["Вскрыть конверт","letter"],["Подойти к кабине машиниста","driver"]],n:1},
+letter:{c:"02 / ПИСЬМО",t:"Почерк, который ты знаешь",p:["В конверте лежит фотография. На ней ты стоишь в этом вагоне. Позади тебя — человек без лица.","На обороте написано: <strong>«Не доверяй голосу. На третьей остановке не выходи».</strong> Снимок датирован завтрашним днём."],o:[["Спрятать снимок и ждать остановки","station"],["Попробовать кому-нибудь позвонить","phone"]],n:2},
+driver:{c:"02 / КАБИНА",t:"Закрыто изнутри",p:["Дверь кабины поддаётся. За ней пустое кресло, но рычаг управления двигается сам по себе.","На стекле выведено: <strong>«Ты уже выбирал. Вспомни».</strong> На панели мигает красная кнопка остановки."],o:[["Нажать экстренную остановку","emergency"],["Вернуться и открыть конверт","letter"]],n:2},
+phone:{c:"03 / СВЯЗЬ",t:"Вызов от самого себя",p:["Связи нет. Но экран загорается: входящий вызов с твоего собственного номера.","Твой голос, только старше, произносит: «Если увидишь девочку в красном, спроси, какой сегодня год»."],o:[["Выслушать предупреждение","warning"],["Сбросить звонок и ждать остановки","station"]],n:3},
+emergency:{c:"03 / ТОРМОЖЕНИЕ",t:"Невозможная станция",p:["Вагон вздрагивает и останавливается. Двери раскрываются с металлическим скрипом.","Платформа пуста. Вывеска гласит: <strong>«СТАНЦИЯ: ВЧЕРА»</strong>. В темноте раздаётся детский смех."],o:[["Выйти на платформу","platform"],["Остаться в вагоне","station"]],n:3},
+station:{c:"03 / ОСТАНОВКА",t:"Девочка в красном",p:["Поезд замедляется. На платформе стоит девочка в красном пальто. Она смотрит прямо на тебя, хотя в стекле отражается лишь пустой вагон.","Двери открываются. Девочка спрашивает: «Ты наконец вернулся?»"],o:[["Спросить, какой сейчас год","year"],["Выйти к ней","platform"]],n:4},
+warning:{c:"04 / ПРЕДУПРЕЖДЕНИЕ",t:"Сорок семь попыток",p:["«Ты звонил мне сорок семь раз, — говорит голос. — И каждый раз выбирал дверь. На этот раз попробуй окно».","За стеклом появляется силуэт, повторяющий твои движения с задержкой."],o:[["Коснуться стекла","mirror"],["Дождаться остановки","station"]],n:4},
+year:{c:"04 / ВОПРОС",t:"Не тот календарь",p:["«Сегодня 14 ноября 1998-го», — говорит девочка. Ты помнишь дату. Тогда пропал человек, которого ты искал много лет.","Она протягивает ладонь: «Ты можешь всё исправить. Но кое-что придётся оставить здесь»."],o:[["Узнать цену","price"],["Отказаться","refuse"]],n:5},
+platform:{c:"04 / ПЛАТФОРМА",t:"На шаг ближе",p:["Ты выходишь, и поезд за спиной исчезает. На стене висит карта метро: все линии ведут к одной станции — <strong>«ДОМ»</strong>.","Перед тобой два прохода: ярко освещённый и почти чёрный."],o:[["Пойти на свет","light"],["Войти в тёмный тоннель","dark"]],n:5},
+mirror:{c:"05 / ОТРАЖЕНИЕ",t:"Другой ты",p:["Стекло теплеет. Силуэт обретает лицо. Это ты, но на висках седина.","Двойник прикладывает ладонь к стеклу и беззвучно говорит: «Я остался, чтобы ты смог уйти»."],o:[["Поменяться местами","sacrifice"],["Отступить","refuse"]],n:6},
+price:{c:"05 / ЦЕНА",t:"Плата за прошлое",p:["«Одно воспоминание, — говорит девочка. — Самое счастливое. Ты забудешь его навсегда, зато сможешь изменить тот день».","На её ладони появляется светящийся ключ."],o:[["Принять ключ","saved"],["Сохранить воспоминание","refuse"]],n:6},
+light:{c:"05 / СВЕТ",t:"Там, где ждут",p:["Ты идёшь на свет и видишь знакомую дверь. За ней звучат голоса близких.","На глазке записка твоим почерком: <strong>«Это не твой дом»</strong>."],o:[["Открыть дверь","trap"],["Вернуться в темноту","dark"]],n:6},
+dark:{c:"05 / ТЕМНОТА",t:"За гранью",p:["Под ногами исчезает пол, но ты не падаешь. Вокруг вспыхивают тысячи окон. В каждом ты принимаешь другое решение.","Впереди появляется выключатель: <strong>«Завершить цикл»</strong>."],o:[["Выключить систему","free"],["Оставить всё как есть","loop"]],n:7},
+saved:{c:"ФИНАЛ / ИСКУПЛЕНИЕ",t:"Второй шанс",p:["Ты принимаешь ключ. Самое счастливое воспоминание исчезает.","Поезд растворяется. Перед тобой улица ноября 1998 года. В кармане записка: «Теперь у тебя есть время».","<strong>Концовка: «Второй шанс».</strong>"],o:[],n:8},
+refuse:{c:"ФИНАЛ / ПАМЯТЬ",t:"Сохранить себя",p:["Ты отказываешься от сделки. Девочка улыбается, будто ждала этого.","Ты просыпаешься дома. На телефоне новая фотография пустого вагона: «Ты выбрал помнить».","<strong>Концовка: «Цена памяти».</strong>"],o:[],n:8},
+sacrifice:{c:"ФИНАЛ / ЗАМЕНА",t:"Место в поезде",p:["Ты проходишь сквозь стекло. Двойник улыбается и уходит в реальный мир.","Ты остаёшься в вагоне. На сиденье появляется конверт с другим именем.","<strong>Концовка: «Смотритель».</strong>"],o:[],n:8},
+trap:{c:"ФИНАЛ / ИЛЛЮЗИЯ",t:"Ложный дом",p:["За дверью тот же вагон метро, но теперь все места заняты людьми без лиц.","Из динамика: «Добро пожаловать домой». Часы показывают 23:47.","<strong>Концовка: «Ловушка».</strong>"],o:[],n:8},
+free:{c:"ФИНАЛ / СВОБОДА",t:"Первое утро",p:["Ты щёлкаешь выключателем. Все окна гаснут, кроме одного, где восходит солнце.","Ты просыпаешься на конечной станции обычного метро. Мир движется вперёд.","<strong>Концовка: «Свобода».</strong>"],o:[],n:8},
+loop:{c:"ФИНАЛ / ЦИКЛ",t:"Ещё один круг",p:["Ты отходишь от выключателя. Под ногами возникает пол знакомого вагона.","На часах 23:47. Напротив конверт с твоим именем.","<strong>Концовка: «Вечное возвращение».</strong>"],o:[],n:8}
+};
+
+/* Version 2.0: player state, choices with consequences, sound and collection */
+const $=id=>document.getElementById(id);
+const stateKey="za-graniy-v2";
+const oldKey="za-graniy-last-scene-v1";
+const endings=["saved","refuse","sacrifice","trap","free","loop"];
+const achievementList={
+first:"Первый шаг|Принять первое решение",
+investigator:"Следопыт|Найти скрытую улику",
+brave:"Без страха|Набрать 3 очка смелости",
+memory:"Хранитель|Набрать 3 очка памяти",
+final:"По ту сторону|Завершить историю",
+collector:"Коллекционер|Открыть 3 разных финала",
+all:"Архивариус|Открыть все 6 финалов"
+};
+let player={scene:"start",bravery:0,memory:0,clues:0,flags:[],visited:[],endings:[],achievements:[]};
+try{const raw=JSON.parse(localStorage.getItem(stateKey)||"null");if(raw&&typeof raw==="object"&&Object.hasOwn(scenes,raw.scene)){player={...player,...raw};for(const k of ["flags","visited","endings","achievements"])if(!Array.isArray(player[k]))player[k]=[]}
+else{const prior=localStorage.getItem(oldKey);if(prior&&Object.hasOwn(scenes,prior)){player.scene=prior;if(endings.includes(prior))player.endings=[prior]}}}catch(_){}
+const persist=()=>{try{localStorage.setItem(stateKey,JSON.stringify(player))}catch(_){}};
+function unlock(id){if(!player.achievements.includes(id))player.achievements.push(id)}
+function mark(){
+if(player.visited.length>1)unlock("first");
+if(player.clues>=1)unlock("investigator");
+if(player.bravery>=3)unlock("brave");
+if(player.memory>=3)unlock("memory");
+if(endings.includes(player.scene)){unlock("final");if(!player.endings.includes(player.scene))player.endings.push(player.scene)}
+if(player.endings.length>=3)unlock("collector");
+if(player.endings.length===6)unlock("all");
+}
+const consequences={
+letter:{memory:1,clues:1,flag:"letter"},driver:{bravery:1},phone:{memory:1,flag:"phone"},warning:{clues:1,flag:"warning"},
+emergency:{bravery:1},platform:{bravery:1},year:{memory:1,clues:1,flag:"year"},mirror:{bravery:1,clues:1},
+price:{memory:1},light:{memory:1},dark:{bravery:1},archive:{clues:1,memory:1,flag:"archive"},
+compartment:{clues:1,flag:"compartment"},recording:{memory:1,flag:"recording"},signal:{bravery:1,flag:"signal"}
+};
+const extras={
+archive:{c:"04 / ЗАБЫТЫЕ ВЕЩИ",t:"Архив пассажиров",p:["Ты находишь служебный отсек, полный билетов. На каждом указано одно и то же время: <strong>23:47</strong>. Имена разные, но подпись пассажира везде твоя.","В папке номер 48 лежит протокол: «Объект сохраняет память между циклами, если оставляет след снаружи». Ты забираешь серебряный жетон."],o:[["Проверить старую запись","recording"],["Вернуться к платформе","station"]],n:4},
+recording:{c:"05 / ПОСЛАНИЕ",t:"Голос из тоннеля",p:["Старый диктофон включается без батареек. На плёнке ты слышишь свой голос: «Девочка не враг. Она ждёт, когда ты вспомнишь, кто запер поезд».","В конце записи звучит ещё один голос: «Дверь откроется тому, кто сохранил три следа»."],o:[["Отыскать сигнальную будку","signal"],["Вернуться к девочке","year"]],n:5},
+compartment:{c:"03 / ТАЙНЫЙ ВАГОН",t:"Чужое купе",p:["Под сиденьем обнаруживается люк. За ним — узкий коридор, которого в метро быть не может.","На стене приколоты шесть фотографий. На каждой ты стоишь в разном месте, но дата и время одинаковы. Одна фотография ещё не проявилась."],o:[["Забрать фотографию","archive"],["Вернуться к кабине","driver"]],n:3},
+signal:{c:"06 / СИГНАЛ",t:"Будка дежурного",p:["В будке горит единственная лампа. Под ней журнал, где последняя запись сделана твоей рукой: «Я построил этот маршрут, чтобы вернуться».","Теперь ты помнишь: однажды ты пожелал остановить время, и поезд исполнил желание буквально. Сигнальная кнопка переводит стрелки к исходной станции."],o:[["Пройти к окну отражений","mirror"],["Вернуться на платформу","platform"]],n:6}
+};
+Object.assign(scenes,extras);
+scenes.driver.o.push(["Осмотреть люк под пультом","compartment"]);
+scenes.letter.o.push(["Найти служебный архив","archive"]);
+scenes.station.o.push(["Проверить служебный коридор","archive"]);
+scenes.dark.o.unshift(["Попробовать вспомнить код выключателя","free","clues",3]);
+scenes.dark.o=scenes.dark.o.map(c=>c[0]==="Выключить систему"?["Выключить систему наугад","loop"]:c);
+let audioCtx=null,audioOn=false;
+function tone(freq=110,duration=.16,volume=.025){if(!audioOn)return;try{
+audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
+if(audioCtx.state==="suspended")audioCtx.resume();
+const osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),now=audioCtx.currentTime;
+osc.type="sine";osc.frequency.setValueAtTime(freq,now);osc.frequency.exponentialRampToValueAtTime(Math.max(50,freq*.6),now+duration);
+gain.gain.setValueAtTime(volume,now);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
+osc.connect(gain);gain.connect(audioCtx.destination);osc.start(now);osc.stop(now+duration+.02)
+}catch(_){}}
+const ambient=()=>{if(audioOn)tone(65,.55,.014)};
+document.getElementById("audio").addEventListener("click",()=>{audioOn=!audioOn;const b=document.getElementById("audio");b.textContent=audioOn?"♫ Звук: вкл.":"♫ Звук: выкл.";b.setAttribute("aria-pressed",String(audioOn));if(audioOn)tone(300,.25,.035)});
+function dialog(title,body){$("dialogtitle").textContent=title;$("dialogbody").replaceChildren();$("dialogbody").append(body);$("overlay").hidden=false;$("closeDialog").focus()}
+$("closeDialog").addEventListener("click",()=>{$("overlay").hidden=true});
+$("overlay").addEventListener("click",e=>{if(e.target===$("overlay"))$("overlay").hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("overlay").hidden=true});
+$("achievements").addEventListener("click",()=>{const box=document.createElement("div");for(const [id,entry] of Object.entries(achievementList)){const [name,desc]=entry.split("|"),line=document.createElement("div");line.className="achievement";const label=document.createElement("span");label.textContent=(player.achievements.includes(id)?"🏆 ":"🔒 ")+name+" · "+desc;const marker=document.createElement("span");marker.textContent=player.achievements.includes(id)?"✓":"—";line.append(label,marker);box.append(line)}
+const p=document.createElement("p");p.className="small";p.textContent="Финалы: "+player.endings.length+" из 6. Достижения сохраняются на этом устройстве.";box.prepend(p);dialog("Достижения",box)});
+$("library").addEventListener("click",()=>{const box=document.createElement("div");const p=document.createElement("p");p.innerHTML="<strong>Эпизод 01. Последний поезд</strong><br>Доступен бесплатно. Мистический триллер с 6 финалами.";box.append(p);const p2=document.createElement("p");p2.innerHTML="<strong>Эпизод 02. Комната без окон</strong><br>В разработке. Здесь позднее появится продолжение.";box.append(p2);const p3=document.createElement("p");p3.className="small";p3.textContent="Платные эпизоды пока не продаются. Оплата и аккаунты не подключены.";box.append(p3);dialog("Библиотека историй",box)});
+
+/* Illustrated conclusions: original embedded SVG art, works offline */
+const finalArtwork={
+saved:{title:"Второй шанс",subtitle:"НОЯБРЬ 1998",sky:["#221b35","#7e526a","#f8bc78"],kind:"street"},
+refuse:{title:"Цена памяти",subtitle:"ТЫ ВЫБРАЛ ПОМНИТЬ",sky:["#091327","#313958","#8193ba"],kind:"phone"},
+sacrifice:{title:"Смотритель",subtitle:"ПОСЛЕДНИЙ ПАССАЖИР",sky:["#08091b","#332247","#755d91"],kind:"envelope"},
+trap:{title:"Ловушка",subtitle:"ДОБРО ПОЖАЛОВАТЬ ДОМОЙ",sky:["#170c1b","#4e2338","#923c5a"],kind:"faces"},
+free:{title:"Свобода",subtitle:"ПЕРВОЕ УТРО",sky:["#203357","#6a8cae","#ffe0a0"],kind:"sun"},
+loop:{title:"Вечное возвращение",subtitle:"23:47",sky:["#0a0b21","#30244c","#7d5ea3"],kind:"clock"}
+};
+function endingSvg(data){
+const [a,b,c]=data.sky;
+const defs='<defs><linearGradient id="sky23" x1="0" y1="0" x2="0" y2="1"><stop stop-color="'+a+'"/><stop offset=".58" stop-color="'+b+'"/><stop offset="1" stop-color="'+c+'"/></linearGradient><radialGradient id="halo23"><stop stop-color="#fff0c6" stop-opacity=".9"/><stop offset="1" stop-color="#f5e7ff" stop-opacity="0"/></radialGradient></defs>';
+let scene="";
+if(data.kind==="street"){
+scene='<circle class="light" cx="340" cy="110" r="120" fill="url(#halo23)"/><circle cx="340" cy="105" r="43" fill="#ffe2ab" opacity=".78"/><g fill="#1b1828"><path d="M0 100h84v-49h70v86h60v-53h92v55h74v-66h100v227H0z"/></g><g fill="#edc78a" opacity=".65"><path d="M30 121h13v24H30zm33 0h13v24H63zm63-39h15v20h-15zm90 36h15v28h-15zm47-4h15v26h-15zm157-5h15v25h-15z"/></g><path d="M125 300L225 178h46L375 300Z" fill="#6e5266" opacity=".8"/><path d="M240 177L192 300M254 177l65 123" stroke="#ffcf91" opacity=".45" stroke-width="3"/>';
+}else if(data.kind==="phone"){
+scene='<g class="scenery"><path d="M25 40Q240 -25 455 40L440 300H40Z" fill="#0c1328"/><path d="M86 90Q240 15 394 90V280H86Z" fill="#24314c" stroke="#8196c0" stroke-opacity=".65" stroke-width="5"/><path d="M125 130Q240 86 355 130" stroke="#9aafd8" stroke-opacity=".5" stroke-width="4" fill="none"/><path d="M40 235h400" stroke="#a9b8dc" stroke-width="9" opacity=".32"/></g><rect x="213" y="145" width="53" height="96" rx="8" fill="#10111b" stroke="#b7cbef" stroke-width="3"/><rect class="light" x="219" y="151" width="41" height="72" rx="3" fill="#acc4f5"/><path d="M230 180l8 10 15-21" stroke="#1d3051" stroke-width="3" fill="none"/>';
+}else if(data.kind==="envelope"){
+scene='<path d="M25 50Q240 -40 455 50L455 300H25Z" fill="#0b0b1a"/><path d="M70 130Q240 20 410 130V300H70Z" fill="#262039" stroke="#ac8fca" stroke-opacity=".5" stroke-width="5"/><path d="M70 236h340" stroke="#b3a2d0" stroke-opacity=".5" stroke-width="9"/><path d="M112 245q42-118 84 0M284 245q42-118 84 0" fill="#14101d" stroke="#594769" stroke-width="6"/><rect x="192" y="208" width="96" height="54" rx="2" fill="#e0c9ab" transform="rotate(-7 240 235)"/><path d="M192 208l48 38 48-38" fill="none" stroke="#886b74" stroke-width="2" transform="rotate(-7 240 235)"/><circle class="light" cx="240" cy="237" r="7" fill="#ab4666"/>';
+}else if(data.kind==="faces"){
+scene='<path d="M5 52Q240 -40 475 52v248H5Z" fill="#160c18"/><path d="M48 120Q240 35 432 120v180H48Z" fill="#392133" stroke="#a15f81" stroke-opacity=".4" stroke-width="7"/><g class="scenery" fill="#0b0910" stroke="#bc7898" stroke-opacity=".4" stroke-width="2"><ellipse cx="98" cy="164" rx="24" ry="36"/><ellipse cx="166" cy="143" rx="30" ry="46"/><ellipse cx="240" cy="153" rx="32" ry="49"/><ellipse cx="315" cy="143" rx="30" ry="46"/><ellipse cx="385" cy="164" rx="24" ry="36"/><path d="M50 300v-83q48-50 96 0v83zm95 0v-90q48-40 96 0v90zm95 0v-90q48-40 96 0v90zm95 0v-83q48-50 96 0v83z"/></g><path d="M45 258h390" stroke="#d97e93" opacity=".3" stroke-width="5"/>';
+}else if(data.kind==="sun"){
+scene='<circle class="light" cx="290" cy="144" r="137" fill="url(#halo23)"/><circle cx="290" cy="139" r="62" fill="#ffeab0"/><path d="M0 200Q140 178 280 196T480 190V300H0Z" fill="#243e5b"/><path d="M0 227Q240 191 480 227V300H0Z" fill="#132740"/><g stroke="#7fb8d7" stroke-width="7" opacity=".58"><path d="M83 229h314M83 254h314"/></g><path d="M0 281L480 250" stroke="#f5c990" opacity=".4" stroke-width="6"/>';
+}else{
+scene='<path d="M30 60Q240 -35 450 60V300H30Z" fill="#100e27"/><path d="M98 82Q240 -2 382 82V300H98Z" fill="#2c2047" stroke="#a98ccc" stroke-opacity=".6" stroke-width="6"/><circle class="light" cx="240" cy="147" r="94" fill="url(#halo23)"/><circle cx="240" cy="145" r="66" fill="#1a1830" stroke="#d2bae9" stroke-width="5"/><g stroke="#d2bae9" stroke-width="4"><path d="M240 89v11M240 190v11M185 145h11M284 145h11"/></g><path d="M240 145v-37M240 145l32 15" stroke="#f6d2fb" stroke-width="6" stroke-linecap="round"/><circle cx="240" cy="145" r="6" fill="#f6d2fb"/><path d="M120 300l72-85h96l72 85" fill="none" stroke="#72618a" stroke-width="8"/>';
+}
+return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" role="img" aria-label="'+data.title+'"><rect width="480" height="300" fill="url(#sky23)"/>'+defs+'<g class="scenery">'+scene+'</g><g class="rain" stroke="#ded8ff" stroke-opacity=".15" stroke-width="2"><path d="M50 20l-18 32M130 70l-18 32M420 25l-18 32M370 95l-18 32M210 18l-18 32"/></g></svg>';
+}
+function renderEnding(id){
+const box=$("endingArt"),data=finalArtwork[id];
+if(!data){box.hidden=true;box.classList.remove("show");box.replaceChildren();return}
+box.replaceChildren();
+const illustration=document.createElement("div");
+illustration.innerHTML=endingSvg(data);
+const caption=document.createElement("div");caption.className="caption";caption.textContent=data.subtitle;
+const title=document.createElement("strong");title.textContent=data.title;caption.append(title);
+box.append(illustration,caption);
+box.hidden=false;box.classList.remove("show");void box.offsetWidth;box.classList.add("show");
+}
+
+function renderV2(){
+mark();persist();const s=scenes[player.scene],id=player.scene;
+$("chapter").textContent=s.c;$("count").textContent=String(s.n).padStart(2,"0")+" / 08";$("fill").style.width=(s.n*12.5)+"%";
+$("title").textContent=s.t;$("poster").dataset.scene=id;$("story").replaceChildren();
+for(const line of s.p){const p=document.createElement("p");p.innerHTML=line;$("story").append(p)}
+$("bravery").textContent=player.bravery;$("memory").textContent=player.memory;$("clues").textContent=player.clues;
+$("choices").replaceChildren();
+const choices=s.o.length?s.o:[["Пройти историю ещё раз","start"]];
+for(const [label,next,need,threshold] of choices){
+const locked=need&&player[need]<threshold;
+const b=document.createElement("button");b.type="button";b.className="choice"+(locked?" locked":"");b.disabled=!!locked;
+const a=document.createElement("span");a.textContent=label+(locked?" (нужно следов: "+threshold+")":"");const icon=document.createElement("span");icon.textContent=locked?"🔒":next==="start"?"↻":"→";icon.setAttribute("aria-hidden","true");b.append(a,icon);b.addEventListener("click",()=>goV2(next));$("choices").append(b)}
+renderEnding(id);
+$("notice").textContent=s.o.length?"Выборы влияют на характеристики":"Финал открыт • открой остальные";
+for(const id of ["panel","choices"]){const node=$(id);node.classList.remove("scene-enter");void node.offsetWidth;node.classList.add("scene-enter")};
+}
+function goV2(id){
+if(!Object.hasOwn(scenes,id))return;
+if(id==="start"){player={...player,scene:"start",bravery:0,memory:0,clues:0,flags:[],visited:[]}}else{
+const data=consequences[id];
+if(data&&(!data.flag||!player.flags.includes(data.flag))){for(const k of ["bravery","memory","clues"])player[k]+=(data[k]||0);if(data.flag)player.flags.push(data.flag)}
+player.scene=id;
+}
+if(!player.visited.includes(id))player.visited.push(id);
+tone(id==="station"?470:215,.19,.027);if(["station","emergency","dark"].includes(id))setTimeout(ambient,230);
+renderV2();
+}
+$("restart").addEventListener("click",e=>{e.stopImmediatePropagation();if(player.scene==="start"||confirm("Начать сюжет сначала? Достижения и открытые финалы сохранятся."))goV2("start")},true);
+if(!player.visited.includes(player.scene))player.visited.push(player.scene);
+renderV2();
+
+</script>
+</body>
+</html>
