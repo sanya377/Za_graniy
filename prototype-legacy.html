@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070a11"><title>За гранью · Новый пролог</title>
+<style>
+:root{color-scheme:dark;--ink:#eeeefa;--muted:#a1a7bc;--accent:#e5a9a9;--glass:#0b101cdd;--edge:#ffffff26}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#05070d;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+body{background:radial-gradient(ellipse at 60% 8%,#26253c 0%,#070a12 48%,#05070d 100%);min-height:100dvh}
+button{font:inherit;color:inherit}button:focus-visible{outline:2px solid #e5a9a9;outline-offset:3px}
+.shell{width:min(700px,100%);min-height:100dvh;margin:auto;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);box-shadow:0 0 90px #0008;position:relative}
+.top{padding:16px 20px 12px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.brand{font-size:12px;letter-spacing:.23em;color:#d5b7ba;font-weight:800}.topsmall{font-size:11px;color:#959bb4;margin-top:5px;letter-spacing:.08em}
+.toolbar{display:flex;gap:8px}.icon{border:1px solid var(--edge);background:#151923;border-radius:50px;min-width:41px;height:41px;cursor:pointer}
+.progress{height:2px;background:#ffffff0b}.progress>div{height:100%;background:linear-gradient(90deg,#76637c,#edc0bb);width:10%;transition:width .4s}
+.scene{position:relative;flex:1;min-height:330px;max-height:64dvh;overflow:hidden;background:#10131c;isolation:isolate}
+.scene::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#080b11a0 0%,transparent 30%,#090c1255 60%,#070911ef 100%);z-index:2}
+.scene img{height:100%;width:100%;object-fit:cover;filter:brightness(.68) saturate(.72);transition:filter .7s,transform 6s;transform:scale(1.04)}
+.scene.active img{filter:brightness(.8) saturate(.83);transform:scale(1.1)}
+.noise{position:absolute;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,#0002 4px);opacity:.45}
+.caption{position:absolute;left:22px;top:21px;z-index:3;font-size:11px;letter-spacing:.14em;color:#e5d3d3;background:#090b13af;border:1px solid #ffffff21;padding:9px 12px;border-radius:6px}
+.hots{position:absolute;inset:0;z-index:4;pointer-events:none}
+.hot{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;min-width:60px;min-height:60px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+.hot .pin{width:28px;height:28px;border:1px solid #f9d3bd;background:#2c1c23b8;box-shadow:0 0 0 7px #f7c9bc1a,0 0 24px #cba0af90;border-radius:50%;display:grid;place-items:center;font-size:16px;animation:pulse 2.4s infinite}
+.hot small{font-size:11px;margin-top:13px;background:#090d17e0;border-radius:30px;padding:5px 9px;white-space:nowrap}
+.hot:disabled{opacity:.43;pointer-events:none}.hot:disabled .pin{animation:none}
+@keyframes pulse{50%{box-shadow:0 0 0 13px #f7c9bc0a,0 0 18px #cba0af70}}
+.bottom{position:relative;z-index:5;background:linear-gradient(180deg,#11131d,#080b13);padding:20px 19px 24px;min-height:245px;border-top:1px solid #ffffff1a}
+.meta{color:#bfa6ad;font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}
+.title{font:normal clamp(22px,5vw,30px)/1.17 Georgia,serif;margin:0 0 12px}
+.story{font-size:16px;line-height:1.57;color:#e0dfe9;white-space:pre-line;min-height:52px}
+.story em{color:#f3bfc0;font-style:normal}.story strong{color:white}
+.actions{display:grid;gap:9px;margin-top:17px}
+.action{border:1px solid #ffffff35;text-align:left;background:#1b1f2b;border-radius:11px;padding:13px 15px;line-height:1.3;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:15px;font-weight:550}
+.action.primary{background:linear-gradient(100deg,#63445d,#412f46);border-color:#b78c9c}.action span{opacity:.7}
+.action:disabled{opacity:.4}.hint{font-size:12px;color:var(--muted);margin-top:13px;text-align:center}
+.overlay{position:fixed;inset:0;z-index:99;background:#030407eb;display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(13px)}
+.modal{width:min(390px,100%);border:1px solid #ffffff30;background:#10121ff5;border-radius:19px;padding:28px 24px;text-align:center;box-shadow:0 26px 70px #000a}
+.bigtitle{font:normal 41px/1 Georgia,serif;letter-spacing:-.04em;margin:16px 0}.modal p{line-height:1.65;color:#b4b5c5}.modal button{width:100%;margin-top:16px}
+.hidden{display:none!important}
+.inventory{position:absolute;right:14px;top:67px;z-index:12;width:245px;max-width:85vw;padding:17px;background:#141822f5;border:1px solid #ffffff35;border-radius:15px;box-shadow:0 20px 50px #000c}
+.inventory h3{margin:0 0 10px;font-size:16px}.inventory ul{padding-left:18px;line-height:1.75;font-size:14px;color:#cecbd4}
+.countdown{position:absolute;z-index:5;right:18px;top:21px;background:#4b2329e8;padding:9px 13px;border:1px solid #c7838c;border-radius:6px;font-size:13px;font-weight:bold;display:none}
+.countdown.on{display:block}
+@media (max-height:720px){.scene{min-height:260px;max-height:53dvh}.bottom{padding-top:14px}.story{font-size:15px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* Jumpscare: one controlled reveal, no strobing */
+.scare{position:fixed;inset:0;z-index:120;background:radial-gradient(circle at 50% 37%,#401b29,#060309 65%);display:grid;place-items:center;overflow:hidden;pointer-events:none;opacity:0;transition:opacity .07s}
+.scare.show{opacity:1}.scare img{width:min(110vw,820px);height:min(100dvh,950px);object-fit:contain;filter:drop-shadow(0 0 45px #bc172e) contrast(1.38);transform:scale(.6);transform-origin:center;opacity:0;image-rendering:auto}
+.scare.show img{opacity:1;animation:scareIn .7s cubic-bezier(.16,.75,.2,1) forwards}
+@keyframes scareIn{0%{transform:scale(.65) rotate(-7deg)}35%{transform:scale(1.45) rotate(4deg)}100%{transform:scale(1.1) rotate(0deg)}}
+.scare .scareword{position:absolute;bottom:12%;text-align:center;color:#f3d7d9;letter-spacing:.35em;font-weight:800;font-size:clamp(20px,5vw,34px);text-shadow:0 0 30px #d21c46}
+.replay{border:1px solid #bf91a4;background:#473043;border-radius:10px;padding:12px 16px;cursor:pointer;font-weight:700;font-size:13px}
+@media(prefers-reduced-motion:reduce){.scare.show img{animation:none;transform:scale(1)}}
+
+.codepad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border:1px solid #ffffff24;padding:12px;border-radius:13px;background:#10131e}
+.codepad .digits{grid-column:1/-1;text-align:center;font-size:25px;letter-spacing:.55em;padding:8px 0 12px;color:#f5c7b0;font-family:monospace}
+.codepad .digit{min-height:46px;border:1px solid #ffffff32;border-radius:8px;background:#303141;font-size:20px;cursor:pointer}
+.codepad .digit:active{background:#85546d}
+
+.hunt-status{position:absolute;z-index:9;left:12px;right:12px;bottom:16px;border:1px solid #c77d8799;border-radius:12px;background:#190d17e9;box-shadow:0 4px 30px #000b;padding:12px 14px;backdrop-filter:blur(7px)}
+.hunt-row{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#e7cdd3;font-size:12px;font-weight:700;letter-spacing:.06em}
+.danger-track{height:5px;border-radius:4px;background:#321a23;margin-top:11px;overflow:hidden}.danger-track div{height:100%;background:linear-gradient(90deg,#b86c75,#ec3737);transition:width .45s;width:70%}
+.scene.hunting img{filter:brightness(.43) saturate(.55)}
+.hidden{display:none!important}
+</style></head><body>
+<div class="shell">
+<header class="top"><div><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="topsmall">ГЛАВА 01 · V5.2</div></div><div class="toolbar"><button id="sound" class="icon" title="Звук" aria-label="Включить или выключить звук">🔇</button><button id="bag" class="icon" title="Улики" aria-label="Улики">⌑</button><button id="again" class="replay" title="Начать заново" aria-label="Играть заново">↻ Заново</button></div></header>
+<div class="progress"><div id="bar"></div></div>
+<main class="scene" id="scene"><img id="picture" src="assets/scenes/start.webp" alt="Кадр истории"><div class="noise"></div><div class="caption" id="stamp">23:47 · ВАГОН 0</div><div class="countdown" id="clock">00:10</div><div class="hots" id="hots"></div>
+<div id="huntStatus" class="hunt-status hidden" aria-live="polite">
+ <div class="hunt-row"><span id="huntCue">👣 ШАГИ БЛИЗКО</span><strong id="huntCount">16 c</strong></div>
+ <div class="danger-track"><div id="huntMeter"></div></div>
+</div></main>
+<section class="bottom"><div class="meta" id="tag">01 · ПРОБУЖДЕНИЕ</div><h1 class="title" id="title">Последний поезд</h1><div class="story" id="story"></div><div class="actions" id="actions"></div><div class="hint" id="hint"></div></section>
+<div class="hint" style="padding:0 18px 14px;font-size:10px">Крик: nick121087 / Wikimedia Commons, CC0. Изображение: оригинальная генерация для «За гранью».</div>
+<div id="inventory" class="inventory hidden"><h3>Найденные улики</h3><ul id="items"></ul></div>
+</div>
+<div id="scare" class="scare" aria-hidden="true"><img id="scareFace" src="assets/scares/ghost.webp" alt="" decoding="sync" loading="eager"><div class="scareword">НЕ СМОТРИ</div></div>
+<div id="intro" class="overlay"><div class="modal"><div class="brand">ЗА ГРАНЬЮ ◇</div><h2 class="bigtitle">Последний<br>поезд</h2><p>Ты очнулся в вагоне, которого нет на карте метро.<br><br>В этой истории опасно даже смотреть по сторонам.</p><button class="action primary" id="begin">Начать поездку <span>→</span></button><p style="font-size:12px">В игре есть неожиданные пугающие изображения и женский крик. Громкость контролируется устройством · 10–15 минут</p></div></div>
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+let s={node:"wake",clues:[],fear:0,turned:false,knowsMother:false,seen:[],sound:false,lock:false,checkpoint:"trapCell",digits:"",mistakes:0,codePowered:false,ventOpen:false,deaths:0};
+let ctx=null,timer=null,remaining=0,scareTimeout=null,scareSeq=0,screamBuffer=null,screamLoading=null,huntTimer=null,huntPhase=0,huntDeadline=0,huntVisit=0,huntIntensity=0;
+const SCREAM_URL="https://upload.wikimedia.org/wikipedia/commons/e/e6/Nick121087_-_Demonic_Woman_Scream_%28cc0%29_%28freesound%29.mp3";
+function prepareScream(){
+ if(screamLoading)return screamLoading;
+ try{
+  ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+  screamLoading=fetch(SCREAM_URL,{mode:"cors",cache:"force-cache"})
+    .then(r=>{if(!r.ok)throw Error("scream fetch "+r.status);return r.arrayBuffer()})
+    .then(b=>ctx.decodeAudioData(b)).then(buffer=>{screamBuffer=buffer;return buffer})
+    .catch(()=>{screamLoading=null;return null});
+ }catch(e){screamLoading=Promise.resolve(null)}
+ return screamLoading;
+}
+
+function tone(hz=170,dur=.14,vol=.07,type="sine"){
+ if(!s.sound)return;try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();ctx.resume();
+ const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(hz,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(45,hz*.77),ctx.currentTime+dur);g.gain.setValueAtTime(vol,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+dur);o.connect(g).connect(ctx.destination);o.start();o.stop(ctx.currentTime+dur);}catch(e){}
+}
+const texts={
+wake:{tag:"01 · ПРОБУЖДЕНИЕ",title:"23:47",img:"start",stamp:"23:47 · ВАГОН 0",text:"Стук колёс. Пустой вагон.\n\nИз динамика звучит женский голос:\n«Пассажир на первом месте. <em>Пожалуйста, не оборачивайтесь</em>».\n\nЗа твоей спиной раздаются три удара.",actions:[["Не оборачиваться","safe"],["Резко посмотреть назад","turned"]]},
+safe:{tag:"02 · НЕИЗВЕСТНЫЙ",title:"Кто-то рядом",img:"carriage",text:"Чья-то ледяная ладонь ложится тебе на плечо.\n\n«Правильно», шепчет голос у самого уха. «В прошлый раз ты посмотрел».\n\nКогда ты набираешься смелости повернуться, за спиной уже никого.",actions:[["Осмотреть вагон","explore"]]},
+turned:{tag:"02 · ВСТРЕЧА",title:"Он увидел тебя",img:"reflection",text:"Ты оборачиваешься.\n\nВ конце вагона стоит человек без лица. Его голова медленно поворачивается вслед за твоим взглядом.\n\nСвет гаснет. Когда лампы вспыхивают снова, он исчезает. На стекле проступают слова: <em>«Я тебя запомнил»</em>.",actions:[["Осмотреть вагон","explore"]]},
+explore:{tag:"03 · ИССЛЕДОВАНИЕ",title:"Что здесь не так?",img:"carriage",stamp:"23:47 · ВРЕМЯ СТОИТ",text:"Вагон пуст, но он не кажется заброшенным.\n\n<em>Нажми на предметы на изображении.</em> Найди хотя бы две улики, прежде чем идти дальше.",hotspots:[{id:"clock",x:50,y:16,label:"Часы"},{id:"window",x:78,y:44,label:"Окно"},{id:"seat",x:28,y:68,label:"Сиденье"}],actions:[["Идти к двери между вагонами","door"]]},
+clock:{tag:"УЛИКА · ЧАСЫ",title:"Невозможное время",img:"carriage",text:"23:47. Секундная стрелка движется назад.\n\nНа металле рядом с циферблатом кто-то выцарапал: <em>«Не верь времени. Оно повторяет тебя».</em>",actions:[["Вернуться к осмотру","explore"]]},
+window:{tag:"УЛИКА · ОКНО",title:"Чужое отражение",img:"reflection",text:"За окном только чёрный тоннель.\n\nВ отражении напротив сидит маленькая девочка в красном пальто. Ты оборачиваешься. Сиденье пустое.\n\nВ стекле девочка всё ещё смотрит на тебя.",actions:[["Вернуться к осмотру","explore"]]},
+seat:{tag:"УЛИКА · СИДЕНЬЕ",title:"Фотография",img:"envelope",text:"Под обивкой ты находишь мокрую фотографию: женщина в красном шарфе держит за руку ребёнка.\n\nНа обороте твоим почерком написано: <em>«Не позволяй ей снова войти в поезд».</em>",actions:[["Вернуться к осмотру","explore"]]},
+door:{tag:"04 · ОСТАНОВКА",title:"Не открывай",img:"serviceDoor",stamp:"23:47 · ДВЕРЬ 48",text:"Ты подходишь к двери. За ней кто-то медленно стучит.\n\n«Откройте», просит мужчина. «Вы последний пассажир».\n\nА затем из динамика раздаётся тот самый женский голос: <em>«Не впускай его».</em>",actions:[["Открыть дверь","opened"],["Не открывать и спросить имя","refused"]]},
+opened:{tag:"05 · ОШИБКА",title:"Дежурный №48",img:"conductor",text:"Дверь распахивается. Мужчина в форме метрополитена протягивает билет.\n\nНа билете напечатано твоё имя и дата завтрашнего дня.\n\nОн улыбается: <em>«В этот раз вы сами меня впустили».</em>",actions:[["Спросить, что происходит","reveal"]]},
+refused:{tag:"05 · ПРАВИЛО",title:"Он знает твоё имя",img:"serviceDoor",text:"«Назовите себя», требуешь ты.\n\nСнаружи долгий скрип, словно ногтем водят по металлу.\n\n«Мне незачем», отвечает мужчина. <em>«Вы и так знаете своё имя. Я носил его до вас».</em>",actions:[["Посмотреть через стекло двери","reveal"]]},
+reveal:{tag:"06 · ПЕРВАЯ ПРАВДА",title:"Не первый раз",img:"memoryDoor",text:"На секунду лампы превращаются в аварийные огни. Перед глазами вспыхивает другая ночь: дождь, крики и женщина в красном шарфе.\n\nОна толкает маленького тебя в поезд, а сама остаётся на платформе.\n\nНо страшнее всего другое: <em>ты вспоминаешь, что сегодня сам купил билет сюда.</em>",actions:[["Искать женщину на платформе","platform"],["Бежать к кабине машиниста","chaseHall"]]},
+platform:{tag:"07 · ТРЕТЬЯ СТАНЦИЯ",title:"Девочка в красном",img:"stationGirl",text:"На пустой платформе стоит девочка. Вместо лица на секунду проступает твоё детское отражение.\n\n«Ты опоздал», говорит она. «Через минуту поезд заберёт тебя вместе с нами».\n\nВ дальнем конце платформы загорается табло: <em>НЕ ОСТАВАЙСЯ НА СВЕТУ.</em>",actions:[["Спрятаться под платформой","trapCell"],["Позвать девочку и пойти за ней","chaseHall"]]},
+chaseHall:{tag:"07 · ПОГОНЯ",title:"Шаги без тела",img:"chase",text:"Ты бросаешься к кабине машиниста. По железному полу сзади бегут шаги.\n\nВ зеркале мелькают мокрые волосы женщины, хотя за спиной никого нет.\n\nВпереди служебная дверь. Она приоткрыта. Выбирать нужно сейчас.",actions:[["Нырнуть в служебный отсек","trapCell"],["Остаться в коридоре и попытаться спрятаться","huntRoom"]]},
+huntRoom:{tag:"08 · ТИХАЯ ОХОТА",title:"Он ищет тебя",img:"chase",text:"Ты слышишь медленные шаги: кто-то идёт по коридору и открывает каждую дверь.\n\n<em>Слушай шаги, прячься и выбирай момент для побега.</em> Здесь опасен любой лишний звук.",actions:[]},
+deadHunt:{tag:"СМЕРТЬ · ПРЕСЛЕДОВАНИЕ",title:"Тебя обнаружили",img:"trap",death:true,text:"Стук обуви внезапно обрывается. Ты понимаешь, что существо стоит прямо за тобой.\n\nПоследний звук — женский крик у самого уха.\n\n<em>Ты погиб. Попробуй прислушиваться к шагам и не двигаться слишком рано.</em>",actions:[["↻ Повторить попытку скрыться","retryHunt"],["↻ С контрольной точки","checkpoint"],["Начать заново","restart"]]},
+trapCell:{tag:"08 · ЗАПЕРТЫЙ ВАГОН",title:"Ловушка №48",img:"serviceDoor",stamp:"23:47 · НЕТ ВЫХОДА",text:"Щёлк! Дверь захлопнулась за спиной.\n\nСнаружи дежурный тихо произносит: «Через три минуты вагон будет утилизирован».\n\nВнутри старый щиток, решётка вентиляции и сиденье с порванной обивкой. <em>Осмотри все три места и найди способ выбраться.</em>",hotspots:[{id:"seatTool",x:28,y:72,label:"Сиденье"},{id:"breaker",x:53,y:28,label:"Щиток"},{id:"vent",x:80,y:46,label:"Решётка"}],actions:[["Подойти к кодовому замку","keypad"],["Попробовать выбить дверь","deadDoor"]]},
+seatTool:{tag:"ПРЕДМЕТ",title:"Медная проволока",img:"seatOne",text:"Из-под сиденья торчит тонкая медная проволока. Порезав руку о металл, ты вытягиваешь её целиком.\n\n<em>Получен предмет: медная проволока.</em> Может пригодиться для вскрытия решётки или замыкания контактов.",actions:[["Вернуться в запертый вагон","trapCell"]]},
+breaker:{tag:"УЛИКА",title:"Надпись в щитке",img:"controlRoom",text:"Внутри щитка четыре потёртых рычага. Над ними кто-то выцарапал: <em>«Часы замерли на 23:47. Только эти цифры выведут тебя».</em>\n\nПод надписью заметен контакт, который можно перемкнуть проволокой.",actions:[["Перемкнуть контакты","bridge"],["Вернуться в вагон","trapCell"]]},
+bridge:{tag:"09 · РИСК",title:"Искры в темноте",img:"controlRoom",text:"Ты соединяешь оголённые контакты. Щиток вздрагивает, лампа над замком загорается зелёным.\n\nИз динамика доносится голос: «Ещё немного, и я тебя потеряю…».\n\n<em>Питание замка восстановлено.</em>",actions:[["Подойти к кодовому замку","keypad"],["Осмотреть решётку вентиляции","vent"]]},
+vent:{tag:"ПУТЬ ПОБЕГА",title:"Вентиляция",img:"serviceDoor",text:"За решёткой тянется узкий вентиляционный канал. Её удерживают два ржавых винта.\n\nПросто руками их не выкрутить, но мягкая металлическая проволока вполне подойдёт.",actions:[["Открутить винты проволокой","openVent"],["Вернуться в вагон","trapCell"]]},
+openVent:{tag:"10 · УЗКИЙ ПРОХОД",title:"Канал под потолком",img:"memoryDoor",text:"Решётка поддаётся. Ты с трудом протискиваешься в вентиляционную шахту.\n\nПозади раздаётся металлический удар: дежурный вошёл в вагон.\n\nВпереди канал раздваивается. Слева веет холодом, справа слышен детский плач.",actions:[["Ползти налево, к холодному воздуху","shaftExit"],["Ползти направо, на детский голос","deadShaft"]]},
+shaftExit:{tag:"11 · СНАРУЖИ",title:"За стеной поезда",img:"stationGirl",text:"Ты срываешься из шахты на узкую технологическую платформу. Внизу медленно катится пустой состав.\n\nВ одном из окон ты видишь себя. Тот, другой, смотрит прямо на тебя и медленно машет рукой.\n\nС платформы ведёт лестница в диспетчерскую.",actions:[["Подняться в диспетчерскую","controlFinal"],["Вернуться к поезду","deadReturn"]]},
+keypad:{tag:"ЗАГАДКА",title:"Кодовый замок",img:"controlRoom",text:"На замке четыре цифры. Зелёная лампа должна гореть, иначе механизм не откроется.\n\nВспомни, какое время повторялось всю дорогу.\n\n<em>Введи четыре цифры.</em>",actions:[["Вернуться в вагон","trapCell"]]},
+codeOpen:{tag:"10 · СВОБОДА?",title:"Дверь открыта",img:"serviceDoor",text:"Мотор замка щёлкает, дверь отходит на несколько сантиметров. Ты проскакиваешь в коридор, когда за спиной начинает визжать аварийная сирена.\n\nНо в окне отражается не твоя фигура, а женщина с мокрыми волосами.",actions:[["Бежать к выходу на платформу","shaftExit"],["Обратиться к женщине в отражении","deadReturn"]]},
+controlFinal:{tag:"12 · ДИСПЕТЧЕРСКАЯ",title:"Кто запер тебя?",img:"controlRoom",text:"На панели управления мигают две записи: <em>ПАССАЖИР №1</em> и <em>ДЕЖУРНЫЙ №48</em>.\n\nРядом прикреплено твоё фото. Под ним подпись: «Запирать при каждой попытке вспомнить».\n\nТеперь ясно: ловушка была создана не для убийства. Кто-то намеренно не хотел, чтобы ты добрался сюда.",actions:[["Отключить систему и выйти из поезда","escapeGood"],["Включить линию ноль ещё раз","endingLoop"]]},
+escapeGood:{tag:"КОНЕЦ ГЛАВЫ · ПОБЕГ",title:"Ты выжил. Пока.",img:"freedom",text:"Поезд застывает. За окном вместо тоннеля появляется серое предрассветное небо.\n\nНа телефон приходит сообщение от неизвестного номера: <em>«Ты вышел из вагона. Но она всё ещё внутри».</em>\n\nТы выжил, нашёл следы прошлого и открыл путь ко второй главе.",actions:[["↻ Играть заново","restart"]]},
+endingLoop:{tag:"КОНЕЦ ГЛАВЫ · ПЕТЛЯ",title:"Новый смотритель",img:"keeper",text:"Ты нажимаешь кнопку запуска. Свет заливает пустой поезд.\n\nДежурный №48 снимает значок и оставляет его тебе. «В этот раз ты сам выбрал остаться».\n\nСледующий пассажир появится ровно в 23:47.",actions:[["↻ Играть заново","restart"]]},
+deadCorridor:{tag:"СМЕРТЬ · ПОГОНЯ",title:"Они догнали тебя",img:"trap",death:true,text:"Ты прячешься за автоматом с водой. Шаги прекращаются.\n\nМокрые пальцы внезапно обхватывают твою шею сзади. Последнее, что ты слышишь, женский шёпот: <em>«Не надо было останавливаться».</em>\n\nТы погиб. Но поезд позволяет попытаться ещё раз.",actions:[["↻ Повторить с контрольной точки","checkpoint"],["Начать историю заново","restart"]]},
+deadDoor:{tag:"СМЕРТЬ · ЛОВУШКА",title:"Последний удар",img:"trap",death:true,text:"Ты бросаешься на дверь всем телом. На обратной стороне кто-то дважды стучит в ответ.\n\nЧерез секунду потолок с грохотом опускается. Экран гаснет.\n\n<em>Ты не успел выбраться из ловушки.</em>",actions:[["↻ Повторить с контрольной точки","checkpoint"],["Начать заново","restart"]]},
+deadShaft:{tag:"СМЕРТЬ · ШАХТА",title:"Не тот голос",img:"reflection",death:true,text:"Ты ползёшь на детский плач. Он становится ближе, но ни одного ребёнка здесь нет.\n\nЧьи-то холодные руки хватают тебя за лицо. Вентиляция содрогается от женского крика.\n\n<em>Больше никто не услышит твоих шагов.</em>",actions:[["↻ Повторить с контрольной точки","checkpoint"],["Начать заново","restart"]]},
+deadReturn:{tag:"СМЕРТЬ · ОТРАЖЕНИЕ",title:"Ты остался там",img:"reflection",death:true,text:"Ты протягиваешь руку к тёмному стеклу. На мгновение оно становится жидким.\n\nЧеловек по другую сторону меняется с тобой местами. Теперь ты смотришь на мир из отражения, а твоё тело уходит по платформе.\n\n<em>Оно больше тебе не принадлежит.</em>",actions:[["↻ Повторить с контрольной точки","checkpoint"],["Начать заново","restart"]]},
+end:{tag:"КОНЕЦ ГЛАВЫ",title:"Следующая остановка",img:"stationGirl",text:"Девочка в красном ожидает тебя на платформе.\n\n«Ты вспомнил, как сюда попал. Теперь вспомни, почему вернулся».\n\n<em>Конец первой главы.</em>",actions:[["Играть заново","restart"]]}
+
+};
+const HUNT_PHASES=[
+ {title:"Шаги приближаются",story:"ТУК... ТУК... ТУК...\n\nРядом два укрытия: железный шкаф с тёмной нишей и скамейка под мигающей лампой. В отражении на стене движется длинная тень.",cue:"👣 ШАГИ БЛИЗКО",choices:[["Спрятаться за железным шкафом","hideCloset"],["Залезть под освещённую скамейку","hideBench"],["Побежать к двери","runNow"]],sec:16},
+ {title:"Прямо за стенкой",story:"Ты притаился за шкафом. Существо останавливается совсем рядом.\n\nТы слышишь его неровное дыхание. Мобильный телефон в кармане начинает вибрировать.",cue:"👂 ШАГИ СОВСЕМ РЯДОМ",choices:[["Задержать дыхание и зажать телефон","holdBreath"],["Посмотреть из укрытия","peekOut"],["Вскочить и побежать","runNow"]],sec:14},
+ {title:"Шаги уходят",story:"Сначала один шаг... затем второй... потом тишина.\n\nЗа металлической перегородкой дверь служебного отсека. Но неизвестно, действительно ли существо ушло.",cue:"👣 ШАГИ УДАЛЯЮТСЯ",choices:[["Прислушаться ещё раз","listenMore"],["Сразу броситься к двери","rushDoor"],["Шумно отвлечь существо","makeNoise"]],sec:17},
+ {title:"Путь свободен?",story:"Теперь ты слышишь отчётливо: три медленных шага уходят в дальнюю часть вагона. Затем хлопает дверь.\n\nЕсли двигаться тихо, можно добраться до служебного отсека.",cue:"✅ ШАГИ ЗА ДАЛЬНЕЙ ДВЕРЬЮ",choices:[["Тихо проскользнуть в отсек","sneakExit"],["Продолжать ждать","waitForever"],["Позвать на помощь","makeNoise"]],sec:13}
+];
+const found={clock:"Часы идут назад",window:"Девочка в отражении",seat:"Фотография в красном шарфе",seatTool:"Медная проволока",breaker:"Подсказка: время 23:47",vent:"Найден вентиляционный канал"};
+
+function loudScare(){
+ if(!s.sound)return;
+ try{
+  ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();ctx.resume();
+  if(screamBuffer){
+    const now=ctx.currentTime;
+    const src=ctx.createBufferSource();src.buffer=screamBuffer;src.playbackRate.value=1.06;
+    const gain=ctx.createGain(),limiter=ctx.createDynamicsCompressor();
+    limiter.threshold.value=-16;limiter.knee.value=4;limiter.ratio.value=16;limiter.attack.value=.003;limiter.release.value=.14;
+    gain.gain.setValueAtTime(.001,now);gain.gain.linearRampToValueAtTime(.63,now+.035);
+    gain.gain.setValueAtTime(.63,now+1.72);gain.gain.exponentialRampToValueAtTime(.001,now+2.04);
+    src.connect(gain).connect(limiter).connect(ctx.destination);src.start(now);src.stop(now+Math.min(2.08,screamBuffer.duration/1.06));
+  } else {
+    // Offline/network fallback: short sharp horror sound, never silent.
+    const now=ctx.currentTime, dur=.85, sr=ctx.sampleRate,buffer=ctx.createBuffer(1,Math.floor(sr*dur),sr),data=buffer.getChannelData(0);
+    for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(1-i/data.length);
+    const src=ctx.createBufferSource(),gain=ctx.createGain(),filter=ctx.createBiquadFilter(),lim=ctx.createDynamicsCompressor();
+    src.buffer=buffer;filter.type="bandpass";filter.frequency.value=980;filter.Q.value=.5;
+    lim.threshold.value=-16;lim.ratio.value=16;
+    gain.gain.value=.28;src.connect(filter).connect(gain).connect(lim).connect(ctx.destination);src.start(now);
+    prepareScream();
+  }
+ }catch(e){}
+}
+function hideScare(){scareSeq++;if(scareTimeout){clearTimeout(scareTimeout);scareTimeout=null;}$("scare").classList.remove("show");}
+function jumpscare(){
+ const seq=++scareSeq;const panel=$("scare");
+ panel.classList.add("show");loudScare();
+ scareTimeout=setTimeout(()=>{if(scareSeq===seq)hideScare()},1750);
+}
+function stopHunt(){
+ if(huntTimer){clearInterval(huntTimer);huntTimer=null;}
+ $("huntStatus").classList.add("hidden");
+ $("scene").classList.remove("hunting");
+}
+function footstep(strength=.7){
+ if(!s.sound)return;
+ try{
+ ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();ctx.resume();
+ const now=ctx.currentTime;
+ for(const delay of [0,.25]){
+   const o=ctx.createOscillator(),g=ctx.createGain(),filter=ctx.createBiquadFilter();
+   o.type="sine";o.frequency.setValueAtTime(78,now+delay);o.frequency.exponentialRampToValueAtTime(43,now+delay+.12);
+   filter.type="lowpass";filter.frequency.value=180;
+   g.gain.setValueAtTime(.001,now+delay);g.gain.linearRampToValueAtTime(.11*strength,now+delay+.015);g.gain.exponentialRampToValueAtTime(.001,now+delay+.17);
+   o.connect(filter).connect(g).connect(ctx.destination);o.start(now+delay);o.stop(now+delay+.18);
+ }
+ }catch(e){}
+}
+function huntChoice(action){
+ if(s.node!=="huntRoom")return;
+ if(["hideBench","runNow","peekOut","rushDoor","makeNoise","waitForever"].includes(action)){
+   stopHunt();choose("deadHunt");return;
+ }
+ if(action==="hideCloset"&&huntPhase===0){startHunt(1);return}
+ if(action==="holdBreath"&&huntPhase===1){startHunt(2);return}
+ if(action==="listenMore"&&huntPhase===2){startHunt(3);return}
+ if(action==="sneakExit"&&huntPhase===3){
+    stopHunt();choose("trapCell");return;
+ }
+}
+function startHunt(phase=0){
+ stopHunt();huntPhase=phase;huntVisit++;
+ const p=HUNT_PHASES[phase],seq=huntVisit;
+ s.node="huntRoom";$("tag").textContent="08 · ИГРА НА ВЫЖИВАНИЕ";
+ $("title").textContent=p.title;$("story").innerHTML=p.story.replaceAll("\\n","<br>");
+ $("picture").src="assets/scenes/chase.webp";$("stamp").textContent="23:47 · НЕ ШУМИ";
+ $("scene").classList.add("hunting");
+ $("huntStatus").classList.remove("hidden");
+ $("huntCue").textContent=p.cue;$("huntMeter").style.width=(phase===1?82:phase===0?67:phase===2?43:18)+"%";
+ $("hots").replaceChildren();
+ const actions=$("actions");actions.replaceChildren();
+ for(const [label,action] of p.choices){
+   const b=document.createElement("button");b.className="action";
+   const txt=document.createElement("strong");txt.textContent=label;
+   const arrow=document.createElement("span");arrow.textContent="→";
+   b.append(txt,arrow);b.onclick=()=>huntChoice(action);actions.append(b);
+ }
+ $("hint").textContent="Если время закончится, существо тебя найдёт.";
+ $("bar").style.width=(55+phase*5)+"%";
+ const end=Date.now()+p.sec*1000;
+ function tick(){
+   if(s.node!=="huntRoom"||huntVisit!==seq)return;
+   const left=Math.max(0,Math.ceil((end-Date.now())/1000));$("huntCount").textContent=left+" c";
+   if(left===0){stopHunt();choose("deadHunt");return}
+   if(s.sound&&left%3===0&&left!==s.lastFoot){s.lastFoot=left;footstep(phase===1?1:phase===3?.3:.65)}
+ }
+ tick();huntTimer=setInterval(tick,400);
+}
+function clean(){if(timer){clearInterval(timer);timer=null;}$("clock").classList.remove("on");}
+function resetGame(target="wake"){
+ const sound=s.sound;hideScare();clean();stopHunt();
+ s={node:target,clues:target==="wake"?[]:["clock","window"],fear:0,turned:false,knowsMother:false,seen:[],sound,lock:false,checkpoint:"trapCell",digits:"",mistakes:0,codePowered:false,ventOpen:false,deaths:0};
+ render(target);
+}
+function choose(id){
+ tone(115,.2,.065,"triangle");
+ if(id==="restart"){resetGame("wake");return}
+ if(id==="checkpoint"){resetGame("trapCell");return}
+ if(id==="retryHunt"){stopHunt();startHunt(0);return}
+ if(found[id]&&!s.clues.includes(id))s.clues.push(id);
+ if(id==="door"&&s.clues.filter(x=>["clock","window","seat"].includes(x)).length<2){$("hint").textContent="🔎 Исследуй ещё предметы: нужно 2 улики.";tone(280,.18);return}
+ if(id==="huntRoom"){startHunt(0);return}
+ if(id==="turned"){s.turned=true;s.fear++}
+ if(id==="opened")s.fear++;
+ if(id==="bridge"&&!s.clues.includes("seatTool")){ $("hint").textContent="⚡ Контакты нечем замкнуть. Поищи проволоку под сиденьем.";return}
+ if(id==="openVent"&&!s.clues.includes("seatTool")){$("hint").textContent="Нужен тонкий инструмент. Осмотри сиденье.";return}
+ if(id==="bridge"){s.codePowered=true}
+ if(id==="openVent"){s.ventOpen=true}
+ if(id==="keypad"){s.digits=""}
+ render(id);
+ if(id==="turned"||id==="opened"||id==="deadShaft"||id==="deadHunt")setTimeout(()=>{if(s.node===id)jumpscare()},id==="turned"?180:520);
+ if(id==="deadCorridor"||id==="deadDoor"||id==="deadReturn")setTimeout(()=>{if(s.node===id)jumpscare()},550);
+}
+function codeDigit(n){
+ if(s.node!=="keypad")return;
+ if(n==="clear"){s.digits="";renderDigits();return}
+ if(s.digits.length>=4)return;
+ s.digits+=n;tone(390,.07,.04);renderDigits();
+ if(s.digits.length===4){
+   const code=s.digits;
+   setTimeout(()=>{
+     if(s.node!=="keypad")return;
+     if(!s.codePowered){s.digits="";$("hint").textContent="🔒 Нет питания. Проверь щиток и замкни контакты проволокой.";renderDigits();return}
+     if(code==="2347"){choose("codeOpen");return}
+     s.mistakes=(s.mistakes||0)+1;s.digits="";
+     if(s.mistakes>=3)choose("deadDoor");
+     else{$("hint").textContent="⛔ Неверный код. Попытка "+s.mistakes+"/3.";renderDigits();}
+   },260);
+ }
+}
+function renderDigits(){
+ let target=$("digits");if(target)target.textContent=(s.digits||"").padEnd(4,"•");
+}
+function render(id){
+ stopHunt();clean();s.node=id;const n=texts[id];s.seen.push(id);if(id==="end")s.seen=s.seen.slice(-30);
+ $("tag").textContent=n.tag;$("title").textContent=n.title;$("story").innerHTML=n.text;$("stamp").textContent=n.stamp||"23:47 · ЛИНИЯ 0";
+ $("picture").src="assets/scenes/"+n.img+".webp";$("picture").alt="Иллюстрация: "+n.title;
+ $("scene").classList.remove("active");requestAnimationFrame(()=>$("scene").classList.add("active"));
+ const linear=["wake","safe","turned","explore","clock","window","seat","door","opened","refused","reveal","platform","chaseHall","trapCell","breaker","seatTool","vent","openVent","shaftExit","keypad","codeOpen","controlFinal","escapeGood","endingLoop"];
+ const idx=linear.indexOf(id);$("bar").style.width=(idx<0?72:Math.round((idx+1)/linear.length*100))+"%";
+ const h=$("hots");h.replaceChildren();for(const p of n.hotspots||[]){
+ const b=document.createElement("button");b.className="hot";b.style.left=p.x+"%";b.style.top=p.y+"%";b.setAttribute("aria-label","Исследовать: "+p.label);
+ b.innerHTML='<span class="pin">'+(s.clues.includes(p.id)?"✓":"+")+'</span><small>'+p.label+'</small>';b.onclick=()=>choose(p.id);h.appendChild(b);}
+ const a=$("actions");a.replaceChildren();
+ if(id==="keypad"){
+  const pad=document.createElement("div");pad.className="codepad";
+  const read=document.createElement("div");read.className="digits";read.id="digits";read.textContent="••••";pad.appendChild(read);
+  for(const digit of ["1","2","3","4","5","6","7","8","9","С","0"]){const btn=document.createElement("button");btn.className="digit";btn.type="button";btn.textContent=digit;btn.onclick=()=>codeDigit(digit==="С"?"clear":digit);pad.appendChild(btn)}
+  a.appendChild(pad);
+ }
+ for(const [label,to] of n.actions||[]){const b=document.createElement("button");b.className="action"+(to==="end"?" primary":"");b.innerHTML="<strong></strong><span>→</span>";b.querySelector("strong").textContent=label;b.onclick=()=>choose(to);a.appendChild(b)}
+ $("hint").textContent=id==="explore"?"Улики: "+s.clues.length+"/2 · Нажимай на светящиеся точки":id==="end"?"Твои решения будут влиять на продолжение полной истории.":"";
+ if(id==="door"){remaining=12;$("clock").classList.add("on");$("clock").textContent="00:"+remaining;timer=setInterval(()=>{remaining--;$("clock").textContent="00:"+String(Math.max(remaining,0)).padStart(2,"0");if(remaining<=0){clean();choose("opened")}},1000);}
+ try{sessionStorage.setItem("zg_v5_node",id)}catch(e){}
+}
+$("begin").onclick=()=>{$("intro").classList.add("hidden");s.sound=true;$("sound").textContent="🔊";prepareScream();tone(110,.4,.08,"sawtooth");render("wake")};
+$("sound").onclick=()=>{s.sound=!s.sound;$("sound").textContent=s.sound?"🔊":"🔇";if(s.sound){prepareScream();tone(220,.2)}};
+$("bag").onclick=()=>{const box=$("inventory");box.classList.toggle("hidden");const ul=$("items");ul.replaceChildren();for(const id of s.clues){const li=document.createElement("li");li.textContent=found[id];ul.appendChild(li)}if(!s.clues.length){const li=document.createElement("li");li.textContent="Пока пусто";ul.appendChild(li)}};
+$("again").onclick=()=>{$("inventory").classList.add("hidden");resetGame("wake")};
+})();
+</script></body></html>
