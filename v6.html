@@ -108,11 +108,40 @@ button{font:inherit;color:inherit}button:focus-visible{outline:2px solid #e5a9a9
 .scene.fx-danger .dark-figure .dark-head{box-shadow:0 0 5px #000,8px 14px 18px #000}
 @media(max-width:450px){.fx-flashlight{background:radial-gradient(circle 100px at var(--tx,50%) var(--ty,50%),transparent 0%,#05060b33 50%,#030307c9 100%)}}
 @media(prefers-reduced-motion:reduce){.fx-fog,.fx-glitch,.fx-filmflash,.fx-scene-msg,.scene.fx-danger::before,.scene .noise,#picture,.scene.fx-danger .dark-figure.visible{animation:none!important}#weather{display:none}}
+
+.storymenu{width:min(450px,100%);padding:25px 20px}.storymenu .bigtitle{font-size:35px;margin:12px 0}.storymenu p{font-size:13px;margin:8px 0 17px}
+.storychoice{width:100%;display:flex;align-items:center;gap:15px;text-align:left;min-height:92px;border:1px solid #9c768a77;background:linear-gradient(110deg,#2b2638,#171a27);border-radius:14px;padding:12px;margin-top:11px;cursor:pointer}
+.storychoice:nth-of-type(2){border-color:#7596a188;background:linear-gradient(110deg,#1c313a,#161f2b)}
+.storychoice .storyemoji{font-size:33px;flex:0 0 48px}.storychoice>span:nth-child(2){flex:1}
+.storychoice b{display:block;font-size:17px;letter-spacing:.01em}.storychoice small{display:block;margin-top:5px;font-size:11px;line-height:1.4;color:#b5c4ca}
+.storychoice i{font-size:20px;font-style:normal;color:#dbc9cf}.menunote{font-size:11px!important;color:#a3a9b8!important}
+.hospital-art{display:none;position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,#34454d 0%,#14242d 48%,#05080e 94%)}
+.scene.hospital .hospital-art{display:block}
+.scene.hospital #picture{display:none}
+.scene.hospital .hospital-art::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 75px,#060c14a0 76px 79px),repeating-linear-gradient(0deg,transparent 0 82px,#060c1466 83px 85px);opacity:.38}
+.h-vanish{position:absolute;inset:0;background:linear-gradient(90deg,#02070cdb,transparent 28%,transparent 72%,#02070cdb);z-index:2}
+.h-light{position:absolute;width:53%;height:26px;left:24%;top:0;border-radius:4px;background:#d9f2ed;box-shadow:0 0 38px 18px #dfffea30,0 0 120px 40px #c0e7df25;animation:h-light 3.8s steps(2,end) infinite}
+@keyframes h-light{0%,75%,83%,100%{opacity:.7}76%,81%{opacity:.07}}
+.h-floor{position:absolute;inset:68% 0 0;background:repeating-linear-gradient(90deg,#243942 0 47px,#131c25 48px 50px);transform:perspective(160px) rotateX(24deg);transform-origin:top}
+.h-door{position:absolute;left:37%;top:16%;width:26%;height:73%;border:9px solid #10191e;background:linear-gradient(90deg,#15232e 0%,#33434d 47%,#14242c 100%);box-shadow:0 0 0 3px #6a787557,0 0 35px #000b}
+.h-door::after{content:"";position:absolute;right:8%;top:53%;width:13px;height:6px;border:2px solid #bec5b0;background:#49544b;box-shadow:0 0 15px #f1db9f}
+.h-bed{position:absolute;bottom:14%;left:7%;width:47%;height:27%;background:linear-gradient(160deg,#b7c2ba 0%,#78898b 36%,#384c54 75%);transform:skew(-12deg) rotate(-4deg);box-shadow:10px 14px 0 #1a262d,0 22px 55px #000}
+.h-bed::before{content:"";position:absolute;top:-25%;left:0;width:44%;height:36%;border-radius:25px;background:#d2dbd4;box-shadow:0 0 10px #7a898b}
+.h-monitor{position:absolute;right:6%;top:29%;width:30%;height:31%;border:6px solid #10262a;background:#020e12;box-shadow:0 0 20px #66a6a23f;display:grid;place-items:center;color:#6affa4;font:900 19px monospace;text-shadow:0 0 14px #36f69c}
+.h-monitor::after{content:"〰〰〰";font-size:25px;position:absolute;top:40%;color:#4af8aa}
+.h-curtain{position:absolute;inset:8% 1% 7% 67%;background:repeating-linear-gradient(90deg,#7b92986b 0 16px,#283a449c 18px 25px);transform:skew(-5deg);filter:blur(2px)}
+.h-shadow{position:absolute;left:62%;top:16%;width:15%;height:68%;opacity:.64;filter:blur(3px);background:radial-gradient(ellipse at 50% 14%,#020507 0 16%,transparent 17%),linear-gradient(180deg,transparent 16%,#020405 22% 91%,transparent 100%);animation:h-shadow 7s ease-in-out infinite alternate}
+@keyframes h-shadow{from{transform:translateX(34px) scale(.9);opacity:.1}to{transform:translateX(-22px) scale(1.12);opacity:.8}}
+.h-sign{position:absolute;z-index:3;left:6%;top:15%;border:1px solid #b0bfc067;padding:7px 11px;background:#18252bba;color:#deebe5;font-size:13px;letter-spacing:.17em}
+.scene.hospital .caption{border-color:#8da5ae55;background:#0d2327c9}
+.scene.hospital .noise{opacity:.6}
+.scene.hospital #weather{opacity:.3}
+@media(prefers-reduced-motion:reduce){.h-light,.h-shadow{animation:none!important}}
 </style></head><body>
 <div class="shell">
-<header class="top"><div><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="topsmall">ГЛАВА 01 · V6.2 · РАСШИРЕННАЯ ИСТОРИЯ</div></div><div class="toolbar"><button id="hapticBtn" class="icon" title="Вибрация и обратная связь" aria-label="Включить или выключить вибрацию">📳</button><button id="flashBtn" class="icon" title="Фонарик" aria-label="Включить или выключить фонарик">🔦</button><button id="motion" class="icon" title="Анимация" aria-label="Включить или выключить анимацию">🎬</button><button id="sound" class="icon" title="Звук" aria-label="Включить или выключить звук">🔇</button><button id="bag" class="icon" title="Улики" aria-label="Улики">⌑</button><button id="again" class="replay" title="Начать заново" aria-label="Играть заново">↻ Заново</button></div></header>
-<div class="progress"><div id="bar"></div></div><div class="buildtag">V6.2 · ВИБРАЦИЯ · НОВЫЕ ГЛАВЫ · ВЫБОРЫ · ФИНАЛЫ</div>
-<main class="scene" id="scene"><img id="picture" src="assets/scenes/start.webp" alt="Кадр истории"><div class="noise"></div><canvas id="weather" aria-hidden="true"></canvas><div class="fx-fog" aria-hidden="true"></div><div class="fx-fog fx-fog2" aria-hidden="true"></div><div id="glitch" class="fx-glitch" aria-hidden="true"></div><div id="flashlight" class="fx-flashlight" aria-hidden="true"></div><div id="filmflash" class="fx-filmflash" aria-hidden="true"></div><div id="sceneMsg" class="fx-scene-msg" aria-live="off">НЕ ОБОРАЧИВАЙСЯ</div><div id="particles" aria-hidden="true"></div><div class="dark-figure" id="darkFigure" aria-hidden="true"><div class="dark-head"></div><div class="dark-body"></div></div><div class="lightning" id="lightning"></div><div class="caption" id="stamp">23:47 · ВАГОН 0</div><div class="countdown" id="clock">00:10</div><div class="hots" id="hots"></div>
+<header class="top"><div><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="topsmall">ИСТОРИИ · V6.3 · ДВА КОШМАРА</div></div><div class="toolbar"><button id="menuBtn" class="icon" title="Выбрать историю" aria-label="Выбрать историю">⌂</button><button id="hapticBtn" class="icon" title="Вибрация и обратная связь" aria-label="Включить или выключить вибрацию">📳</button><button id="flashBtn" class="icon" title="Фонарик" aria-label="Включить или выключить фонарик">🔦</button><button id="motion" class="icon" title="Анимация" aria-label="Включить или выключить анимацию">🎬</button><button id="sound" class="icon" title="Звук" aria-label="Включить или выключить звук">🔇</button><button id="bag" class="icon" title="Улики" aria-label="Улики">⌑</button><button id="again" class="replay" title="Начать заново" aria-label="Играть заново">↻ Заново</button></div></header>
+<div class="progress"><div id="bar"></div></div><div class="buildtag">V6.3 · ПОЕЗД ИЛИ БОЛЬНИЦА · ВЫБЕРИ СВОЙ СТРАХ</div>
+<main class="scene" id="scene"><div id="hospitalArt" class="hospital-art" aria-hidden="true"></div><img id="picture" src="assets/scenes/start.webp" alt="Кадр истории"><div class="noise"></div><canvas id="weather" aria-hidden="true"></canvas><div class="fx-fog" aria-hidden="true"></div><div class="fx-fog fx-fog2" aria-hidden="true"></div><div id="glitch" class="fx-glitch" aria-hidden="true"></div><div id="flashlight" class="fx-flashlight" aria-hidden="true"></div><div id="filmflash" class="fx-filmflash" aria-hidden="true"></div><div id="sceneMsg" class="fx-scene-msg" aria-live="off">НЕ ОБОРАЧИВАЙСЯ</div><div id="particles" aria-hidden="true"></div><div class="dark-figure" id="darkFigure" aria-hidden="true"><div class="dark-head"></div><div class="dark-body"></div></div><div class="lightning" id="lightning"></div><div class="caption" id="stamp">23:47 · ВАГОН 0</div><div class="countdown" id="clock">00:10</div><div class="hots" id="hots"></div>
 <div id="huntStatus" class="hunt-status hidden" aria-live="polite">
  <div class="hunt-row"><span id="huntCue">👣 ШАГИ БЛИЗКО</span><strong id="huntCount">16 c</strong></div>
  <div class="danger-track"><div id="huntMeter"></div></div>
@@ -122,7 +151,7 @@ button{font:inherit;color:inherit}button:focus-visible{outline:2px solid #e5a9a9
 <div id="inventory" class="inventory hidden"><h3>Найденные улики</h3><ul id="items"></ul></div>
 </div>
 <div id="scare" class="scare" aria-hidden="true"><img id="scareFace" src="assets/scares/ghost.webp" alt="" decoding="sync" loading="eager"><div class="scareword">НЕ СМОТРИ</div></div>
-<div id="intro" class="overlay"><div class="modal"><div class="brand">ЗА ГРАНЬЮ ◇</div><h2 class="bigtitle">Последний<br>поезд</h2><p>Ты очнулся в вагоне, которого нет на карте метро.<br><br>В этой истории опасно даже смотреть по сторонам.</p><button class="action primary" id="begin">Начать поездку <span>→</span></button><p style="font-size:12px">В игре есть неожиданные пугающие изображения и женский крик. Громкость контролируется устройством · 10–15 минут</p></div></div>
+<div id="intro" class="overlay"><div class="modal storymenu"><div class="brand">ЗА ГРАНЬЮ ◇</div><h2 class="bigtitle">Выбери свой<br>кошмар</h2><p>Две самостоятельные истории. Разные ловушки, загадки, решения и концовки.</p><button class="storychoice" id="begin"><span class="storyemoji">🚇</span><span><b>Последний поезд</b><small>Пустое метро · 23:47 · Побег из петли</small></span><i>→</i></button><button class="storychoice" id="beginHospital"><span class="storyemoji">🏥</span><span><b>Палата №0</b><small>Ночная больница · 03:33 · Чужие воспоминания</small></span><i>→</i></button><p class="menunote">Есть неожиданные страшные сцены и женский крик. Громкость зависит от настроек устройства.</p></div></div>
 <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.90.0/phaser.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
@@ -186,15 +215,15 @@ function fxTrigger(id){
  }
  scene.classList.remove("fx-shake");
  for(const key of ["glitch","filmflash","sceneMsg"]){const el=$(key);el.classList.remove("hit","show");void el.offsetWidth}
- const peril=/^(turned|door|opened|refused|reflection|window|chaseHall|huntRoom|dead.*|trapCell|openVent|shaftExit|codeOpen|corridorFork|redDoor|emergency|caughtLight|passGuard|guardTruth|rewritePast)$/.test(id);
- const fatal=/^dead/.test(id);
+ const peril=/^(hCall|hWindow|hCorridor|hRun|hDead.*|hProcedureDoor|hDeadLift|hDeadGas|hAlarm|hSurgery|turned|door|opened|refused|reflection|window|chaseHall|huntRoom|dead.*|trapCell|openVent|shaftExit|codeOpen|corridorFork|redDoor|emergency|caughtLight|passGuard|guardTruth|rewritePast)$/.test(id);
+ const fatal=/^dead|^hDead/.test(id);
  scene.classList.toggle("fx-danger",peril);
  $("flashlight").classList.toggle("on",motion&&(peril||flashlightManual));
  if(!motion)return;
  $("glitch").classList.add("hit");
  $("filmflash").classList.add("hit");
  if(peril){scene.classList.add("fx-shake");fxSchedule(()=>scene.classList.remove("fx-shake"),450)}
- const messages={archive:"ЭКСПЕРИМЕНТ 48",corridorFork:"НЕ ВЕРЬ ГОЛОСАМ",redDoor:"ЭТО НЕ ДОМ",emergency:"12 СЕКУНД",passGuard:"НЕ ОСТАНАВЛИВАЙСЯ",finalChoice:"ПОСЛЕДНИЙ ВЫБОР",trueEscape:"ТЫ СВОБОДЕН",wake:"НЕ ОБОРАЧИВАЙСЯ",turned:"ОН УВИДЕЛ ТЕБЯ",safe:"КТО-ТО РЯДОМ",door:"НЕ ОТКРЫВАЙ",opened:"ОН УЖЕ ЗДЕСЬ",chaseHall:"БЕГИ",huntRoom:"НЕ ШУМИ",trapCell:"ТЫ ЗАПЕРТ",openVent:"ТИШЕ...",escapeGood:"ТЫ ВЫЖИЛ",deadHunt:"ТЕБЯ НАШЛИ"};
+ const messages={hWake:"ПАЛАТА №0",hCall:"ОНА УЖЕ ЗДЕСЬ",hCorridor:"НЕ СМОТРИ",hRun:"БЕГИ",hSurgery:"НЕ ДЫШИ",hDeadNurse:"ТЫ НЕ ПАЦИЕНТ",hGoodEnding:"ТЫ ВСПОМНИЛ",archive:"ЭКСПЕРИМЕНТ 48",corridorFork:"НЕ ВЕРЬ ГОЛОСАМ",redDoor:"ЭТО НЕ ДОМ",emergency:"12 СЕКУНД",passGuard:"НЕ ОСТАНАВЛИВАЙСЯ",finalChoice:"ПОСЛЕДНИЙ ВЫБОР",trueEscape:"ТЫ СВОБОДЕН",wake:"НЕ ОБОРАЧИВАЙСЯ",turned:"ОН УВИДЕЛ ТЕБЯ",safe:"КТО-ТО РЯДОМ",door:"НЕ ОТКРЫВАЙ",opened:"ОН УЖЕ ЗДЕСЬ",chaseHall:"БЕГИ",huntRoom:"НЕ ШУМИ",trapCell:"ТЫ ЗАПЕРТ",openVent:"ТИШЕ...",escapeGood:"ТЫ ВЫЖИЛ",deadHunt:"ТЕБЯ НАШЛИ"};
  const msg=messages[id]||(fatal?"ТЫ ПОГИБ":"");
  if(msg){$("sceneMsg").textContent=msg;$("sceneMsg").classList.add("show")}
  if(peril&&id!=="huntRoom")fxSchedule(()=>{if(s.node===id){$("glitch").classList.remove("hit");void $("glitch").offsetWidth;$("glitch").classList.add("hit")}},2200);
@@ -343,7 +372,35 @@ deadMirror:{tag:"СМЕРТЬ · ЗЕРКАЛО",title:"Ты убил не то�
 finalChoice:{tag:"18 · ПОСЛЕДНЕЕ РЕШЕНИЕ",title:"Кого спасать?",img:"stationGirl",text:"За окном медленно появляется рассвет. Девочка поднимается со стула.\\n\\n«Ты можешь остановить линию, но не вернуть ту ночь», говорит она. «Или остаться здесь и продолжать искать невозможный выход».\\n\\nНа пульте три кнопки: <em>ОТПУСТИТЬ, ОСТАТЬСЯ, ПЕРЕПИСАТЬ.</em>",actions:[["Остановить линию и отпустить прошлое","trueEscape"],["Остаться смотрителем поезда","endingLoop"],["Попытаться переписать прошлое","rewritePast"]]},
 rewritePast:{tag:"19 · ПОСЛЕДНЯЯ СДЕЛКА",title:"Цена воспоминания",img:"secondChanceOffer",text:"Дежурный появляется рядом и протягивает маленький ключ. «Я могу вернуть тебя в ту ночь. Но ты забудешь всё, что узнал о ней», говорит он.\\n\\nДевочка качает головой. <em>«Не делай этого. Мы уже пробовали».</em>",actions:[["Отказаться от сделки","finalChoice"],["Взять ключ и вернуться в ночь","memoryLoop"]]},
 memoryLoop:{tag:"ФИНАЛ · ПЕТЛЯ",title:"Тот же поезд",img:"loop",text:"Ты закрываешь глаза. Холодная платформа. Запах дыма. Красный шарф в твоих руках.\\n\\nНо в этот раз ты не можешь вспомнить лицо матери. Ты забываешь даже то, почему вернулся.\\n\\nЧасы снова показывают <em>23:47</em>. Из динамика раздаётся голос: «Пожалуйста, не оборачивайтесь».",actions:[["↻ Начать заново","restart"]]},
-trueEscape:{tag:"ФИНАЛ · ОСВОБОЖДЕНИЕ",title:"Первый настоящий рассвет",img:"freedom",text:"Ты нажимаешь «ОТПУСТИТЬ». Поезд останавливается без единого звука. Лица на фотографиях наконец исчезают.\\n\\nНа платформе больше никого нет, но из динамика доносится знакомый голос: <em>«Теперь живи за нас обоих».</em>\\n\\nТы выходишь наружу. Впервые за много лет часы идут вперёд. Конец первой истории.",actions:[["↻ Пройти историю иначе","restart"]]}
+trueEscape:{tag:"ФИНАЛ · ОСВОБОЖДЕНИЕ",title:"Первый настоящий рассвет",img:"freedom",text:"Ты нажимаешь «ОТПУСТИТЬ». Поезд останавливается без единого звука. Лица на фотографиях наконец исчезают.\\n\\nНа платформе больше никого нет, но из динамика доносится знакомый голос: <em>«Теперь живи за нас обоих».</em>\\n\\nТы выходишь наружу. Впервые за много лет часы идут вперёд. Конец первой истории.",actions:[["↻ Пройти историю иначе","restart"]]},
+hWake:{tag:"01 · ПРОБУЖДЕНИЕ",title:"Палата №0",room:"ward",text:"Ты просыпаешься на больничной койке. На запястье браслет с твоим именем и датой завтрашнего дня.\n\nПод потолком мерцает лампа. Из коридора доносится голос медсестры: «Пациент ноль пришёл в сознание. Начинайте повторение».\n\nНа стене часы показывают <em>03:33</em>.",actions:[["Снять браслет и осмотреть палату","hExplore"],["Закричать и позвать медсестру","hCall"]],img:"controlRoom"},
+hCall:{tag:"02 · НЕ ЗОВИ ЕЁ",title:"Сестра без лица",room:"ward",text:"За дверью перестают скрипеть колёса каталки.\n\n«Я уже здесь», говорит женщина прямо у тебя за спиной.\n\nНа секунду отражение в окне превращается в чужое лицо. Но когда ты поворачиваешься, там пусто.",actions:[["Затаиться и обследовать палату","hExplore"],["Открыть дверь и искать медсестру","hCorridor"]],img:"controlRoom"},
+hExplore:{tag:"02 · ОСМОТР",title:"Палата, которой нет",room:"ward",text:"Койка, шкафчик и окно с решёткой. За стеклом не улица, а тёмный больничный коридор.\n\nНа подушке вмятина от второй головы. <em>Осмотри предметы, прежде чем уходить.</em>",actions:[["Поднять историю болезни","hChart"],["Открыть металлический шкафчик","hLocker"],["Посмотреть в окно","hWindow"],["Выйти в коридор","hCorridor"]],img:"controlRoom"},
+hChart:{tag:"УЛИКА · ИСТОРИЯ БОЛЕЗНИ",title:"Диагноз: память",room:"ward",text:"История болезни датирована завтрашним днём. В графе «Диагноз» написано: <em>«Повторное воспоминание чужой смерти».</em>\n\nНа полях выведена инструкция: «Номер палаты не является номером. Код от процедурной: час, в который всё началось».\n\nТы запоминаешь цифры: <em>0333</em>.",actions:[["Убрать запись и продолжить осмотр","hExplore"]],img:"controlRoom"},
+hLocker:{tag:"УЛИКА · ШКАФЧИК",title:"Медицинский жетон",room:"ward",text:"В шкафчике лежит металлический жетон с гравировкой «САНИТАР / НОЧНАЯ СМЕНА» и фотография женщины у больничного входа.\n\nНа обороте: <em>«Не открывай кабинет главврача, пока не узнаешь, кто лежит в палате №0».</em>",actions:[["Взять жетон и вернуться","hExplore"]],img:"controlRoom"},
+hWindow:{tag:"НЕВОЗМОЖНОЕ",title:"Соседняя палата",room:"ward",text:"Ты подходишь к окну. По ту сторону стекла видишь самого себя, лежащего на такой же койке.\n\nДругой ты медленно открывает глаза и беззвучно шевелит губами: <em>«Уходи, пока она не вернулась».</em>",actions:[["Отойти от окна","hExplore"],["Ударить по стеклу","hDeadWindow"]],img:"controlRoom"},
+hDeadWindow:{tag:"СМЕРТЬ · СТЕКЛО",title:"Чужое место",room:"ward",text:"Ты ударяешь в стекло. Оно становится мягким, будто поверхность воды.\n\nЧья-то рука хватает тебя за запястье. В следующее мгновение ты лежишь на другой стороне, а твоя копия уходит через дверь.\n\n<em>Ты остался вместо неё.</em>",actions:[["↻ Повторить больницу","hRestart"],["Выбрать историю","menu"]],death:true,img:"controlRoom"},
+hCorridor:{tag:"03 · НОЧНОЙ КОРИДОР",title:"Не смотри на пост",room:"hall",text:"В коридоре горит красная лампа. На посту медсестры стоит пустая чашка с ещё тёплым чаем.\n\nИз динамика слышен шёпот: «У неё нет лица, пока ты на неё не посмотришь».\n\nВдали медленно движется каталка без человека.",actions:[["Идти тихо к процедурной","hProcedureDoor"],["Подойти к посту медсестры","hNurseDesk"],["Побежать к лестнице","hRun"]],img:"controlRoom"},
+hNurseDesk:{tag:"04 · ПОСТ МЕДСЕСТРЫ",title:"Журнал ночной смены",room:"desk",text:"На столе лежит журнал. В каждой строке имя пациента совпадает с твоим. Время поступления всегда одно: <em>03:33</em>.\n\nПоследняя запись: «Пациент ноль снова просил выключить аппарат. Не давать ему видеть снимки».\n\nСнизу нарисованы три символа: <em>круг, крест, круг</em>.",actions:[["Запомнить запись и идти в процедурную","hProcedureDoor"],["Посмотреть за ширму","hDeadNurse"]],img:"controlRoom"},
+hDeadNurse:{tag:"СМЕРТЬ · ПОСТ",title:"Не просыпайся",room:"desk",text:"Ты отодвигаешь ширму. Там стоит медсестра в грязном халате.\n\nОна поворачивает голову слишком далеко и касается твоего лица холодной ладонью.\n\n«Опять не тот пациент», произносит она, пока свет в глазах гаснет.",actions:[["↻ С контрольной точки","hCheckpoint"],["Начать больницу заново","hRestart"]],death:true,img:"controlRoom"},
+hRun:{tag:"04 · ПОГОНЯ",title:"Каталка №13",room:"hall",text:"Ты бросаешься к лестнице. За спиной раздаётся дребезг колёс, который быстро превращается в бег.\n\nНа стене видишь две стрелки: «ЛИФТ» и «ПРОЦЕДУРНАЯ». Кнопки лифта светятся изнутри.",actions:[["Спрятаться в процедурной","hProcedureDoor"],["Вызвать лифт","hDeadLift"]],img:"controlRoom"},
+hDeadLift:{tag:"СМЕРТЬ · ЛИФТ",title:"Тринадцатый этаж",room:"lift",text:"Двери лифта открываются. Внутри нет пола. Только тёмная шахта, из которой доносится плач.\n\nПозади тебя раздаётся стук колёс. Кто-то толкает тебя в темноту.\n\nНа табло вспыхивает <em>13</em>.",actions:[["↻ С контрольной точки","hCheckpoint"],["Начать больницу заново","hRestart"]],death:true,img:"controlRoom"},
+hProcedureDoor:{tag:"05 · ЗАКРЫТАЯ ДВЕРЬ",title:"Четыре цифры",room:"door",text:"Процедурная заперта электронным замком. Под экраном четыре кнопки с цифрами и надпись: <em>«Время первого пробуждения»</em>.\n\nКлюч должен быть спрятан где-то в медицинских записях. На табло горит красный огонёк.",actions:[["Ввести код на замке","hKeypad"],["Вернуться к посту","hNurseDesk"],["Отступить в палату","hExplore"]],img:"controlRoom"},
+hKeypad:{tag:"ЗАГАДКА · ПРОЦЕДУРНАЯ",title:"Назови время",room:"door",text:"На замке четыре пустых разряда. Нажимай цифры.\n\n<em>Подсказка: время, которое повторяется в истории больницы.</em>",actions:[["Вернуться в коридор","hProcedureDoor"]],hospitalKeypad:true,img:"controlRoom"},
+hProcedure:{tag:"06 · ЗА СТЕКЛОМ",title:"Чужое лечение",room:"lab",text:"Процедурная заполнена аппаратами. Под простынёй лежит человек, подключённый к монитору. Его сердце бьётся слишком ровно, будто это запись.\n\nНа столе кассета «ПАЦИЕНТ 0» и коробка с защитными масками.",actions:[["Прослушать кассету","hRecording"],["Снять простыню с пациента","hPatient"],["Взять защитную маску","hMask"]],img:"controlRoom"},
+hMask:{tag:"ПРЕДМЕТ · МАСКА",title:"Нельзя дышать",room:"lab",text:"В коробке лежит одна чистая маска. На упаковке надпись: «Для входа в операционную».\n\nТы прячешь маску в карман и замечаешь, что на этикетке твоё имя.",actions:[["Вернуться к столу","hProcedure"],["Идти к операционной","hSurgery"]],img:"controlRoom"},
+hPatient:{tag:"07 · СЕРДЦЕ",title:"Под простынёй",room:"lab",text:"Под простынёй лежит пожилой мужчина. На груди у него хирургический шрам. Лицо знакомо, но ты не можешь вспомнить откуда.\n\nВнезапно его глаза открываются: <em>«Это твоё последнее воспоминание. Не отдавай его ей».</em>",actions:[["Спросить, кто он","hOldMan"],["Испугаться и отключить монитор","hDeadMonitor"]],img:"controlRoom"},
+hOldMan:{tag:"УЛИКА · ПРОШЛОЕ",title:"Человек, который помнит",room:"lab",text:"«Я врач, который пытался остановить эксперимент», говорит мужчина.\n\n«Они лечат потерю памяти, стирая невыносимые воспоминания. Но каждый раз человек, которого ты забыл, остаётся здесь. Медсестра — одна из них».\n\nОн указывает на дверь операционной.",actions:[["Поблагодарить и пойти к операционной","hSurgery"],["Вернуться за кассетой","hProcedure"]],img:"controlRoom"},
+hDeadMonitor:{tag:"СМЕРТЬ · АППАРАТ",title:"Остановка сердца",room:"lab",text:"Ты выдёргиваешь провод. Монитор замолкает.\n\nНо вместе с ним исчезают и звуки твоего сердца. В последние секунды ты понимаешь: <em>прибор был подключён к тебе.</em>",actions:[["↻ С контрольной точки","hCheckpoint"],["Начать больницу заново","hRestart"]],death:true,img:"controlRoom"},
+hRecording:{tag:"УЛИКА · КАССЕТА",title:"Запись врача",room:"lab",text:"«Если вы это слышите, значит, мы снова проиграли», говорит усталый мужской голос.\n\n«Пациент ноль добровольно согласился забыть ту ночь. Но аппарат сохраняет копии сознания. Отключить его можно только из операционной».\n\nНа конце плёнки слышится собственный голос: <em>«Я согласен».</em>",actions:[["Искать операционную","hSurgery"],["Осмотреть процедурную","hProcedure"]],img:"controlRoom"},
+hSurgery:{tag:"08 · ОПЕРАЦИОННАЯ",title:"Голос в темноте",room:"surgery",text:"Операционная погружена в густой туман. На операционном столе лежит исписанная бумага: «НЕ ДЫШИ».\n\nВ лампах над столом отражается женщина в медицинской маске. Кажется, она стоит за твоей спиной.\n\nНа стене два выключателя: вентиляция и аварийное питание.",actions:[["Надеть маску и выключить вентиляцию","hSafeSurgery"],["Пойти к столу без маски","hDeadGas"],["Включить аварийное питание","hAlarm"]],img:"controlRoom"},
+hDeadGas:{tag:"СМЕРТЬ · ТУМАН",title:"Последний вдох",room:"surgery",text:"Ты вдыхаешь сладковатый запах. Ноги становятся ватными, а белые стены плывут.\n\nЖенщина наклоняется над тобой: «Уже просыпался? Ничего, попробуем ещё раз».\n\nСнова темнота.",actions:[["↻ С контрольной точки","hCheckpoint"],["Начать больницу заново","hRestart"]],death:true,img:"controlRoom"},
+hAlarm:{tag:"09 · СИРЕНА",title:"Теперь она знает",room:"surgery",text:"Загорается красный аварийный свет. Все двери блокируются.\n\nМедсестра появляется в дверном проёме. Её лицо скрыто тенью, но она держит шприц.\n\n«Ты опять всё испортил», шепчет она.",actions:[["Нырнуть под операционный стол","hSafeSurgery"],["Попытаться заговорить с ней","hDeadNurse"]],img:"controlRoom"},
+hSafeSurgery:{tag:"09 · ПОСЛЕДНЯЯ ПРАВДА",title:"Сердце аппарата",room:"surgery",text:"Ты перебираешься к главному пульту. На экране две кнопки: <em>«ОТКЛЮЧИТЬ»</em> и <em>«ПЕРЕЗАПИСАТЬ»</em>.\n\nПод пультом лежит детская фотография. На ней ты стоишь рядом с человеком, которого до сих пор не можешь вспомнить.\n\nВпервые тебя охватывает ужас не от чудовища, а от собственного выбора.",actions:[["Отключить аппарат и вспомнить всё","hTruth"],["Перезаписать память и вернуться в палату","hLoopEnding"],["Попытаться спасти медсестру","hRescue"]],img:"controlRoom"},
+hRescue:{tag:"10 · ЧУЖАЯ ПАМЯТЬ",title:"Она тоже была пациентом",room:"surgery",text:"Ты не нажимаешь на кнопку. Вместо этого называешь имя, написанное на старой фотографии.\n\nМедсестра роняет шприц. Её лицо на секунду становится человеческим.\n\n«Я ждала, что ты вспомнишь», говорит она, отступая к двери. Теперь аппарат можно отключить без её сопротивления.",actions:[["Вместе отключить аппарат","hGoodEnding"],["Оставить всё как есть","hLoopEnding"]],img:"controlRoom"},
+hTruth:{tag:"10 · ПРАВДА",title:"Ночь аварии",room:"surgery",text:"Экран вспыхивает. Ты видишь ту ночь: больница, авария на подстанции и людей, которых не успели спасти.\n\nТебе предложили забыть катастрофу. Но вместе с воспоминанием ты стёр человека, который спас тебя, а система попыталась восстановить его снова и снова.\n\nТеперь воспоминание принадлежит тебе.",actions:[["Выйти из больницы","hGoodEnding"],["Снова включить аппарат","hLoopEnding"]],img:"controlRoom"},
+hGoodEnding:{tag:"ФИНАЛ · РАССВЕТ",title:"Палата больше не существует",room:"exit",text:"Дверь больницы открывается. На улице прохладно и тихо. Впервые за долгое время ты слышишь настоящий утренний город.\n\nБраслет на руке рассыпается в пыль. На нём остаётся лишь одна цифра: <em>0</em>.\n\nТы выбрал помнить. И смог выйти.",actions:[["↻ Пройти «Палату №0» заново","hRestart"],["Выбрать другую историю","menu"]],img:"controlRoom"},
+hLoopEnding:{tag:"ФИНАЛ · ЗАБВЕНИЕ",title:"Повторное поступление",room:"ward",text:"Ты нажимаешь «ПЕРЕЗАПИСАТЬ». Все звуки больницы исчезают.\n\nКогда ты открываешь глаза, на запястье новый браслет. Медсестра улыбается в дверях, а часы снова показывают <em>03:33</em>.\n\n«Пациент ноль пришёл в сознание. Начинайте повторение».",actions:[["↻ Попробовать изменить судьбу","hRestart"],["Выбрать другую историю","menu"]],img:"controlRoom"}
 };
 const HUNT_PHASES=[
  {title:"Шаги приближаются",story:"ТУК... ТУК... ТУК...\n\nРядом два укрытия: железный шкаф с тёмной нишей и скамейка под мигающей лампой. В отражении на стене движется длинная тень.",cue:"👣 ШАГИ БЛИЗКО",choices:[["Спрятаться за железным шкафом","hideCloset"],["Залезть под освещённую скамейку","hideBench"],["Побежать к двери","runNow"]],sec:16},
@@ -351,7 +408,7 @@ const HUNT_PHASES=[
  {title:"Шаги уходят",story:"Сначала один шаг... затем второй... потом тишина.\n\nЗа металлической перегородкой дверь служебного отсека. Но неизвестно, действительно ли существо ушло.",cue:"👣 ШАГИ УДАЛЯЮТСЯ",choices:[["Прислушаться ещё раз","listenMore"],["Сразу броситься к двери","rushDoor"],["Шумно отвлечь существо","makeNoise"]],sec:17},
  {title:"Путь свободен?",story:"Теперь ты слышишь отчётливо: три медленных шага уходят в дальнюю часть вагона. Затем хлопает дверь.\n\nЕсли двигаться тихо, можно добраться до служебного отсека.",cue:"✅ ШАГИ ЗА ДАЛЬНЕЙ ДВЕРЬЮ",choices:[["Тихо проскользнуть в отсек","sneakExit"],["Продолжать ждать","waitForever"],["Позвать на помощь","makeNoise"]],sec:13}
 ];
-const found={tape:"Кассета с голосом женщины",logbook:"Журнал: свет останавливает объект №48",redKey:"Ключ с красной нитью",clock:"Часы идут назад",window:"Девочка в отражении",seat:"Фотография в красном шарфе",seatTool:"Медная проволока",breaker:"Подсказка: время 23:47",vent:"Найден вентиляционный канал"};
+const found={hChart:"История болезни: код 03:33",hLocker:"Жетон санитара",hRecording:"Кассета «Пациент ноль»",hOldMan:"Свидетель эксперимента",hMask:"Защитная маска",hNurseDesk:"Журнал: круг, крест, круг",tape:"Кассета с голосом женщины",logbook:"Журнал: свет останавливает объект №48",redKey:"Ключ с красной нитью",clock:"Часы идут назад",window:"Девочка в отражении",seat:"Фотография в красном шарфе",seatTool:"Медная проволока",breaker:"Подсказка: время 23:47",vent:"Найден вентиляционный канал"};
 
 function loudScare(){
  if(!s.sound)return;
@@ -450,6 +507,43 @@ function startHunt(phase=0){
  tick();huntTimer=setInterval(tick,400);
 }
 function clean(){if(timer){clearInterval(timer);timer=null;}$("clock").classList.remove("on");}
+
+let currentStory="train",hospitalCode="",hospitalMisses=0;
+function menu(){
+ hideScare();clean();stopHunt();fxStop();$("inventory").classList.add("hidden");
+ $("intro").classList.remove("hidden");$("scene").classList.remove("hospital");
+}
+function startStory(which){
+ currentStory=which;hospitalCode="";hospitalMisses=0;
+ $("intro").classList.add("hidden");s.sound=true;$("sound").textContent="🔊";
+ initSound();prepareScream();initAtmosphere();tone(110,.4,.08,"sawtooth");haptic("tap");
+ resetGame(which==="hospital"?"hWake":"wake");
+}
+function hospitalPicture(room){
+ const r=room||"ward";
+ $("scene").classList.toggle("hospital",currentStory==="hospital");
+ if(currentStory!=="hospital")return;
+ const title={ward:"ПАЛАТА №0",hall:"КОРИДОР B-13",desk:"ПОСТ СЕСТРЫ",door:"ПРОЦЕДУРНАЯ",lab:"ПАЦИЕНТ 0",surgery:"ОПЕРАЦИОННАЯ",exit:"ВЫХОД",lift:"ЛИФТ 13"}[r]||"ПАЛАТА №0";
+ const box=$("hospitalArt");
+ box.innerHTML='<div class="h-light"></div><div class="h-floor"></div><div class="h-door"></div>'+(["ward","lab","surgery"].includes(r)?'<div class="h-bed"></div>':'')+(["ward","desk","lab","surgery"].includes(r)?'<div class="h-monitor">03:33</div>':'')+(["desk","surgery"].includes(r)?'<div class="h-curtain"></div>':'')+(["hall","lift","desk","surgery"].includes(r)?'<div class="h-shadow"></div>':'')+'<div class="h-sign">'+title+'</div><div class="h-vanish"></div>';
+}
+function hospitalDigit(v){
+ if(s.node!=="hKeypad")return;
+ if(v==="C"){hospitalCode="";updateHospitalCode();return}
+ hospitalCode+=v;tone(440,.09,.035);updateHospitalCode();
+ if(hospitalCode.length===4){
+  const entered=hospitalCode;
+  setTimeout(()=>{
+   if(s.node!=="hKeypad")return;
+   if(entered==="0333"){hospitalCode="";choose("hProcedure")}
+   else{hospitalCode="";hospitalMisses++;if(hospitalMisses>=3)choose("hDeadNurse");else{$("hint").textContent="⛔ Код не подходит. Неверных попыток: "+hospitalMisses+"/3.";updateHospitalCode()}}
+  },250)
+ }
+}
+function updateHospitalCode(){
+ const d=$("hDigits");if(d)d.textContent=hospitalCode.padEnd(4,"•");
+}
+
 function resetGame(target="wake"){
  const sound=s.sound;hideScare();clean();stopHunt();
  const deaths=s.deaths||0;
@@ -459,14 +553,20 @@ function resetGame(target="wake"){
 function choose(id){
  tone(115,.2,.065,"triangle");
  haptic("tap");
- if(id==="restart"){resetGame("wake");return}
+ if(id==="menu"){menu();return}
+ if(id==="hRestart"){resetGame("hWake");return}
+ if(id==="hCheckpoint"){resetGame("hCorridor");return}
+ if(id==="restart"){resetGame(currentStory==="hospital"?"hWake":"wake");return}
  if(id==="checkpoint"){resetGame("trapCell");return}
  if(id==="checkpoint2"){resetGame("controlFinal");return}
  if(id==="retryHunt"){stopHunt();startHunt(0);return}
  if(found[id]&&!s.clues.includes(id))s.clues.push(id);
- if(["tape","logbook","redKey"].includes(id)&&!s.clues.includes(id))s.clues.push(id);
+ if(["tape","logbook","redKey","hChart","hLocker","hRecording","hOldMan","hMask","hNurseDesk"].includes(id)&&!s.clues.includes(id))s.clues.push(id);
  if(id==="door"&&s.clues.filter(x=>["clock","window","seat"].includes(x)).length<2){$("hint").textContent="🔎 Исследуй ещё предметы: нужно 2 улики.";tone(280,.18);return}
  if(id==="huntRoom"){startHunt(0);return}
+ if(id==="hSafeSurgery"&&!s.clues.includes("hMask")){$("hint").textContent="☣️ Нужна защитная маска из процедурной. Иначе опасно входить.";haptic("danger");return}
+ if(id==="hRescue"&&!s.clues.includes("hRecording")&&!s.clues.includes("hOldMan")){$("hint").textContent="Ты не знаешь, как обратиться к медсестре. Сначала узнай её историю.";return}
+ if(id==="hKeypad"){hospitalCode=""}
  if(id==="emergency"&&!s.clues.includes("logbook")){$("hint").textContent="⚡ Ты не знаешь, как действует аварийный свет. Найди журнал смены в архиве.";return}
  if(id==="trueEscape"&&!s.clues.includes("tape")&&!s.clues.includes("logbook")){$("hint").textContent="Нужно узнать правду. Вернись к архиву и найди хотя бы одну запись.";return}
  if(id==="turned"){s.turned=true;s.fear++}
@@ -477,7 +577,7 @@ function choose(id){
  if(id==="openVent"){s.ventOpen=true}
  if(id==="keypad"){s.digits=""}
  render(id);
- if(id==="turned"||id==="opened"||id==="deadShaft"||id==="deadHunt")setTimeout(()=>{if(s.node===id)jumpscare()},id==="turned"?180:520);
+ if(id==="hCall"||id==="hDeadNurse"||id==="hDeadWindow"||id==="hDeadGas"||id==="turned"||id==="opened"||id==="deadShaft"||id==="deadHunt")setTimeout(()=>{if(s.node===id)jumpscare()},id==="turned"?180:520);
  if(id==="deadCorridor"||id==="deadDoor"||id==="deadReturn")setTimeout(()=>{if(s.node===id)jumpscare()},550);
 }
 function codeDigit(n){
@@ -502,8 +602,9 @@ function renderDigits(){
 }
 function render(id){
  stopHunt();clean();s.node=id;
- if(/^dead/.test(id)){s.deaths=(s.deaths||0)+1;haptic("death");}
- if(["door","huntRoom","trapCell","redDoor","emergency","finalChoice"].includes(id))haptic("danger");const n=texts[id];s.seen.push(id);if(id==="end")s.seen=s.seen.slice(-30);
+ if(/^dead/.test(id)||/^hDead/.test(id)){s.deaths=(s.deaths||0)+1;haptic("death");}
+ if(["door","huntRoom","trapCell","redDoor","emergency","finalChoice"].includes(id))haptic("danger");const n=texts[id];s.seen.push(id);
+ hospitalPicture(n.room);if(id==="end")s.seen=s.seen.slice(-30);
  $("tag").textContent=n.tag;$("title").textContent=n.title;$("story").innerHTML=n.text;$("stamp").textContent=n.stamp||"23:47 · ЛИНИЯ 0";
  $("picture").src="assets/scenes/"+n.img+".webp";$("picture").alt="Иллюстрация: "+n.title;
  $("scene").classList.remove("active");requestAnimationFrame(()=>$("scene").classList.add("active"));
@@ -515,6 +616,12 @@ function render(id){
  const b=document.createElement("button");b.className="hot";b.style.left=p.x+"%";b.style.top=p.y+"%";b.setAttribute("aria-label","Исследовать: "+p.label);
  b.innerHTML='<span class="pin">'+(s.clues.includes(p.id)?"✓":"+")+'</span><small>'+p.label+'</small>';b.onclick=()=>choose(p.id);h.appendChild(b);}
  const a=$("actions");a.replaceChildren();
+ if(id==="hKeypad"){
+  const pad=document.createElement("div");pad.className="codepad";
+  const read=document.createElement("div");read.className="digits";read.id="hDigits";read.textContent="••••";pad.appendChild(read);
+  for(const digit of ["1","2","3","4","5","6","7","8","9","C","0"]){const btn=document.createElement("button");btn.className="digit";btn.type="button";btn.textContent=digit;btn.onclick=()=>hospitalDigit(digit);pad.appendChild(btn)}
+  a.appendChild(pad);
+ }
  if(id==="keypad"){
   const pad=document.createElement("div");pad.className="codepad";
   const read=document.createElement("div");read.className="digits";read.id="digits";read.textContent="••••";pad.appendChild(read);
@@ -526,10 +633,9 @@ function render(id){
  if(id==="door"){remaining=12;$("clock").classList.add("on");$("clock").textContent="00:"+remaining;timer=setInterval(()=>{remaining--;$("clock").textContent="00:"+String(Math.max(remaining,0)).padStart(2,"0");if(remaining<=0){haptic("danger");clean();choose("opened")}},1000);}
  try{sessionStorage.setItem("zg_v5_node",id)}catch(e){}
 }
-$("begin").onclick=()=>{
- haptic("tap");$("intro").classList.add("hidden");s.sound=true;$("sound").textContent="🔊";
- initSound();prepareScream();initAtmosphere();tone(110,.4,.08,"sawtooth");render("wake");
-};
+$("begin").onclick=()=>startStory("train");
+$("beginHospital").onclick=()=>startStory("hospital");
+$("menuBtn").onclick=menu;
 $("hapticBtn").onclick=()=>{
  hapticsEnabled=!hapticsEnabled;
  $("hapticBtn").textContent=hapticsEnabled?"📳":"📴";
@@ -549,7 +655,7 @@ $("flashBtn").onclick=()=>{
  $("flashlight").classList.toggle("on",motion&&(flashlightManual||$("scene").classList.contains("fx-danger")));
 };
 $("bag").onclick=()=>{const box=$("inventory");box.classList.toggle("hidden");const ul=$("items");ul.replaceChildren();for(const id of s.clues){const li=document.createElement("li");li.textContent=found[id];ul.appendChild(li)}if(!s.clues.length){const li=document.createElement("li");li.textContent="Пока пусто";ul.appendChild(li)}};
-$("again").onclick=()=>{$("inventory").classList.add("hidden");resetGame("wake")};
+$("again").onclick=()=>{$("inventory").classList.add("hidden");resetGame(currentStory==="hospital"?"hWake":"wake")};
 $("motion").textContent=motion?"🎬":"⏸️";
 })();
 });
