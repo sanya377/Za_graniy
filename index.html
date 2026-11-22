@@ -35,16 +35,16 @@ footer{display:flex;justify-content:space-between;gap:12px;align-items:center;co
 .hero .stamp{position:static;align-self:flex-end;font-size:9px;margin-bottom:0}
 .hero .eyebrow{font-size:9px}
 .stage{display:block;position:relative;width:100%;padding:0;border:1px solid #9385bb66;min-height:410px;overflow:hidden;border-radius:24px;background:#070c16;color:#fff;text-align:left;box-shadow:0 20px 70px #0009;isolation:isolate;-webkit-tap-highlight-color:transparent}
-.stage svg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.stage svg,.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .stage:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,#060712b8,transparent 33%,#04071322 78%,#06071350);z-index:2}
 .stage::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0 4px,#ffffff08 5px 6px);opacity:.15}
 .stage-label{position:absolute;left:20px;top:21px;z-index:3;font-size:11px;font-weight:800;color:#fff;letter-spacing:.16em;text-transform:uppercase;text-shadow:0 2px 15px #000}
 .stage-tap{position:absolute;bottom:22px;left:18px;right:18px;z-index:3;display:flex;gap:11px;align-items:center;justify-content:center;text-align:center;padding:14px 15px;border:1px solid #ddd3ff55;border-radius:16px;background:#080a18b8;backdrop-filter:blur(9px);font-size:14px;letter-spacing:.02em;box-shadow:0 9px 24px #0009}
 .stage-tap[hidden]{display:none!important}.stage-tap .hand{font-size:22px;animation:tapPulse 2s ease-in-out infinite}
-.stage:not(.revealed) svg{animation:artEnter .8s ease both,sceneZoom 14s ease-in-out infinite alternate}
+.stage:not(.revealed) svg,.stage:not(.revealed) img{animation:artEnter .8s ease both,sceneZoom 14s ease-in-out infinite alternate}
 .stage.revealed{min-height:170px;height:190px;transition:min-height .5s,height .5s}
 .stage.revealed .stage-tap{opacity:0;pointer-events:none}
-.stage.revealed svg{filter:saturate(.8) brightness(.75)}
+.stage.revealed svg,.stage.revealed img{filter:saturate(.8) brightness(.75)}
 .stage[disabled]{cursor:default}
 .card[hidden],.choices[hidden]{display:none!important}
 .stage .shimmer{animation:stageFlicker 5s ease-in-out infinite}
@@ -63,7 +63,7 @@ footer{display:flex;justify-content:space-between;gap:12px;align-items:center;co
 </head>
 <body class="mood-mystery">
 <main>
-<header><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="ep">ЭПИЗОД 01 · V4.1</div></header>
+<header><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="ep">ЭПИЗОД 01 · V4.2</div></header>
 <section class="hero" id="hero">
   <div class="stamp" id="stamp">23:47 / ЛИНИЯ 0</div>
   <div class="art" aria-hidden="true"><div class="dust"></div><div class="scan"></div><div class="glow"></div><div class="tunnel"></div><div class="window"></div><div class="rails"></div><div class="figure"></div><div class="fog"></div></div>
@@ -337,8 +337,13 @@ function render(){
   $("progress").style.width=Math.min(100,Math.round(state.visited.length/16*100))+"%";
   $("title").textContent=s.title;
   $("stageLabel").textContent=artNames[state.scene]||s.title.toUpperCase();
-  $("stage").querySelector("svg")?.remove();
-  $("stage").insertAdjacentHTML("afterbegin",sceneSvg(state.scene));
+  $("stage").querySelector("svg,img")?.remove();
+  const sceneImage=document.createElement("img");
+  sceneImage.src="assets/scenes/"+state.scene+".webp";
+  sceneImage.alt="Кадр сцены: "+(artNames[state.scene]||s.title);
+  sceneImage.decoding="async";
+  sceneImage.loading="eager";
+  $("stage").prepend(sceneImage);
   updateReveal();
   const story=$("story"); story.replaceChildren();
   for(const line of s.text){const p=document.createElement("p"); p.innerHTML=line; story.append(p)}
