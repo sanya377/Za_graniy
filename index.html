@@ -44,7 +44,7 @@ footer{display:flex;align-items:center;justify-content:space-between;gap:12px;ma
 </head>
 <body>
 <main>
-<header><div class="logo">ЗА ГРАНЬЮ ◇</div><div class="badge">ЭПИЗОД 01 · V2.1</div></header>
+<header><div class="logo">ЗА ГРАНЬЮ ◇</div><div class="badge">ЭПИЗОД 01 · V2.2</div></header>
 <div class="poster" id="poster"><div class="art" aria-hidden="true"><div class="glow"></div><div class="tunnel"></div><div class="rails"></div><div class="figure"></div></div><div class="eyebrow">Интерактивный триллер</div><h1>Последний<br>поезд</h1><p>Иногда последняя остановка — это только начало.</p></div>
 <div class="toolbar"><button type="button" class="chip" id="audio" aria-pressed="false">♫ Звук: выкл.</button><button type="button" class="chip" id="achievements">🏆 Достижения</button><button type="button" class="chip" id="library">📚 Истории</button></div>
 <div class="stats"><div class="stat">Смелость: <strong id="bravery">0</strong></div><div class="stat">Память: <strong id="memory">0</strong></div><div class="stat">Следы: <strong id="clues">0</strong></div></div>
@@ -80,6 +80,7 @@ loop:{c:"ФИНАЛ / ЦИКЛ",t:"Ещё один круг",p:["Ты отход
 };
 
 /* Version 2.0: player state, choices with consequences, sound and collection */
+const $=id=>document.getElementById(id);
 const stateKey="za-graniy-v2";
 const oldKey="za-graniy-last-scene-v1";
 const endings=["saved","refuse","sacrifice","trap","free","loop"];
