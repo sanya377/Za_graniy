@@ -19,17 +19,42 @@ header{display:flex;align-items:center;justify-content:space-between}.logo{lette
 .actions{display:grid;gap:11px}.choice{border:1px solid #ffffff23;border-radius:15px;background:#262539;color:#f4f0ff;padding:18px 17px;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:15px;line-height:1.4;transition:background .15s,transform .15s}.choice:hover{background:#38304b;transform:translateY(-1px)}.choice span:last-child{color:#ca9ef8;font-size:23px;flex:none}
 footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:8px;font-size:11px;color:#87859e}footer button{border:0;background:none;color:#c1b6d4;padding:8px 0;text-decoration:underline;text-underline-offset:4px;font-size:12px}
 @keyframes rise{from{opacity:.25;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){*,*:after,*:before{animation:none!important;transition:none!important}}
+
+/* v2: illustrated scenes, exploration and collection */
+.poster{isolation:isolate;transition:background .45s ease}
+.poster:after{display:none}
+.art{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.art .glow{position:absolute;width:190px;height:190px;top:-15px;right:6%;border-radius:50%;background:#caa1ed66;filter:blur(45px)}
+.art .tunnel{position:absolute;left:8%;right:8%;top:9%;height:115%;border:2px solid #e3c5ff55;border-radius:48% 48% 0 0;box-shadow:0 0 50px #dc9cff66,inset 0 0 52px #a681f555}
+.art .rails{position:absolute;left:47%;bottom:-25%;width:18%;height:70%;transform:perspective(200px) rotateX(58deg);border-left:3px solid #a7bad9b3;border-right:3px solid #a7bad9b3;background:repeating-linear-gradient(to bottom,transparent 0 15px,#8a8ea066 16px 19px)}
+.art .figure{position:absolute;bottom:23%;right:27%;width:25px;height:65px;background:#080916;border-radius:48% 48% 10% 10%;box-shadow:0 -19px 0 -3px #090a19,0 0 26px #030310}
+.poster[data-scene="station"] .figure,.poster[data-scene="year"] .figure{background:#a62f50;box-shadow:0 -19px 0 -3px #10101d,0 0 35px #e0597c88}
+.poster[data-scene="platform"] .tunnel,.poster[data-scene="dark"] .tunnel,.poster[data-scene="free"] .tunnel{transform:scale(.75);box-shadow:0 0 95px #73c5c855}
+.poster[data-scene="mirror"] .tunnel,.poster[data-scene="warning"] .tunnel{border-color:#76cbd8}
+.poster[data-scene="trap"] .glow,.poster[data-scene="loop"] .glow{background:#e95f7666}
+.poster[data-scene="saved"] .glow,.poster[data-scene="free"] .glow{background:#eec7909c}
+.poster .eyebrow,.poster h1,.poster p{position:relative}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:-5px}.chip{border:1px solid #ffffff24;color:#dfd5f3;background:#242238;border-radius:999px;padding:9px 13px;font-size:12px;min-height:38px}.chip[aria-pressed="true"]{border-color:#aa8df2;color:#fff;background:#403153}
+.stats{display:flex;gap:10px;flex-wrap:wrap;color:#b8afc7;font-size:12px}.stat{border:1px solid #ffffff19;background:#191729;padding:8px 11px;border-radius:10px}.stat strong{color:#ead1ff}
+.note{border-left:2px solid #b795de;padding:11px 13px;background:#b795de12;color:#dfc8fb;border-radius:0 10px 10px 0;font-size:13px;line-height:1.5}
+.overlay[hidden]{display:none}.overlay{position:fixed;inset:0;z-index:20;background:#05040bd9;padding:14px;display:grid;place-items:center}.dialog{background:#1a192b;border:1px solid #8e78b34c;max-height:87svh;overflow:auto;border-radius:23px;padding:23px;width:min(100%,490px);box-shadow:0 15px 80px #000a}.dialog h2{font-size:24px;margin:0 0 12px}.dialog p{font-size:14px;line-height:1.65;color:#ccc4d9}.dialog .small{font-size:12px;color:#9890ac}.dialog button{margin-top:12px}.achievement{border-bottom:1px solid #ffffff14;padding:12px 0;display:flex;justify-content:space-between;gap:12px;font-size:13px}.achievement span:last-child{color:#cbb7ea}
+.choice.locked{opacity:.55;border-style:dashed}
+@media(max-width:420px){.poster{min-height:230px}.toolbar{gap:6px}.chip{font-size:11px;padding:8px 10px}}
 </style>
 </head>
 <body>
 <main>
 <header><div class="logo">ЗА ГРАНЬЮ ◇</div><div class="badge">ЭПИЗОД 01</div></header>
-<div class="poster"><div class="eyebrow">Интерактивный триллер</div><h1>Последний<br>поезд</h1><p>Иногда последняя остановка — это только начало.</p></div>
+<div class="poster" id="poster"><div class="art" aria-hidden="true"><div class="glow"></div><div class="tunnel"></div><div class="rails"></div><div class="figure"></div></div><div class="eyebrow">Интерактивный триллер</div><h1>Последний<br>поезд</h1><p>Иногда последняя остановка — это только начало.</p></div>
+<div class="toolbar"><button type="button" class="chip" id="audio" aria-pressed="false">♫ Звук: выкл.</button><button type="button" class="chip" id="achievements">🏆 Достижения</button><button type="button" class="chip" id="library">📚 Истории</button></div>
+<div class="stats"><div class="stat">Смелость: <strong id="bravery">0</strong></div><div class="stat">Память: <strong id="memory">0</strong></div><div class="stat">Следы: <strong id="clues">0</strong></div></div>
 <div><div class="chapterrow"><strong id="chapter"></strong><span id="count"></span></div><div class="track"><div class="fill" id="fill"></div></div></div>
 <section class="panel" id="panel" aria-live="polite"><h2 id="title"></h2><div class="story" id="story"></div></section>
 <nav class="actions" id="choices" aria-label="Выбор действий"></nav>
+<div id="effect" class="note" hidden></div>
 <footer><button id="restart" type="button">Начать заново</button><span id="notice">Прогресс сохраняется автоматически</span></footer>
 </main>
+<div id="overlay" class="overlay" hidden><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogtitle"><h2 id="dialogtitle"></h2><div id="dialogbody"></div><button id="closeDialog" class="chip" type="button">Закрыть</button></section></div>
 <script>
 "use strict";
 const scenes={
@@ -53,27 +78,100 @@ trap:{c:"ФИНАЛ / ИЛЛЮЗИЯ",t:"Ложный дом",p:["За двер�
 free:{c:"ФИНАЛ / СВОБОДА",t:"Первое утро",p:["Ты щёлкаешь выключателем. Все окна гаснут, кроме одного, где восходит солнце.","Ты просыпаешься на конечной станции обычного метро. Мир движется вперёд.","<strong>Концовка: «Свобода».</strong>"],o:[],n:8},
 loop:{c:"ФИНАЛ / ЦИКЛ",t:"Ещё один круг",p:["Ты отходишь от выключателя. Под ногами возникает пол знакомого вагона.","На часах 23:47. Напротив конверт с твоим именем.","<strong>Концовка: «Вечное возвращение».</strong>"],o:[],n:8}
 };
-const storage="za-graniy-last-scene-v1";
-const $=id=>document.getElementById(id);
-let current="start";
-try{const saved=localStorage.getItem(storage);if(saved&&Object.hasOwn(scenes,saved))current=saved}catch(_){}
-function render(){
-const s=scenes[current];
-$("chapter").textContent=s.c;
-$("count").textContent=String(s.n).padStart(2,"0")+" / 08";
-$("fill").style.width=(s.n*12.5)+"%";
-$("title").textContent=s.t;
-$("story").replaceChildren();
+
+/* Version 2.0: player state, choices with consequences, sound and collection */
+const stateKey="za-graniy-v2";
+const oldKey="za-graniy-last-scene-v1";
+const endings=["saved","refuse","sacrifice","trap","free","loop"];
+const achievementList={
+first:"Первый шаг|Принять первое решение",
+investigator:"Следопыт|Найти скрытую улику",
+brave:"Без страха|Набрать 3 очка смелости",
+memory:"Хранитель|Набрать 3 очка памяти",
+final:"По ту сторону|Завершить историю",
+collector:"Коллекционер|Открыть 3 разных финала",
+all:"Архивариус|Открыть все 6 финалов"
+};
+let player={scene:"start",bravery:0,memory:0,clues:0,flags:[],visited:[],endings:[],achievements:[]};
+try{const raw=JSON.parse(localStorage.getItem(stateKey)||"null");if(raw&&typeof raw==="object"&&Object.hasOwn(scenes,raw.scene)){player={...player,...raw};for(const k of ["flags","visited","endings","achievements"])if(!Array.isArray(player[k]))player[k]=[]}}
+else{const prior=localStorage.getItem(oldKey);if(prior&&Object.hasOwn(scenes,prior)){player.scene=prior;if(endings.includes(prior))player.endings=[prior]}}}catch(_){}
+const persist=()=>{try{localStorage.setItem(stateKey,JSON.stringify(player))}catch(_){}};
+function unlock(id){if(!player.achievements.includes(id))player.achievements.push(id)}
+function mark(){
+if(player.visited.length>1)unlock("first");
+if(player.clues>=1)unlock("investigator");
+if(player.bravery>=3)unlock("brave");
+if(player.memory>=3)unlock("memory");
+if(endings.includes(player.scene)){unlock("final");if(!player.endings.includes(player.scene))player.endings.push(player.scene)}
+if(player.endings.length>=3)unlock("collector");
+if(player.endings.length===6)unlock("all");
+}
+const consequences={
+letter:{memory:1,clues:1,flag:"letter"},driver:{bravery:1},phone:{memory:1,flag:"phone"},warning:{clues:1,flag:"warning"},
+emergency:{bravery:1},platform:{bravery:1},year:{memory:1,clues:1,flag:"year"},mirror:{bravery:1,clues:1},
+price:{memory:1},light:{memory:1},dark:{bravery:1},archive:{clues:1,memory:1,flag:"archive"},
+compartment:{clues:1,flag:"compartment"},recording:{memory:1,flag:"recording"},signal:{bravery:1,flag:"signal"}
+};
+const extras={
+archive:{c:"04 / ЗАБЫТЫЕ ВЕЩИ",t:"Архив пассажиров",p:["Ты находишь служебный отсек, полный билетов. На каждом указано одно и то же время: <strong>23:47</strong>. Имена разные, но подпись пассажира везде твоя.","В папке номер 48 лежит протокол: «Объект сохраняет память между циклами, если оставляет след снаружи». Ты забираешь серебряный жетон."],o:[["Проверить старую запись","recording"],["Вернуться к платформе","station"]],n:4},
+recording:{c:"05 / ПОСЛАНИЕ",t:"Голос из тоннеля",p:["Старый диктофон включается без батареек. На плёнке ты слышишь свой голос: «Девочка не враг. Она ждёт, когда ты вспомнишь, кто запер поезд».","В конце записи звучит ещё один голос: «Дверь откроется тому, кто сохранил три следа»."],o:[["Отыскать сигнальную будку","signal"],["Вернуться к девочке","year"]],n:5},
+compartment:{c:"03 / ТАЙНЫЙ ВАГОН",t:"Чужое купе",p:["Под сиденьем обнаруживается люк. За ним — узкий коридор, которого в метро быть не может.","На стене приколоты шесть фотографий. На каждой ты стоишь в разном месте, но дата и время одинаковы. Одна фотография ещё не проявилась."],o:[["Забрать фотографию","archive"],["Вернуться к кабине","driver"]],n:3},
+signal:{c:"06 / СИГНАЛ",t:"Будка дежурного",p:["В будке горит единственная лампа. Под ней журнал, где последняя запись сделана твоей рукой: «Я построил этот маршрут, чтобы вернуться».","Теперь ты помнишь: однажды ты пожелал остановить время, и поезд исполнил желание буквально. Сигнальная кнопка переводит стрелки к исходной станции."],o:[["Пройти к окну отражений","mirror"],["Вернуться на платформу","platform"]],n:6}
+};
+Object.assign(scenes,extras);
+scenes.driver.o.push(["Осмотреть люк под пультом","compartment"]);
+scenes.letter.o.push(["Найти служебный архив","archive"]);
+scenes.station.o.push(["Проверить служебный коридор","archive"]);
+scenes.dark.o.unshift(["Попробовать вспомнить код выключателя","free","clues",3]);
+scenes.dark.o=scenes.dark.o.map(c=>c[0]==="Выключить систему"?["Выключить систему наугад","loop"]:c);
+let audioCtx=null,audioOn=false;
+function tone(freq=110,duration=.16,volume=.025){if(!audioOn)return;try{
+audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
+if(audioCtx.state==="suspended")audioCtx.resume();
+const osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),now=audioCtx.currentTime;
+osc.type="sine";osc.frequency.setValueAtTime(freq,now);osc.frequency.exponentialRampToValueAtTime(Math.max(50,freq*.6),now+duration);
+gain.gain.setValueAtTime(volume,now);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
+osc.connect(gain);gain.connect(audioCtx.destination);osc.start(now);osc.stop(now+duration+.02)
+}catch(_){}}
+const ambient=()=>{if(audioOn)tone(65,.55,.014)};
+document.getElementById("audio").addEventListener("click",()=>{audioOn=!audioOn;const b=document.getElementById("audio");b.textContent=audioOn?"♫ Звук: вкл.":"♫ Звук: выкл.";b.setAttribute("aria-pressed",String(audioOn));if(audioOn)tone(300,.25,.035)});
+function dialog(title,body){$("dialogtitle").textContent=title;$("dialogbody").replaceChildren();$("dialogbody").append(body);$("overlay").hidden=false;$("closeDialog").focus()}
+$("closeDialog").addEventListener("click",()=>{$("overlay").hidden=true});
+$("overlay").addEventListener("click",e=>{if(e.target===$("overlay"))$("overlay").hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("overlay").hidden=true});
+$("achievements").addEventListener("click",()=>{const box=document.createElement("div");for(const [id,entry] of Object.entries(achievementList)){const [name,desc]=entry.split("|"),line=document.createElement("div");line.className="achievement";const label=document.createElement("span");label.textContent=(player.achievements.includes(id)?"🏆 ":"🔒 ")+name+" · "+desc;const marker=document.createElement("span");marker.textContent=player.achievements.includes(id)?"✓":"—";line.append(label,marker);box.append(line)}
+const p=document.createElement("p");p.className="small";p.textContent="Финалы: "+player.endings.length+" из 6. Достижения сохраняются на этом устройстве.";box.prepend(p);dialog("Достижения",box)});
+$("library").addEventListener("click",()=>{const box=document.createElement("div");const p=document.createElement("p");p.innerHTML="<strong>Эпизод 01. Последний поезд</strong><br>Доступен бесплатно. Мистический триллер с 6 финалами.";box.append(p);const p2=document.createElement("p");p2.innerHTML="<strong>Эпизод 02. Комната без окон</strong><br>В разработке. Здесь позднее появится продолжение.";box.append(p2);const p3=document.createElement("p");p3.className="small";p3.textContent="Платные эпизоды пока не продаются. Оплата и аккаунты не подключены.";box.append(p3);dialog("Библиотека историй",box)});
+function renderV2(){
+mark();persist();const s=scenes[player.scene],id=player.scene;
+$("chapter").textContent=s.c;$("count").textContent=String(s.n).padStart(2,"0")+" / 08";$("fill").style.width=(s.n*12.5)+"%";
+$("title").textContent=s.t;$("poster").dataset.scene=id;$("story").replaceChildren();
 for(const line of s.p){const p=document.createElement("p");p.innerHTML=line;$("story").append(p)}
+$("bravery").textContent=player.bravery;$("memory").textContent=player.memory;$("clues").textContent=player.clues;
 $("choices").replaceChildren();
 const choices=s.o.length?s.o:[["Пройти историю ещё раз","start"]];
-for(const [label,next] of choices){const b=document.createElement("button");b.className="choice";b.type="button";const a=document.createElement("span");a.textContent=label;const icon=document.createElement("span");icon.textContent=next==="start"?"↻":"→";icon.setAttribute("aria-hidden","true");b.append(a,icon);b.addEventListener("click",()=>go(next));$("choices").append(b)}
-$("notice").textContent=s.o.length?"Прогресс сохраняется автоматически":"Финал открыт • попробуй другой путь";
+for(const [label,next,need,threshold] of choices){
+const locked=need&&player[need]<threshold;
+const b=document.createElement("button");b.type="button";b.className="choice"+(locked?" locked":"");b.disabled=!!locked;
+const a=document.createElement("span");a.textContent=label+(locked?" (нужно следов: "+threshold+")":"");const icon=document.createElement("span");icon.textContent=locked?"🔒":next==="start"?"↻":"→";icon.setAttribute("aria-hidden","true");b.append(a,icon);b.addEventListener("click",()=>goV2(next));$("choices").append(b)}
+$("notice").textContent=s.o.length?"Выборы влияют на характеристики":"Финал открыт • открой остальные";
 $("panel").style.animation="none";void $("panel").offsetWidth;$("panel").style.animation="";
 }
-function go(id){if(!Object.hasOwn(scenes,id))return;current=id;try{localStorage.setItem(storage,id)}catch(_){}render();window.scrollTo({top:0,behavior:"smooth"})}
-$("restart").addEventListener("click",()=>{if(current==="start"||confirm("Начать историю заново?"))go("start")});
-render();
+function goV2(id){
+if(!Object.hasOwn(scenes,id))return;
+if(id==="start"){player={...player,scene:"start",bravery:0,memory:0,clues:0,flags:[],visited:[]}}else{
+const data=consequences[id];
+if(data&&(!data.flag||!player.flags.includes(data.flag))){for(const k of ["bravery","memory","clues"])player[k]+=(data[k]||0);if(data.flag)player.flags.push(data.flag)}
+player.scene=id;
+}
+if(!player.visited.includes(id))player.visited.push(id);
+tone(id==="station"?470:215,.19,.027);if(["station","emergency","dark"].includes(id))setTimeout(ambient,230);
+renderV2();window.scrollTo({top:0,behavior:"smooth"});
+}
+$("restart").addEventListener("click",e=>{e.stopImmediatePropagation();if(player.scene==="start"||confirm("Начать сюжет сначала? Достижения и открытые финалы сохранятся."))goV2("start")},true);
+if(!player.visited.includes(player.scene))player.visited.push(player.scene);
+renderV2();
+
 </script>
 </body>
 </html>
