@@ -93,7 +93,7 @@ collector:"Коллекционер|Открыть 3 разных финала",
 all:"Архивариус|Открыть все 6 финалов"
 };
 let player={scene:"start",bravery:0,memory:0,clues:0,flags:[],visited:[],endings:[],achievements:[]};
-try{const raw=JSON.parse(localStorage.getItem(stateKey)||"null");if(raw&&typeof raw==="object"&&Object.hasOwn(scenes,raw.scene)){player={...player,...raw};for(const k of ["flags","visited","endings","achievements"])if(!Array.isArray(player[k]))player[k]=[]}}
+try{const raw=JSON.parse(localStorage.getItem(stateKey)||"null");if(raw&&typeof raw==="object"&&Object.hasOwn(scenes,raw.scene)){player={...player,...raw};for(const k of ["flags","visited","endings","achievements"])if(!Array.isArray(player[k]))player[k]=[]}
 else{const prior=localStorage.getItem(oldKey);if(prior&&Object.hasOwn(scenes,prior)){player.scene=prior;if(endings.includes(prior))player.endings=[prior]}}}catch(_){}
 const persist=()=>{try{localStorage.setItem(stateKey,JSON.stringify(player))}catch(_){}};
 function unlock(id){if(!player.achievements.includes(id))player.achievements.push(id)}
