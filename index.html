@@ -40,16 +40,53 @@ footer{display:flex;align-items:center;justify-content:space-between;gap:12px;ma
 .overlay[hidden]{display:none}.overlay{position:fixed;inset:0;z-index:20;background:#05040bd9;padding:14px;display:grid;place-items:center}.dialog{background:#1a192b;border:1px solid #8e78b34c;max-height:87svh;overflow:auto;border-radius:23px;padding:23px;width:min(100%,490px);box-shadow:0 15px 80px #000a}.dialog h2{font-size:24px;margin:0 0 12px}.dialog p{font-size:14px;line-height:1.65;color:#ccc4d9}.dialog .small{font-size:12px;color:#9890ac}.dialog button{margin-top:12px}.achievement{border-bottom:1px solid #ffffff14;padding:12px 0;display:flex;justify-content:space-between;gap:12px;font-size:13px}.achievement span:last-child{color:#cbb7ea}
 .choice.locked{opacity:.55;border-style:dashed}
 @media(max-width:420px){.poster{min-height:230px}.toolbar{gap:6px}.chip{font-size:11px;padding:8px 10px}}
+
+/* 2.3: animated narrative and illustrated alternate endings */
+html{scroll-behavior:auto}
+.poster .glow{animation:lanternGlow 5s ease-in-out infinite alternate}
+.poster .figure{animation:shadowBreathe 4s ease-in-out infinite}
+.poster .rails{animation:railDrift 3.8s linear infinite}
+.poster .tunnel{animation:tunnelPulse 7s ease-in-out infinite alternate}
+.panel.scene-enter{animation:sceneReveal .48s cubic-bezier(.2,.8,.2,1) both}
+.panel.scene-enter .story p{animation:textReveal .55s ease-out both}
+.panel.scene-enter .story p:nth-child(2){animation-delay:.1s}
+.panel.scene-enter .story p:nth-child(3){animation-delay:.2s}
+.actions.scene-enter .choice{animation:choiceReveal .42s cubic-bezier(.2,.8,.2,1) both}
+.actions.scene-enter .choice:nth-child(2){animation-delay:.08s}
+.actions.scene-enter .choice:nth-child(3){animation-delay:.16s}
+.ending-illustration{overflow:hidden;position:relative;border-radius:23px;border:1px solid #c5adff36;background:#111322;box-shadow:0 24px 65px #0007;min-height:220px}
+.ending-illustration[hidden]{display:none}
+.ending-illustration svg{display:block;width:100%;height:auto;min-height:220px}
+.ending-illustration.show{animation:endingArrive .85s ease both}
+.ending-illustration .scenery{transform-origin:50% 100%;animation:illustrationFloat 8s ease-in-out infinite alternate}
+.ending-illustration .light{animation:lightBreathe 5s ease-in-out infinite alternate}
+.ending-illustration .rain{animation:rainMove 2s linear infinite}
+.ending-illustration .caption{position:absolute;bottom:0;left:0;right:0;padding:32px 20px 17px;background:linear-gradient(transparent,#080916cc);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#efe5ff}
+.ending-illustration .caption strong{display:block;font:normal 22px Georgia,serif;text-transform:none;letter-spacing:normal;margin-top:5px}
+@keyframes lanternGlow{from{opacity:.45;transform:scale(.9)}to{opacity:.88;transform:scale(1.18)}}
+@keyframes shadowBreathe{from{transform:translateY(1px) scale(.97)}to{transform:translateY(-4px) scale(1.03)}}
+@keyframes railDrift{from{background-position:0 0}to{background-position:0 60px}}
+@keyframes tunnelPulse{from{opacity:.5}to{opacity:.98}}
+@keyframes sceneReveal{from{opacity:.25;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes textReveal{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@keyframes choiceReveal{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes endingArrive{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+@keyframes illustrationFloat{from{transform:translateY(2px)}to{transform:translateY(-5px)}}
+@keyframes lightBreathe{from{opacity:.4}to{opacity:1}}
+@keyframes rainMove{from{transform:translateY(-25px)}to{transform:translateY(28px)}}
+@media(prefers-reduced-motion:reduce){.poster .glow,.poster .figure,.poster .rails,.poster .tunnel,.panel.scene-enter,.panel.scene-enter .story p,.actions.scene-enter .choice,.ending-illustration.show,.ending-illustration .scenery,.ending-illustration .light,.ending-illustration .rain{animation:none!important}}
+
 </style>
 </head>
 <body>
 <main>
-<header><div class="logo">ЗА ГРАНЬЮ ◇</div><div class="badge">ЭПИЗОД 01 · V2.2</div></header>
+<header><div class="logo">ЗА ГРАНЬЮ ◇</div><div class="badge">ЭПИЗОД 01 · V2.3</div></header>
 <div class="poster" id="poster"><div class="art" aria-hidden="true"><div class="glow"></div><div class="tunnel"></div><div class="rails"></div><div class="figure"></div></div><div class="eyebrow">Интерактивный триллер</div><h1>Последний<br>поезд</h1><p>Иногда последняя остановка — это только начало.</p></div>
 <div class="toolbar"><button type="button" class="chip" id="audio" aria-pressed="false">♫ Звук: выкл.</button><button type="button" class="chip" id="achievements">🏆 Достижения</button><button type="button" class="chip" id="library">📚 Истории</button></div>
 <div class="stats"><div class="stat">Смелость: <strong id="bravery">0</strong></div><div class="stat">Память: <strong id="memory">0</strong></div><div class="stat">Следы: <strong id="clues">0</strong></div></div>
 <div><div class="chapterrow"><strong id="chapter"></strong><span id="count"></span></div><div class="track"><div class="fill" id="fill"></div></div></div>
 <section class="panel" id="panel" aria-live="polite"><h2 id="title"></h2><div class="story" id="story"></div></section>
+<section id="endingArt" class="ending-illustration" aria-label="Иллюстрация концовки" hidden></section>
 <nav class="actions" id="choices" aria-label="Выбор действий"></nav>
 <div id="effect" class="note" hidden></div>
 <footer><button id="restart" type="button">Начать заново</button><span id="notice">Прогресс сохраняется автоматически</span></footer>
@@ -143,6 +180,47 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")$("overlay").hidden=
 $("achievements").addEventListener("click",()=>{const box=document.createElement("div");for(const [id,entry] of Object.entries(achievementList)){const [name,desc]=entry.split("|"),line=document.createElement("div");line.className="achievement";const label=document.createElement("span");label.textContent=(player.achievements.includes(id)?"🏆 ":"🔒 ")+name+" · "+desc;const marker=document.createElement("span");marker.textContent=player.achievements.includes(id)?"✓":"—";line.append(label,marker);box.append(line)}
 const p=document.createElement("p");p.className="small";p.textContent="Финалы: "+player.endings.length+" из 6. Достижения сохраняются на этом устройстве.";box.prepend(p);dialog("Достижения",box)});
 $("library").addEventListener("click",()=>{const box=document.createElement("div");const p=document.createElement("p");p.innerHTML="<strong>Эпизод 01. Последний поезд</strong><br>Доступен бесплатно. Мистический триллер с 6 финалами.";box.append(p);const p2=document.createElement("p");p2.innerHTML="<strong>Эпизод 02. Комната без окон</strong><br>В разработке. Здесь позднее появится продолжение.";box.append(p2);const p3=document.createElement("p");p3.className="small";p3.textContent="Платные эпизоды пока не продаются. Оплата и аккаунты не подключены.";box.append(p3);dialog("Библиотека историй",box)});
+
+/* Illustrated conclusions: original embedded SVG art, works offline */
+const finalArtwork={
+saved:{title:"Второй шанс",subtitle:"НОЯБРЬ 1998",sky:["#221b35","#7e526a","#f8bc78"],kind:"street"},
+refuse:{title:"Цена памяти",subtitle:"ТЫ ВЫБРАЛ ПОМНИТЬ",sky:["#091327","#313958","#8193ba"],kind:"phone"},
+sacrifice:{title:"Смотритель",subtitle:"ПОСЛЕДНИЙ ПАССАЖИР",sky:["#08091b","#332247","#755d91"],kind:"envelope"},
+trap:{title:"Ловушка",subtitle:"ДОБРО ПОЖАЛОВАТЬ ДОМОЙ",sky:["#170c1b","#4e2338","#923c5a"],kind:"faces"},
+free:{title:"Свобода",subtitle:"ПЕРВОЕ УТРО",sky:["#203357","#6a8cae","#ffe0a0"],kind:"sun"},
+loop:{title:"Вечное возвращение",subtitle:"23:47",sky:["#0a0b21","#30244c","#7d5ea3"],kind:"clock"}
+};
+function endingSvg(data){
+const [a,b,c]=data.sky;
+const defs='<defs><linearGradient id="sky23" x1="0" y1="0" x2="0" y2="1"><stop stop-color="'+a+'"/><stop offset=".58" stop-color="'+b+'"/><stop offset="1" stop-color="'+c+'"/></linearGradient><radialGradient id="halo23"><stop stop-color="#fff0c6" stop-opacity=".9"/><stop offset="1" stop-color="#f5e7ff" stop-opacity="0"/></radialGradient></defs>';
+let scene="";
+if(data.kind==="street"){
+scene='<circle class="light" cx="340" cy="110" r="120" fill="url(#halo23)"/><circle cx="340" cy="105" r="43" fill="#ffe2ab" opacity=".78"/><g fill="#1b1828"><path d="M0 100h84v-49h70v86h60v-53h92v55h74v-66h100v227H0z"/></g><g fill="#edc78a" opacity=".65"><path d="M30 121h13v24H30zm33 0h13v24H63zm63-39h15v20h-15zm90 36h15v28h-15zm47-4h15v26h-15zm157-5h15v25h-15z"/></g><path d="M125 300L225 178h46L375 300Z" fill="#6e5266" opacity=".8"/><path d="M240 177L192 300M254 177l65 123" stroke="#ffcf91" opacity=".45" stroke-width="3"/>';
+}else if(data.kind==="phone"){
+scene='<g class="scenery"><path d="M25 40Q240 -25 455 40L440 300H40Z" fill="#0c1328"/><path d="M86 90Q240 15 394 90V280H86Z" fill="#24314c" stroke="#8196c0" stroke-opacity=".65" stroke-width="5"/><path d="M125 130Q240 86 355 130" stroke="#9aafd8" stroke-opacity=".5" stroke-width="4" fill="none"/><path d="M40 235h400" stroke="#a9b8dc" stroke-width="9" opacity=".32"/></g><rect x="213" y="145" width="53" height="96" rx="8" fill="#10111b" stroke="#b7cbef" stroke-width="3"/><rect class="light" x="219" y="151" width="41" height="72" rx="3" fill="#acc4f5"/><path d="M230 180l8 10 15-21" stroke="#1d3051" stroke-width="3" fill="none"/>';
+}else if(data.kind==="envelope"){
+scene='<path d="M25 50Q240 -40 455 50L455 300H25Z" fill="#0b0b1a"/><path d="M70 130Q240 20 410 130V300H70Z" fill="#262039" stroke="#ac8fca" stroke-opacity=".5" stroke-width="5"/><path d="M70 236h340" stroke="#b3a2d0" stroke-opacity=".5" stroke-width="9"/><path d="M112 245q42-118 84 0M284 245q42-118 84 0" fill="#14101d" stroke="#594769" stroke-width="6"/><rect x="192" y="208" width="96" height="54" rx="2" fill="#e0c9ab" transform="rotate(-7 240 235)"/><path d="M192 208l48 38 48-38" fill="none" stroke="#886b74" stroke-width="2" transform="rotate(-7 240 235)"/><circle class="light" cx="240" cy="237" r="7" fill="#ab4666"/>';
+}else if(data.kind==="faces"){
+scene='<path d="M5 52Q240 -40 475 52v248H5Z" fill="#160c18"/><path d="M48 120Q240 35 432 120v180H48Z" fill="#392133" stroke="#a15f81" stroke-opacity=".4" stroke-width="7"/><g class="scenery" fill="#0b0910" stroke="#bc7898" stroke-opacity=".4" stroke-width="2"><ellipse cx="98" cy="164" rx="24" ry="36"/><ellipse cx="166" cy="143" rx="30" ry="46"/><ellipse cx="240" cy="153" rx="32" ry="49"/><ellipse cx="315" cy="143" rx="30" ry="46"/><ellipse cx="385" cy="164" rx="24" ry="36"/><path d="M50 300v-83q48-50 96 0v83zm95 0v-90q48-40 96 0v90zm95 0v-90q48-40 96 0v90zm95 0v-83q48-50 96 0v83z"/></g><path d="M45 258h390" stroke="#d97e93" opacity=".3" stroke-width="5"/>';
+}else if(data.kind==="sun"){
+scene='<circle class="light" cx="290" cy="144" r="137" fill="url(#halo23)"/><circle cx="290" cy="139" r="62" fill="#ffeab0"/><path d="M0 200Q140 178 280 196T480 190V300H0Z" fill="#243e5b"/><path d="M0 227Q240 191 480 227V300H0Z" fill="#132740"/><g stroke="#7fb8d7" stroke-width="7" opacity=".58"><path d="M83 229h314M83 254h314"/></g><path d="M0 281L480 250" stroke="#f5c990" opacity=".4" stroke-width="6"/>';
+}else{
+scene='<path d="M30 60Q240 -35 450 60V300H30Z" fill="#100e27"/><path d="M98 82Q240 -2 382 82V300H98Z" fill="#2c2047" stroke="#a98ccc" stroke-opacity=".6" stroke-width="6"/><circle class="light" cx="240" cy="147" r="94" fill="url(#halo23)"/><circle cx="240" cy="145" r="66" fill="#1a1830" stroke="#d2bae9" stroke-width="5"/><g stroke="#d2bae9" stroke-width="4"><path d="M240 89v11M240 190v11M185 145h11M284 145h11"/></g><path d="M240 145v-37M240 145l32 15" stroke="#f6d2fb" stroke-width="6" stroke-linecap="round"/><circle cx="240" cy="145" r="6" fill="#f6d2fb"/><path d="M120 300l72-85h96l72 85" fill="none" stroke="#72618a" stroke-width="8"/>';
+}
+return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" role="img" aria-label="'+data.title+'"><rect width="480" height="300" fill="url(#sky23)"/>'+defs+'<g class="scenery">'+scene+'</g><g class="rain" stroke="#ded8ff" stroke-opacity=".15" stroke-width="2"><path d="M50 20l-18 32M130 70l-18 32M420 25l-18 32M370 95l-18 32M210 18l-18 32"/></g></svg>';
+}
+function renderEnding(id){
+const box=$("endingArt"),data=finalArtwork[id];
+if(!data){box.hidden=true;box.classList.remove("show");box.replaceChildren();return}
+box.replaceChildren();
+const illustration=document.createElement("div");
+illustration.innerHTML=endingSvg(data);
+const caption=document.createElement("div");caption.className="caption";caption.textContent=data.subtitle;
+const title=document.createElement("strong");title.textContent=data.title;caption.append(title);
+box.append(illustration,caption);
+box.hidden=false;box.classList.remove("show");void box.offsetWidth;box.classList.add("show");
+}
+
 function renderV2(){
 mark();persist();const s=scenes[player.scene],id=player.scene;
 $("chapter").textContent=s.c;$("count").textContent=String(s.n).padStart(2,"0")+" / 08";$("fill").style.width=(s.n*12.5)+"%";
@@ -155,8 +233,9 @@ for(const [label,next,need,threshold] of choices){
 const locked=need&&player[need]<threshold;
 const b=document.createElement("button");b.type="button";b.className="choice"+(locked?" locked":"");b.disabled=!!locked;
 const a=document.createElement("span");a.textContent=label+(locked?" (нужно следов: "+threshold+")":"");const icon=document.createElement("span");icon.textContent=locked?"🔒":next==="start"?"↻":"→";icon.setAttribute("aria-hidden","true");b.append(a,icon);b.addEventListener("click",()=>goV2(next));$("choices").append(b)}
+renderEnding(id);
 $("notice").textContent=s.o.length?"Выборы влияют на характеристики":"Финал открыт • открой остальные";
-$("panel").style.animation="none";void $("panel").offsetWidth;$("panel").style.animation="";
+for(const id of ["panel","choices"]){const node=$(id);node.classList.remove("scene-enter");void node.offsetWidth;node.classList.add("scene-enter")};
 }
 function goV2(id){
 if(!Object.hasOwn(scenes,id))return;
@@ -167,7 +246,7 @@ player.scene=id;
 }
 if(!player.visited.includes(id))player.visited.push(id);
 tone(id==="station"?470:215,.19,.027);if(["station","emergency","dark"].includes(id))setTimeout(ambient,230);
-renderV2();window.scrollTo({top:0,behavior:"smooth"});
+renderV2();
 }
 $("restart").addEventListener("click",e=>{e.stopImmediatePropagation();if(player.scene==="start"||confirm("Начать сюжет сначала? Достижения и открытые финалы сохранятся."))goV2("start")},true);
 if(!player.visited.includes(player.scene))player.visited.push(player.scene);
