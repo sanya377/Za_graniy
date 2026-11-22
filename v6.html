@@ -75,11 +75,44 @@ button{font:inherit;color:inherit}button:focus-visible{outline:2px solid #e5a9a9
 .lightning{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;background:#ede9fd77;mix-blend-mode:screen}
 .scene.hunting .lightning{background:#b32b4877}
 @media (prefers-reduced-motion:reduce){.lightning,.dark-figure{display:none!important}}
+
+/* V6.1: obvious live effects; all overlays ignore taps */
+#weather,.fx-fog,.fx-glitch,.fx-flashlight,.fx-filmflash,.fx-scene-msg{position:absolute;inset:0;pointer-events:none}
+#weather{z-index:2;width:100%;height:100%;opacity:.85;mix-blend-mode:screen}
+.fx-fog{z-index:2;width:165%;left:-32%;top:37%;height:56%;opacity:.58;filter:blur(28px);background:radial-gradient(ellipse at 30% 70%,#d3cbd047,transparent 56%),radial-gradient(ellipse at 70% 40%,#869aaf48,transparent 55%);animation:fogslide 10s ease-in-out infinite alternate}
+.fx-fog2{top:8%;left:-10%;height:50%;opacity:.43;animation-duration:15s;animation-direction:alternate-reverse}
+@keyframes fogslide{from{transform:translateX(-14%) scale(1)}to{transform:translateX(19%) scale(1.1)}}
+.fx-glitch{z-index:7;opacity:0;mix-blend-mode:screen;background:repeating-linear-gradient(180deg,transparent 0,transparent 4px,#ff3f6538 5px,#58e6ec34 7px,transparent 11px);transform:translateX(0)}
+.fx-glitch.hit{animation:glitchhit .38s steps(4,end) 1}
+@keyframes glitchhit{0%{opacity:.78;transform:translateX(14px)}22%{opacity:.05;transform:translateX(-12px)}45%{opacity:.9;transform:translateX(6px)}70%{opacity:.2;transform:translateX(-8px)}100%{opacity:0;transform:translateX(0)}}
+.fx-filmflash{z-index:8;opacity:0;background:#f1e8dc;mix-blend-mode:screen}
+.fx-filmflash.hit{animation:filmhit .5s ease-out forwards}
+@keyframes filmhit{0%{opacity:.85}16%{opacity:.1}34%{opacity:.6}100%{opacity:0}}
+.fx-flashlight{z-index:3;opacity:0;background:radial-gradient(circle 125px at var(--tx,50%) var(--ty,50%),transparent 0%,#05060b27 50%,#030307c8 100%);transition:opacity .35s}
+.fx-flashlight.on{opacity:1}
+.fx-scene-msg{z-index:6;inset:auto 8% 15%;text-align:center;font-size:clamp(19px,5vw,32px);font-weight:900;letter-spacing:.16em;color:#fff1e8;text-shadow:0 2px 20px #f02642,0 0 45px #000;opacity:0;transform:translateY(24px) scale(.91)}
+.fx-scene-msg.show{animation:sceneMsg .9s cubic-bezier(.2,.8,.2,1)}
+@keyframes sceneMsg{0%{opacity:0;transform:translateY(24px) scale(.92)}21%{opacity:1;transform:translateY(0) scale(1.035)}66%{opacity:.92;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-13px) scale(1)}}
+.scene.fx-danger::before{content:"";position:absolute;inset:-18%;z-index:2;pointer-events:none;background:radial-gradient(ellipse,#0000 24%,#82092045 65%,#2d050ddc 98%);animation:heartpulse 1.7s ease-in-out infinite}
+@keyframes heartpulse{0%,100%{opacity:.38;transform:scale(.99)}40%{opacity:.9;transform:scale(1.13)}}
+.scene.fx-shake{animation:cameraShake .42s cubic-bezier(.26,.5,.3,.7)}
+@keyframes cameraShake{0%,100%{transform:translate(0)}10%{transform:translate(-9px,3px)}25%{transform:translate(7px,-4px)}39%{transform:translate(-5px,5px)}52%{transform:translate(5px,0)}72%{transform:translate(-3px,-2px)}85%{transform:translate(2px,1px)}}
+.scene .noise{z-index:3;opacity:.36;animation:filmgrain 3.5s steps(3,end) infinite}
+@keyframes filmgrain{0%{transform:translateY(0)}35%{transform:translateY(3px)}68%{transform:translateY(-4px)}100%{transform:translateY(0)}}
+#picture{animation:breathshot 7s ease-in-out infinite alternate}
+@keyframes breathshot{from{filter:brightness(.55) saturate(.55) contrast(1.15)}to{filter:brightness(.86) saturate(.8) contrast(1.23)}}
+.dark-figure{z-index:4;transition:opacity .5s}
+.dark-figure.visible{opacity:.65}
+.scene.fx-danger .dark-figure.visible{animation:figureCreep 5s ease-in-out infinite alternate}
+@keyframes figureCreep{from{filter:blur(5px);opacity:.1}to{filter:blur(1px);opacity:.75}}
+.scene.fx-danger .dark-figure .dark-head{box-shadow:0 0 5px #000,8px 14px 18px #000}
+@media(max-width:450px){.fx-flashlight{background:radial-gradient(circle 100px at var(--tx,50%) var(--ty,50%),transparent 0%,#05060b33 50%,#030307c9 100%)}}
+@media(prefers-reduced-motion:reduce){.fx-fog,.fx-glitch,.fx-filmflash,.fx-scene-msg,.scene.fx-danger::before,.scene .noise,#picture,.scene.fx-danger .dark-figure.visible{animation:none!important}#weather{display:none}}
 </style></head><body>
 <div class="shell">
-<header class="top"><div><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="topsmall">ГЛАВА 01 · V6 · АНИМАЦИЯ</div></div><div class="toolbar"><button id="motion" class="icon" title="Анимация" aria-label="Включить или выключить анимацию">🎬</button><button id="sound" class="icon" title="Звук" aria-label="Включить или выключить звук">🔇</button><button id="bag" class="icon" title="Улики" aria-label="Улики">⌑</button><button id="again" class="replay" title="Начать заново" aria-label="Играть заново">↻ Заново</button></div></header>
-<div class="progress"><div id="bar"></div></div><div class="buildtag">LIVE CINEMATIC · GSAP + PHASER + HOWLER + TONE</div>
-<main class="scene" id="scene"><img id="picture" src="assets/scenes/start.webp" alt="Кадр истории"><div class="noise"></div><div id="particles" aria-hidden="true"></div><div class="dark-figure" id="darkFigure" aria-hidden="true"><div class="dark-head"></div><div class="dark-body"></div></div><div class="lightning" id="lightning"></div><div class="caption" id="stamp">23:47 · ВАГОН 0</div><div class="countdown" id="clock">00:10</div><div class="hots" id="hots"></div>
+<header class="top"><div><div class="brand">ЗА ГРАНЬЮ ◇</div><div class="topsmall">ГЛАВА 01 · V6.1 · КИНОЭФФЕКТЫ</div></div><div class="toolbar"><button id="flashBtn" class="icon" title="Фонарик" aria-label="Включить или выключить фонарик">🔦</button><button id="motion" class="icon" title="Анимация" aria-label="Включить или выключить анимацию">🎬</button><button id="sound" class="icon" title="Звук" aria-label="Включить или выключить звук">🔇</button><button id="bag" class="icon" title="Улики" aria-label="Улики">⌑</button><button id="again" class="replay" title="Начать заново" aria-label="Играть заново">↻ Заново</button></div></header>
+<div class="progress"><div id="bar"></div></div><div class="buildtag">V6.1 · ЖИВОЙ ДОЖДЬ · ТЕНИ · ФОНАРИК · ГЛИТЧ · КАМЕРА</div>
+<main class="scene" id="scene"><img id="picture" src="assets/scenes/start.webp" alt="Кадр истории"><div class="noise"></div><canvas id="weather" aria-hidden="true"></canvas><div class="fx-fog" aria-hidden="true"></div><div class="fx-fog fx-fog2" aria-hidden="true"></div><div id="glitch" class="fx-glitch" aria-hidden="true"></div><div id="flashlight" class="fx-flashlight" aria-hidden="true"></div><div id="filmflash" class="fx-filmflash" aria-hidden="true"></div><div id="sceneMsg" class="fx-scene-msg" aria-live="off">НЕ ОБОРАЧИВАЙСЯ</div><div id="particles" aria-hidden="true"></div><div class="dark-figure" id="darkFigure" aria-hidden="true"><div class="dark-head"></div><div class="dark-body"></div></div><div class="lightning" id="lightning"></div><div class="caption" id="stamp">23:47 · ВАГОН 0</div><div class="countdown" id="clock">00:10</div><div class="hots" id="hots"></div>
 <div id="huntStatus" class="hunt-status hidden" aria-live="polite">
  <div class="hunt-row"><span id="huntCue">👣 ШАГИ БЛИЗКО</span><strong id="huntCount">16 c</strong></div>
  <div class="danger-track"><div id="huntMeter"></div></div>
@@ -104,6 +137,62 @@ let ctx=null,timer=null,remaining=0,scareTimeout=null,scareSeq=0,screamBuffer=nu
 let motion=true,phaserGame=null,phaserReady=false,howlScream=null,toneSynth=null,ambienceOn=false,ambientTimer=null,sceneAnimation=null,lastAnimatedScene="",motionToken=0;
 const reduceMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 if(reduceMotion)motion=false;
+
+let fxRaf=0,fxCtx=null,fxDrops=[],fxLast=0,fxTimeouts=[],flashlightManual=false,fxResize=0;
+function fxSchedule(fn,ms){const t=setTimeout(fn,ms);fxTimeouts.push(t)}
+function fxCancel(){fxTimeouts.forEach(clearTimeout);fxTimeouts=[]}
+function fxWeather(){
+ if(fxRaf||!motion||reduceMotion)return;
+ const canvas=$("weather"),context=canvas.getContext("2d",{alpha:true});
+ if(!context)return;fxCtx=context;
+ const resize=()=>{
+   const r=$("scene").getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,1.7);
+   canvas.width=Math.max(1,Math.floor(r.width*dpr));canvas.height=Math.max(1,Math.floor(r.height*dpr));
+   context.setTransform(dpr,0,0,dpr,0,0);fxResize=dpr;
+   fxDrops=Array.from({length:Math.min(125,Math.floor(r.width*.19))},()=>({x:Math.random()*r.width,y:Math.random()*r.height,v:1.7+Math.random()*3.3,len:9+Math.random()*19,alpha:.13+Math.random()*.3}));
+ };
+ resize();
+ const draw=timestamp=>{
+   if(!motion||reduceMotion){fxRaf=0;context.clearRect(0,0,canvas.width,canvas.height);return}
+   const rect=$("scene").getBoundingClientRect(),w=rect.width,ht=rect.height;
+   if(Math.abs(canvas.width/fxResize-w)>8||Math.abs(canvas.height/fxResize-ht)>8)resize();
+   if(timestamp-fxLast>30){
+     fxLast=timestamp;context.clearRect(0,0,w,ht);
+     const storm=$("scene").classList.contains("fx-danger");
+     context.lineWidth=storm?1.35:1;
+     for(const d of fxDrops){
+       context.strokeStyle=storm?("rgba(211,206,228,"+(d.alpha*.95)+")"):("rgba(178,202,227,"+(d.alpha*.6)+")");
+       context.beginPath();context.moveTo(d.x,d.y);context.lineTo(d.x-3,d.y+d.len);context.stroke();
+       d.y+=d.v*(storm?2.3:1.2);d.x-=storm?1.1:.6;
+       if(d.y>ht+25||d.x<0){d.y=-25;d.x=Math.random()*w}
+     }
+   }
+   fxRaf=requestAnimationFrame(draw);
+ };
+ fxRaf=requestAnimationFrame(draw);
+}
+function fxStop(){if(fxRaf)cancelAnimationFrame(fxRaf);fxRaf=0;fxCancel();const ctx=$("weather").getContext("2d");if(ctx)ctx.clearRect(0,0,$("weather").width,$("weather").height);$("scene").classList.remove("fx-shake","fx-danger");$("flashlight").classList.remove("on");$("glitch").classList.remove("hit");$("filmflash").classList.remove("hit");}
+function fxTrigger(id){
+ const scene=$("scene");
+ fxCancel();
+ for(const name of ["fx-glitch","fx-shake"]){/* force restart via class */
+ }
+ scene.classList.remove("fx-shake");
+ for(const key of ["glitch","filmflash","sceneMsg"]){const el=$(key);el.classList.remove("hit","show");void el.offsetWidth}
+ const peril=/^(turned|door|opened|refused|reflection|window|chaseHall|huntRoom|dead.*|trapCell|openVent|shaftExit|codeOpen)$/.test(id);
+ const fatal=/^dead/.test(id);
+ scene.classList.toggle("fx-danger",peril);
+ $("flashlight").classList.toggle("on",motion&&(peril||flashlightManual));
+ if(!motion)return;
+ $("glitch").classList.add("hit");
+ $("filmflash").classList.add("hit");
+ if(peril){scene.classList.add("fx-shake");fxSchedule(()=>scene.classList.remove("fx-shake"),450)}
+ const messages={wake:"НЕ ОБОРАЧИВАЙСЯ",turned:"ОН УВИДЕЛ ТЕБЯ",safe:"КТО-ТО РЯДОМ",door:"НЕ ОТКРЫВАЙ",opened:"ОН УЖЕ ЗДЕСЬ",chaseHall:"БЕГИ",huntRoom:"НЕ ШУМИ",trapCell:"ТЫ ЗАПЕРТ",openVent:"ТИШЕ...",escapeGood:"ТЫ ВЫЖИЛ",deadHunt:"ТЕБЯ НАШЛИ"};
+ const msg=messages[id]||(fatal?"ТЫ ПОГИБ":"");
+ if(msg){$("sceneMsg").textContent=msg;$("sceneMsg").classList.add("show")}
+ if(peril&&id!=="huntRoom")fxSchedule(()=>{if(s.node===id){$("glitch").classList.remove("hit");void $("glitch").offsetWidth;$("glitch").classList.add("hit")}},2200);
+}
+
 function initPhaser(){
  if(!window.Phaser||phaserGame||!motion||reduceMotion)return;
  try{
@@ -127,6 +216,7 @@ function initPhaser(){
 }
 function animateScene(id){
  lastAnimatedScene=id;
+ fxTrigger(id);
  const img=$("picture"),scene=$("scene"),figure=$("darkFigure");
  if(!motion||reduceMotion){figure.classList.remove("visible");return}
  if(sceneAnimation&&typeof sceneAnimation.kill==="function")sceneAnimation.kill();
@@ -157,6 +247,19 @@ function suspenseBeat(){
 }
 function initAtmosphere(){
  initPhaser();
+ fxWeather();
+ const rectScene=$("scene");
+ rectScene.addEventListener("pointerdown",e=>{
+   const box=rectScene.getBoundingClientRect();
+   rectScene.style.setProperty("--tx",((e.clientX-box.left)/box.width*100).toFixed(1)+"%");
+   rectScene.style.setProperty("--ty",((e.clientY-box.top)/box.height*100).toFixed(1)+"%");
+ });
+ rectScene.addEventListener("pointermove",e=>{
+   if(!motion)return;
+   const b=rectScene.getBoundingClientRect();
+   $("flashlight").style.setProperty("--tx",((e.clientX-b.left)/b.width*100).toFixed(1)+"%");
+   $("flashlight").style.setProperty("--ty",((e.clientY-b.top)/b.height*100).toFixed(1)+"%");
+ });
  const scene=$("scene");
  scene.addEventListener("pointermove",e=>{
    if(!motion||!window.gsap||e.pointerType==="touch")return;
@@ -253,6 +356,7 @@ function loudScare(){
 function hideScare(){scareSeq++;if(scareTimeout){clearTimeout(scareTimeout);scareTimeout=null;}$("scare").classList.remove("show");}
 function jumpscare(){
  const seq=++scareSeq;const panel=$("scare");
+ if(motion){$("scene").classList.add("fx-shake");fxSchedule(()=>$("scene").classList.remove("fx-shake"),500)}
  panel.classList.add("show");loudScare();
  if(motion&&window.gsap){
    gsap.fromTo("#scareFace",{scale:.48,rotation:-8,filter:"contrast(1.9) brightness(.6)"},{scale:1.5,rotation:2,filter:"contrast(1.6) brightness(1.3)",duration:.24,ease:"power4.out",overwrite:true});
@@ -394,8 +498,13 @@ $("begin").onclick=()=>{
 $("sound").onclick=()=>{s.sound=!s.sound;$("sound").textContent=s.sound?"🔊":"🔇";if(s.sound){initSound();prepareScream();tone(220,.2)}else if(howlScream)howlScream.stop()};
 $("motion").onclick=()=>{
  motion=!motion;$("motion").textContent=motion?"🎬":"⏸️";
- if(!motion){if(sceneAnimation)sceneAnimation.kill();if(phaserGame){phaserGame.destroy(true);phaserGame=null} $("darkFigure").classList.remove("visible");$("picture").style.transform="";}
- else{initPhaser();animateScene(s.node)}
+ if(!motion){fxStop();if(sceneAnimation)sceneAnimation.kill();if(phaserGame){phaserGame.destroy(true);phaserGame=null} $("darkFigure").classList.remove("visible");$("picture").style.transform="";}
+ else{initPhaser();fxWeather();animateScene(s.node)}
+};
+$("flashBtn").onclick=()=>{
+ flashlightManual=!flashlightManual;
+ $("flashBtn").textContent=flashlightManual?"💡":"🔦";
+ $("flashlight").classList.toggle("on",motion&&(flashlightManual||$("scene").classList.contains("fx-danger")));
 };
 $("bag").onclick=()=>{const box=$("inventory");box.classList.toggle("hidden");const ul=$("items");ul.replaceChildren();for(const id of s.clues){const li=document.createElement("li");li.textContent=found[id];ul.appendChild(li)}if(!s.clues.length){const li=document.createElement("li");li.textContent="Пока пусто";ul.appendChild(li)}};
 $("again").onclick=()=>{$("inventory").classList.add("hidden");resetGame("wake")};
