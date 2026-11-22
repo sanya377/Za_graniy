@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c0b17">
+<meta name="description" content="За гранью — интерактивный мистический триллер">
+<title>За гранью | Последний поезд</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#f3efff;background:#0c0b17;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;min-height:100svh;background:radial-gradient(ellipse at 52% -12%,#56346a 0%,transparent 45%),radial-gradient(ellipse at 100% 95%,#1b3650 0%,transparent 40%),#0c0b17}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid #d5b7ff;outline-offset:3px}
+main{max-width:620px;min-height:100svh;margin:auto;padding:27px 20px 35px;display:flex;flex-direction:column;gap:22px}
+header{display:flex;align-items:center;justify-content:space-between}.logo{letter-spacing:.27em;color:#d6b7ff;font-weight:800;font-size:12px}.badge{font-size:11px;color:#afb0c5}.badge:before{content:"";display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:#8fe7ce;box-shadow:0 0 10px #8fe7ce}
+.poster{position:relative;overflow:hidden;min-height:245px;border-radius:26px;border:1px solid #ffffff20;display:flex;justify-content:end;flex-direction:column;padding:26px;background:linear-gradient(0deg,#100e20 0%,#17142611 90%),radial-gradient(circle at 70% 19%,#b58bc9 0%,#685080 13%,transparent 35%),linear-gradient(130deg,#101c35,#394160 55%,#111121);box-shadow:0 25px 55px #0005}
+.poster:after{content:"";position:absolute;right:23%;top:11%;width:74px;height:145px;border:2px solid #dfbaff85;border-radius:40px 40px 6px 6px;box-shadow:0 0 50px #da9dff7a,inset 0 0 25px #d9a9ff6b;transform:perspective(120px) rotateY(-12deg)}
+.eyebrow{font-size:10px;letter-spacing:.27em;color:#dfc5ff;text-transform:uppercase;font-weight:800;z-index:1}.poster h1{font-weight:850;letter-spacing:-.055em;font-size:clamp(40px,10vw,62px);line-height:1;margin:11px 0;z-index:1}.poster p{font-size:13px;line-height:1.6;color:#cfc6dc;margin:0;z-index:1}
+.chapterrow{display:flex;justify-content:space-between;gap:10px;color:#b6adc8;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding-bottom:13px}.chapterrow strong{color:#dbc3ff}.track{height:3px;background:#333045;border-radius:10px;overflow:hidden}.fill{height:100%;width:12.5%;background:linear-gradient(90deg,#b48cf0,#83decf);transition:width .3s}
+.panel{padding:25px 22px;background:#171725d9;border:1px solid #ffffff15;border-radius:23px;box-shadow:0 15px 45px #0003;animation:rise .22s ease}.panel h2{font:normal 28px Georgia,serif;line-height:1.25;margin:0 0 18px}.story{font-size:16px;line-height:1.85;color:#dcd8e9}.story p{margin:0 0 16px}.story p:last-child{margin-bottom:0}.story strong{color:#f5dbff}
+.actions{display:grid;gap:11px}.choice{border:1px solid #ffffff23;border-radius:15px;background:#262539;color:#f4f0ff;padding:18px 17px;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:15px;line-height:1.4;transition:background .15s,transform .15s}.choice:hover{background:#38304b;transform:translateY(-1px)}.choice span:last-child{color:#ca9ef8;font-size:23px;flex:none}
+footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:8px;font-size:11px;color:#87859e}footer button{border:0;background:none;color:#c1b6d4;padding:8px 0;text-decoration:underline;text-underline-offset:4px;font-size:12px}
+@keyframes rise{from{opacity:.25;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){*,*:after,*:before{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header><div class="logo">ЗА ГРАНЬЮ ◇</div><div class="badge">ЭПИЗОД 01</div></header>
+<div class="poster"><div class="eyebrow">Интерактивный триллер</div><h1>Последний<br>поезд</h1><p>Иногда последняя остановка — это только начало.</p></div>
+<div><div class="chapterrow"><strong id="chapter"></strong><span id="count"></span></div><div class="track"><div class="fill" id="fill"></div></div></div>
+<section class="panel" id="panel" aria-live="polite"><h2 id="title"></h2><div class="story" id="story"></div></section>
+<nav class="actions" id="choices" aria-label="Выбор действий"></nav>
+<footer><button id="restart" type="button">Начать заново</button><span id="notice">Прогресс сохраняется автоматически</span></footer>
+</main>
+<script>
+"use strict";
+const scenes={
+start:{c:"01 / ПРОБУЖДЕНИЕ",t:"23:47",p:["Ты просыпаешься в пустом вагоне метро. За окнами — абсолютная темнота. Телефон показывает <strong>23:47</strong>, хотя часы над дверью отсчитывают секунды назад.","Из динамика раздаётся шёпот: «Пассажир, вас не должно быть здесь». На сиденье напротив лежит конверт с твоим именем."],o:[["Вскрыть конверт","letter"],["Подойти к кабине машиниста","driver"]],n:1},
+letter:{c:"02 / ПИСЬМО",t:"Почерк, который ты знаешь",p:["В конверте лежит фотография. На ней ты стоишь в этом вагоне. Позади тебя — человек без лица.","На обороте написано: <strong>«Не доверяй голосу. На третьей остановке не выходи».</strong> Снимок датирован завтрашним днём."],o:[["Спрятать снимок и ждать остановки","station"],["Попробовать кому-нибудь позвонить","phone"]],n:2},
+driver:{c:"02 / КАБИНА",t:"Закрыто изнутри",p:["Дверь кабины поддаётся. За ней пустое кресло, но рычаг управления двигается сам по себе.","На стекле выведено: <strong>«Ты уже выбирал. Вспомни».</strong> На панели мигает красная кнопка остановки."],o:[["Нажать экстренную остановку","emergency"],["Вернуться и открыть конверт","letter"]],n:2},
+phone:{c:"03 / СВЯЗЬ",t:"Вызов от самого себя",p:["Связи нет. Но экран загорается: входящий вызов с твоего собственного номера.","Твой голос, только старше, произносит: «Если увидишь девочку в красном, спроси, какой сегодня год»."],o:[["Выслушать предупреждение","warning"],["Сбросить звонок и ждать остановки","station"]],n:3},
+emergency:{c:"03 / ТОРМОЖЕНИЕ",t:"Невозможная станция",p:["Вагон вздрагивает и останавливается. Двери раскрываются с металлическим скрипом.","Платформа пуста. Вывеска гласит: <strong>«СТАНЦИЯ: ВЧЕРА»</strong>. В темноте раздаётся детский смех."],o:[["Выйти на платформу","platform"],["Остаться в вагоне","station"]],n:3},
+station:{c:"03 / ОСТАНОВКА",t:"Девочка в красном",p:["Поезд замедляется. На платформе стоит девочка в красном пальто. Она смотрит прямо на тебя, хотя в стекле отражается лишь пустой вагон.","Двери открываются. Девочка спрашивает: «Ты наконец вернулся?»"],o:[["Спросить, какой сейчас год","year"],["Выйти к ней","platform"]],n:4},
+warning:{c:"04 / ПРЕДУПРЕЖДЕНИЕ",t:"Сорок семь попыток",p:["«Ты звонил мне сорок семь раз, — говорит голос. — И каждый раз выбирал дверь. На этот раз попробуй окно».","За стеклом появляется силуэт, повторяющий твои движения с задержкой."],o:[["Коснуться стекла","mirror"],["Дождаться остановки","station"]],n:4},
+year:{c:"04 / ВОПРОС",t:"Не тот календарь",p:["«Сегодня 14 ноября 1998-го», — говорит девочка. Ты помнишь дату. Тогда пропал человек, которого ты искал много лет.","Она протягивает ладонь: «Ты можешь всё исправить. Но кое-что придётся оставить здесь»."],o:[["Узнать цену","price"],["Отказаться","refuse"]],n:5},
+platform:{c:"04 / ПЛАТФОРМА",t:"На шаг ближе",p:["Ты выходишь, и поезд за спиной исчезает. На стене висит карта метро: все линии ведут к одной станции — <strong>«ДОМ»</strong>.","Перед тобой два прохода: ярко освещённый и почти чёрный."],o:[["Пойти на свет","light"],["Войти в тёмный тоннель","dark"]],n:5},
+mirror:{c:"05 / ОТРАЖЕНИЕ",t:"Другой ты",p:["Стекло теплеет. Силуэт обретает лицо. Это ты, но на висках седина.","Двойник прикладывает ладонь к стеклу и беззвучно говорит: «Я остался, чтобы ты смог уйти»."],o:[["Поменяться местами","sacrifice"],["Отступить","refuse"]],n:6},
+price:{c:"05 / ЦЕНА",t:"Плата за прошлое",p:["«Одно воспоминание, — говорит девочка. — Самое счастливое. Ты забудешь его навсегда, зато сможешь изменить тот день».","На её ладони появляется светящийся ключ."],o:[["Принять ключ","saved"],["Сохранить воспоминание","refuse"]],n:6},
+light:{c:"05 / СВЕТ",t:"Там, где ждут",p:["Ты идёшь на свет и видишь знакомую дверь. За ней звучат голоса близких.","На глазке записка твоим почерком: <strong>«Это не твой дом»</strong>."],o:[["Открыть дверь","trap"],["Вернуться в темноту","dark"]],n:6},
+dark:{c:"05 / ТЕМНОТА",t:"За гранью",p:["Под ногами исчезает пол, но ты не падаешь. Вокруг вспыхивают тысячи окон. В каждом ты принимаешь другое решение.","Впереди появляется выключатель: <strong>«Завершить цикл»</strong>."],o:[["Выключить систему","free"],["Оставить всё как есть","loop"]],n:7},
+saved:{c:"ФИНАЛ / ИСКУПЛЕНИЕ",t:"Второй шанс",p:["Ты принимаешь ключ. Самое счастливое воспоминание исчезает.","Поезд растворяется. Перед тобой улица ноября 1998 года. В кармане записка: «Теперь у тебя есть время».","<strong>Концовка: «Второй шанс».</strong>"],o:[],n:8},
+refuse:{c:"ФИНАЛ / ПАМЯТЬ",t:"Сохранить себя",p:["Ты отказываешься от сделки. Девочка улыбается, будто ждала этого.","Ты просыпаешься дома. На телефоне новая фотография пустого вагона: «Ты выбрал помнить».","<strong>Концовка: «Цена памяти».</strong>"],o:[],n:8},
+sacrifice:{c:"ФИНАЛ / ЗАМЕНА",t:"Место в поезде",p:["Ты проходишь сквозь стекло. Двойник улыбается и уходит в реальный мир.","Ты остаёшься в вагоне. На сиденье появляется конверт с другим именем.","<strong>Концовка: «Смотритель».</strong>"],o:[],n:8},
+trap:{c:"ФИНАЛ / ИЛЛЮЗИЯ",t:"Ложный дом",p:["За дверью тот же вагон метро, но теперь все места заняты людьми без лиц.","Из динамика: «Добро пожаловать домой». Часы показывают 23:47.","<strong>Концовка: «Ловушка».</strong>"],o:[],n:8},
+free:{c:"ФИНАЛ / СВОБОДА",t:"Первое утро",p:["Ты щёлкаешь выключателем. Все окна гаснут, кроме одного, где восходит солнце.","Ты просыпаешься на конечной станции обычного метро. Мир движется вперёд.","<strong>Концовка: «Свобода».</strong>"],o:[],n:8},
+loop:{c:"ФИНАЛ / ЦИКЛ",t:"Ещё один круг",p:["Ты отходишь от выключателя. Под ногами возникает пол знакомого вагона.","На часах 23:47. Напротив конверт с твоим именем.","<strong>Концовка: «Вечное возвращение».</strong>"],o:[],n:8}
+};
+const storage="za-graniy-last-scene-v1";
+const $=id=>document.getElementById(id);
+let current="start";
+try{const saved=localStorage.getItem(storage);if(saved&&Object.hasOwn(scenes,saved))current=saved}catch(_){}
+function render(){
+const s=scenes[current];
+$("chapter").textContent=s.c;
+$("count").textContent=String(s.n).padStart(2,"0")+" / 08";
+$("fill").style.width=(s.n*12.5)+"%";
+$("title").textContent=s.t;
+$("story").replaceChildren();
+for(const line of s.p){const p=document.createElement("p");p.innerHTML=line;$("story").append(p)}
+$("choices").replaceChildren();
+const choices=s.o.length?s.o:[["Пройти историю ещё раз","start"]];
+for(const [label,next] of choices){const b=document.createElement("button");b.className="choice";b.type="button";const a=document.createElement("span");a.textContent=label;const icon=document.createElement("span");icon.textContent=next==="start"?"↻":"→";icon.setAttribute("aria-hidden","true");b.append(a,icon);b.addEventListener("click",()=>go(next));$("choices").append(b)}
+$("notice").textContent=s.o.length?"Прогресс сохраняется автоматически":"Финал открыт • попробуй другой путь";
+$("panel").style.animation="none";void $("panel").offsetWidth;$("panel").style.animation="";
+}
+function go(id){if(!Object.hasOwn(scenes,id))return;current=id;try{localStorage.setItem(storage,id)}catch(_){}render();window.scrollTo({top:0,behavior:"smooth"})}
+$("restart").addEventListener("click",()=>{if(current==="start"||confirm("Начать историю заново?"))go("start")});
+render();
+</script>
+</body>
+</html>
