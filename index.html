@@ -40,7 +40,7 @@ footer{display:flex;justify-content:space-between;gap:12px;align-items:center;co
 .stage::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0 4px,#ffffff08 5px 6px);opacity:.15}
 .stage-label{position:absolute;left:20px;top:21px;z-index:3;font-size:11px;font-weight:800;color:#fff;letter-spacing:.16em;text-transform:uppercase;text-shadow:0 2px 15px #000}
 .stage-tap{position:absolute;bottom:22px;left:18px;right:18px;z-index:3;display:flex;gap:11px;align-items:center;justify-content:center;text-align:center;padding:14px 15px;border:1px solid #ddd3ff55;border-radius:16px;background:#080a18b8;backdrop-filter:blur(9px);font-size:14px;letter-spacing:.02em;box-shadow:0 9px 24px #0009}
-.stage-tap .hand{font-size:22px;animation:tapPulse 2s ease-in-out infinite}
+.stage-tap[hidden]{display:none!important}.stage-tap .hand{font-size:22px;animation:tapPulse 2s ease-in-out infinite}
 .stage:not(.revealed) svg{animation:artEnter .8s ease both,sceneZoom 14s ease-in-out infinite alternate}
 .stage.revealed{min-height:170px;height:190px;transition:min-height .5s,height .5s}
 .stage.revealed .stage-tap{opacity:0;pointer-events:none}
@@ -367,6 +367,7 @@ function go(choice){
   if(scenes[choice.to]?.ending && !state.endings.includes(scenes[choice.to].ending)) state.endings.push(scenes[choice.to].ending);
   if(choice.note){$("effect").textContent=choice.note; $("effect").hidden=false;} else $("effect").hidden=true;
   clickAccent(); render();
+  requestAnimationFrame(()=>{const stage=$("stage");if(stage)stage.scrollIntoView({behavior:"smooth",block:"start"});});
 }
 $("restart").addEventListener("click",()=>{if(state.scene==="start"||confirm("Начать эпизод сначала? Открытые финалы и архив останутся сохранены.")){state={...state,scene:"start",revealed:false,nerve:0,mind:0,clue:0,flags:[],visited:[]}; $("effect").hidden=true; if(!state.visited.includes("start")) state.visited.push("start"); render();}});
 if(!state.visited.includes(state.scene)) state.visited.push(state.scene);
