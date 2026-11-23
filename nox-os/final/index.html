@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101913">
+<meta name="description" content="Чужой телефон — интерактивный психологический хоррор.">
+<title>Чужой телефон · NOX OS</title>
+<link rel="stylesheet" href="style.css">
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<main id="phone" aria-label="Чужой телефон">
+  <header class="status"><time id="status-time">22:07</time><button id="island" aria-label="Центр уведомлений"><i></i></button><span class="status-icons" aria-label="Wi-Fi, заряд 72 процента"><svg viewBox="0 0 24 18" aria-hidden="true"><path d="M2 5Q12 -2 22 5M6 9q6-5 12 0m-8 4q2-2 4 0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="16" r="1"/></svg><i class="battery"></i></span></header>
+  <div id="view" class="view"><div class="boot">NOX OS</div></div>
+  <div id="incoming" hidden></div>
+  <aside id="toast" role="status" hidden></aside>
+  <button id="home" aria-label="На рабочий стол" hidden><i></i></button>
+</main>
+<script>window.addEventListener('error',function(e){if(e.target.tagName==='SCRIPT'||e.error){var view=document.getElementById('view');if(view&&view.querySelector('.boot'))view.textContent='Сбой загрузки NOX OS. Перезагрузите страницу.';}},true);</script>
+</body>
+</html>
